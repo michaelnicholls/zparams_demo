@@ -1,0 +1,16 @@
+@EndUserText.label : 'parameters for zdemo - add your parameters after variant'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table zdemo_param {
+
+  key mandt   : abap.clnt not null;
+  key parguid : sysuuid_x16 not null;
+  uname       : syst_uname not null;
+  variant     : abap.int4;
+  int1        : abap.int4;
+  int2        : abap.int4;
+  op          : abap.char(1);
+
+}

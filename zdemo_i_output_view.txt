@@ -1,0 +1,12 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'output'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity ZDEMO_I_output as select from zclass_output
+association to parent zdemo_i_param as _params
+    on $projection.Parguid = _params.parguid
+{
+    key parguid as Parguid,
+    key counter as Counter,
+    text as Text,
+    _params
+}
