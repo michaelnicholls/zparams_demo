@@ -17,7 +17,12 @@
   select single * into @data(class_details)
     from zdemo_i_param  where parguid = @<ls_params>-parguid.
     call method (class_details-class_name)=>main EXPORTING parguid = class_details-parguid .
+    data(lastrun) = |{ sy-datlo date = user  } { sy-timlo time = user }|.    
+    update zdemo_param SET lastrun = @lastrun    where parguid = @<ls_params>-parguid.
+
+
   endloop.
 
 
   ENDMETHOD.
+
