@@ -1,4 +1,4 @@
-@EndUserText.label : 'parameters for zdemo - add your parameters after variant'
+@EndUserText.label : 'parameters for zdemo - add your parameters after vlastrun'
 @AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
 @AbapCatalog.tableCategory : #TRANSPARENT
 @AbapCatalog.deliveryClass : #A
@@ -9,8 +9,10 @@ define table zdemo_param {
   key parguid : sysuuid_x16 not null;
   uname       : syst_uname not null;
   variant     : abap.int4;
+  lastrun    : abap.char(20);
   int1        : abap.int4;
   int2        : abap.int4;
   op          : abap.char(1);
+
 
 }
