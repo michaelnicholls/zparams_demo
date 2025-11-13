@@ -1,4 +1,4 @@
-@EndUserText.label : 'parameters for zdemo - add your parameters after vlastrun'
+@EndUserText.label : 'parameters for zdemo - add your parameters after lastrun'
 @AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
 @AbapCatalog.tableCategory : #TRANSPARENT
 @AbapCatalog.deliveryClass : #A
@@ -17,4 +17,5 @@ define table zdemo_param {
 
 
 }
+
 
