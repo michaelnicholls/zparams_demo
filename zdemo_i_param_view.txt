@@ -29,8 +29,10 @@ define root view entity zdemo_i_param
 
 
       op           as Op,
+      lastrun, 
 
       _outputs
 }
 
 where uname = $session.user // to make sure we only get our parameters
+
