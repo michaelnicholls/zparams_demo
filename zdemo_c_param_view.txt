@@ -48,6 +48,12 @@ define root view entity zdemo_c_param
       @UI.identification: [ { position: 40, label: 'Operator' } ]
       @UI.lineItem: [ { position: 40, label: 'Operator' } ]
       Op                 as Op,
+      @UI.identification: [ { position: 50, label: 'Last run' } ]    
+      @UI.lineItem: [ { position: 50, label: 'Last run' } ]      
+      lastrun,
+
+
 
       _outputs: redirected to composition child Zdemo_c_OUTPUT
 }
+
