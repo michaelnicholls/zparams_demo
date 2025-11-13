@@ -7,7 +7,9 @@ CLASS zparam_helper DEFINITION
   PUBLIC SECTION.
    class-METHODS:
    clear_output IMPORTING parguid type sysuuid_x16, " clears existing outputs
+   write_timestamp IMPORTING parguid type sysuuid_x16 text  type string OPTIONAL,
     write_line importing parguid type sysuuid_x16 text type string. "writes a line to the end of the outputs
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -24,6 +26,10 @@ CLASS zparam_helper IMPLEMENTATION.
 select single  max( counter )  into @data(max_count) from zclass_output where parguid = @parguid.
 
 modify zclass_output from @( value #(    parguid = parguid text = text counter = max_count + 1  ) ).
+  ENDMETHOD.
+
+  METHOD write_timestamp.
+ write_line( parguid = parguid text = |{ text }{ sy-datlo date = user  } { sy-timlo time = user }| ).
   ENDMETHOD.
 
 ENDCLASS.
