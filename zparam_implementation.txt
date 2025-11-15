@@ -1,12 +1,10 @@
   METHOD setUser.
   DATA lt_items_upd TYPE TABLE FOR UPDATE zdemo_i_param.
   lt_items_upd = CORRESPONDING #( keys ).
-  select single max( variant ) INTO @data(maxvar) from zdemo_param WHERE uname = @sy-uname." GROUP BY variant .
   loop at lt_items_upd ASSIGNING FIELD-SYMBOL(<ls_items_upd>).
   <ls_items_upd>-Uname = sy-uname.
-  <ls_items_upd>-Variant = maxvar + 1.
   ENDLOOP.
-  modify entity IN LOCAL MODE zdemo_i_param UPDATE FIELDS ( Uname Variant ) with lt_items_upd REPORTED data(ls_reported).
+  modify entity IN LOCAL MODE zdemo_i_param UPDATE FIELDS ( Uname  ) with lt_items_upd REPORTED data(ls_reported).
   reported = CORRESPONDING #( DEEP ls_reported ).
   ENDMETHOD.
 
@@ -25,4 +23,5 @@
 
 
   ENDMETHOD.
+
 
