@@ -11,10 +11,11 @@ authorization master ( instance )
   create;
   update;
   delete;
-  field ( readonly ) Uname, Variant, lastrun;
+  field ( readonly ) Uname, lastrun;
   field (readonly, numbering : managed) parguid;
   determination setUser on modify {create;} // specific for zdemo
   action execute ;
+  action clear;
 
 	association _outputs;
 }
@@ -29,3 +30,4 @@ association _params {}
 	
 
 }
+
