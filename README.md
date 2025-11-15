@@ -22,7 +22,7 @@ After generating the behaviour implementaation class, add the code for the execu
 
 
 
-There is a service definition zdemo_par_svc which exposes the two consumption views.  
+There is a service definition [zdemo_par_svc](zdemo_par_svc.txt) which exposes the two consumption views.  
 
 After building an appropriate service binding, and publishing it, the Fiori app can be tested and then converted into a real Fiori app for deployment through the FLP.  
 
