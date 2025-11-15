@@ -22,9 +22,10 @@ define view entity Zdemo_c_OUTPUT
   key Counter,
 
       @UI.identification: [ { position: 20, label: 'Text' } ]
-      @UI.lineItem: [ { position: 20, label: 'Text', cssDefault.width: '80%' } ]
+      @UI.lineItem: [ { position: 20, label: 'Text' } ]
       Text,
 
       /* Associations */
       _params : redirected to parent zdemo_c_param
 }
+
