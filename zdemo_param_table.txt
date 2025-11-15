@@ -8,7 +8,6 @@ define table zdemo_param {
   key mandt   : abap.clnt not null;
   key parguid : sysuuid_x16 not null;
   uname       : syst_uname not null;
-  variant     : abap.int4;
   variantname : abap.char(20);
   lastrun    : abap.char(20);
   int1        : abap.int4;
@@ -17,5 +16,6 @@ define table zdemo_param {
 
 
 }
+
 
 
