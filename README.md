@@ -6,7 +6,7 @@ I have attached an example called ZDEMO. It needs a static method called MAIN wi
   
 We need two new tables to be created.  
 The first is for storing the parameters for a global class, similar to the PARAMETERS statement in traditional ABAP reports.
-I have called this ZDEMO_PARAM.  
+I have called this [ZDEMO_PARAM](zparam_demo_table.txt).  
 The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.
 The two table definitions can be found in this repository.  
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
