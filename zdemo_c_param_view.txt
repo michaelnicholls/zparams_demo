@@ -22,23 +22,22 @@ define root view entity zdemo_c_param
                      type: #LINEITEM_REFERENCE,
                      targetElement: '_outputs' } ]
       @UI.hidden: true
-      @UI.lineItem: [ { position: 10, type: #FOR_ACTION, dataAction: 'execute', label: 'Execute' } ]
   key parguid,
+
+      @UI.lineItem: [ { position: 5, label: 'Description' } ]
+      class_description,
 
       @UI.identification: [ { position: 10, label: 'Variant' } ]
       @UI.lineItem: [ { position: 10, label: 'Variant' } ]
-      Variantname            as Variantname,     
 
-      @UI.hidden: true
+      Variantname        as Variantname,
 
-
-      Variant            as Variant,
+ //    Variant,
 
       @UI.hidden: true
       uname,
 
-      @UI.lineItem: [ { position: 5, label: 'Description' } ]
-      class_description,
+      ///////  put your fields here /////
 
       @UI.identification: [ { position: 20, label: 'Integer1' } ]
       @UI.lineItem: [ { position: 20, label: 'Integer1' } ]
@@ -52,13 +51,23 @@ define root view entity zdemo_c_param
       @UI.identification: [ { position: 40, label: 'Operator' } ]
       @UI.lineItem: [ { position: 40, label: 'Operator' } ]
       Op                 as Op,
-      @UI.identification: [ { position: 50, label: 'Last run' } ]    
-      @UI.lineItem: [ { position: 50, label: 'Last run' } ]      
+
+      ////  end of your fields - adjust the position values below
+      @UI.identification: [ { position: 50, label: 'Last run' } ]
+      @UI.lineItem: [ { position: 50, label: 'Last run' } ]
       lastrun,
 
-
+      @UI.lineItem: [ { type: #FOR_ACTION,
+                        inline: true,
+                        dataAction: 'execute',
+                        position: 60,
+                        label: 'Execute' },
+                       
+                      { type: #FOR_ACTION,
+                        inline: true,
+                        dataAction: 'clear',
+                        position: 70,
+                        label: 'Clear last run' } ]
 
       _outputs: redirected to composition child Zdemo_c_OUTPUT
 }
-
-
