@@ -23,5 +23,14 @@
 
 
   ENDMETHOD.
+METHOD clear.    
+READ ENTITY IN LOCAL MODE zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) RESULT DATA(lt_params).  
+loop at lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).   
+zparam_helper=>clear_output( parguid = <ls_params>-parguid ).    
+update zdemo_param SET lastrun = ''    where parguid = @<ls_params>-parguid.  
+endloop.  
+endmethod.
+
+
 
 
