@@ -14,13 +14,9 @@ define root view entity zdemo_i_param
 {
   key parguid,
 
-      variant      as Variant,
       variantname as Variantname,
-
       uname,
-
       'demo class' as class_description, // put a description of your class here
-
       'ZDEMO'      as class_name, // put your class name here
       
 //  put your parameters below here
@@ -31,11 +27,13 @@ define root view entity zdemo_i_param
 
 
       op           as Op,
+// end of your parameters
       lastrun, 
 
       _outputs
 }
 
 where uname = $session.user // to make sure we only get our parameters
+
 
 
