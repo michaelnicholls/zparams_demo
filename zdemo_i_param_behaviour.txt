@@ -12,6 +12,7 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly ) Uname, lastrun;
+  field (readonly : update) global_flag;
   field (readonly, numbering : managed) parguid;
   determination setUser on modify {create;} 
   action execute ;
@@ -30,5 +31,6 @@ association _params {}
 	
 
 }
+
 
 
