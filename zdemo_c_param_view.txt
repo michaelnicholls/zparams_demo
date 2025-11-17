@@ -29,8 +29,12 @@ define root view entity zdemo_c_param
 
       @UI.identification: [ { position: 10, label: 'Variant' } ]
       @UI.lineItem: [ { position: 10, label: 'Variant' } ]
-
+   
       Variantname        as Variantname,
+         @UI.identification: [ { position: 15, label: 'Global' } ]
+      @UI.lineItem: [ { position: 15, label: 'Global' } ]
+   
+      global_flag,
 
  //    Variant,
 
@@ -52,11 +56,11 @@ define root view entity zdemo_c_param
       @UI.lineItem: [ { position: 40, label: 'Operator' } ]
       Op                 as Op,
 
-      ////  end of your fields - adjust the position values below
+      ////  end of your fields
       @UI.identification: [ { position: 50, label: 'Last run' } ]
       @UI.lineItem: [ { position: 50, label: 'Last run' } ]
       lastrun,
-
+   
       @UI.lineItem: [ { type: #FOR_ACTION,
                         inline: true,
                         dataAction: 'execute',
