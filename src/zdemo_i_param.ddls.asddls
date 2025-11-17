@@ -32,6 +32,9 @@ define root view entity zdemo_i_param
 
 
       p.op           as Op,
+      p.checkbox,
+      p.somedate,
+      p.sometime,
 
       /// end of your parameters
       //p.lastrun,

@@ -55,6 +55,15 @@ define root view entity zdemo_c_param
       @UI.identification: [ { position: 40, label: 'Operator' } ]
       @UI.lineItem: [ { position: 40, label: 'Operator' } ]
       Op                 as Op,
+      @UI.identification: [ { position: 41, label: 'Checkbox' } ]
+      @UI.lineItem: [ { position: 41, label: 'Checkbox' } ]
+      checkbox,
+      @UI.identification: [ { position: 42, label: 'Date' } ]
+      @UI.lineItem: [ { position: 42, label: 'Date' } ]
+      somedate,
+      @UI.identification: [ { position: 43, label: 'Time' } ]
+      @UI.lineItem: [ { position: 43, label: 'Time' } ]
+      sometime,
 
       ////  end of your fields
       @UI.identification: [ { position: 50, label: 'Last run' } ]
