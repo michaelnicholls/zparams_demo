@@ -1,0 +1,10 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'last execution'
+@Metadata.ignorePropagatedAnnotations: true
+define view entity zclass_out_exec as select distinct from zclass_output
+{
+    key written_by as WrittenBy,
+    key parguid,
+    text
+    
+} where visible = '' and written_by = $session.user
