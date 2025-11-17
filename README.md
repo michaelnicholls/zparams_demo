@@ -31,22 +31,25 @@ After building an appropriate service binding, and publishing it, the Fiori app 
 The source code for a sample class file that uses the parameters can be found at [zdemo_class](zdemo_class.txt).  
 There is a helper class [zparam_helper](zparam_helper.txt) which has methods for clearing output, writing a timestamp message, and writing new lines.  
 
+These objects are also available in an abapGit repository.  
 
 
-How the app looks on launching  
-<img width="1828" height="328" alt="app1" src="https://github.com/user-attachments/assets/d3a063c5-bf4f-46e3-a249-2a7a983c1f21" />
+
+How the app looks on launching  <img width="1841" height="855" alt="app1" src="https://github.com/user-attachments/assets/25d4d7c6-8361-4259-b33c-00688251f9ee" />
+
 After using the Create option
+<img width="1841" height="855" alt="app_create" src="https://github.com/user-attachments/assets/dfd2c30f-dd34-4d80-a169-fe79fcf518e9" />
 
-<img width="1828" height="328" alt="app_create" src="https://github.com/user-attachments/assets/0f3e24cd-ea0f-4516-94da-d563befac31f" />
 
-Multiple sets of parameters can be created, with each one getting a numbered variant.  
+Multiple sets of parameters can be created, with each one getting a named variant.  
 
 AFter Saving, select a line and Execute
+<img width="1844" height="855" alt="app_before_execute" src="https://github.com/user-attachments/assets/f3fb860f-5963-4591-ad6c-8be36341396c" />
 
 
 
-<img width="1828" height="328" alt="app_before_execute" src="https://github.com/user-attachments/assets/97509a5c-7d08-4c1a-9dcd-486deb7a4942" />
 
-After execution, select the variant
+After execution, select the variant  <img width="1844" height="855" alt="app_after_execute" src="https://github.com/user-attachments/assets/7ab18a61-c1e7-45e1-823e-49b7e3f1d984" />
 
-<img width="1843" height="399" alt="app_after_execute" src="https://github.com/user-attachments/assets/44265071-60ce-46bb-9ce0-32f42531adaa" />
+
+<img width="1854" height="855" alt="app see output" src="https://github.com/user-attachments/assets/27c4d296-065e-46d2-a3ec-e31a23bb2e86" />
