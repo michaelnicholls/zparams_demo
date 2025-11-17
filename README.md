@@ -16,6 +16,8 @@ The zdemo_i_param view has fields for the class name and a description of the cl
 
 There are also 2 projection/consumption level views, eg [zdemo_c_param](zdemo_c_param_view.txt) and [zdemo_c_output](zdemo_c_output_view.txt), which provide the main annotations for the Fiori app.  
 
+To keep track of the last execution, we have another view [zclass_out_exec](zclass_out_exec.txt).  
+
 There are two behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](zdemo_i_param_behaviour.txt) and [zdemo_c_param](zdemo_c_param_behaviour.txt).
 
 After generating the behaviour implementaation class, add the code for the execute and clear actions and the setUser derivation eg [zparam_implementation](zparam_implementation.txt).  
