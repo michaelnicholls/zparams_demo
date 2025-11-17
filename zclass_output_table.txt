@@ -9,5 +9,5 @@ define table zclass_output {
   key parguid : sysuuid_x16 not null;
   key counter : abap.int4 not null;
   text        : abap.char(150);
-
-}
+  written_by  : syst_uname;  
+  visible     : boole_d;
