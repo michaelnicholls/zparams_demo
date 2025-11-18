@@ -15,6 +15,7 @@ define view entity Zdemo_c_OUTPUT
                      position: 10,
                      label: 'Details',
                      type: #IDENTIFICATION_REFERENCE } ]
+                   
         @UI.hidden: true
                  
   key Parguid,

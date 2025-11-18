@@ -1,5 +1,7 @@
 
 
+
+
 CLASS lhc_zdemo_i_param DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
@@ -21,13 +23,15 @@ CLASS lhc_zdemo_i_param IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD setUser.
+   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
+
+
   DATA lt_items_upd TYPE TABLE FOR UPDATE zdemo_i_param.
   read ENTITIES of zdemo_i_param
   IN LOCAL MODE ENTITY zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) result data(lt_x).
-  "lt_items_upd = CORRESPONDING #( keys ).
- " select single max( variant ) INTO @data(maxvar) from zdemo_param WHERE uname = @sy-uname." GROUP BY variant .
+
   loop at lt_x ASSIGNING FIELD-SYMBOL(<ls_x>).
-  <ls_x>-Uname = sy-uname.
+  <ls_x>-Uname = myname.
  if <ls_x>-global_flag is not initial. <ls_x>-uname = ''. endif.
 
   ENDLOOP.
@@ -37,25 +41,33 @@ CLASS lhc_zdemo_i_param IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD execute.
-  READ ENTITY IN LOCAL MODE zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) RESULT DATA(lt_params).
-  data(lastrun) = |{ sy-datlo date = user  } { sy-timlo time = user }|.
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
-  loop at lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).
-  " find our parameters
-  select single * into @data(class_details)
-    from zdemo_i_param  where parguid = @<ls_params>-parguid.
-    " get any existing history record
-    select single counter from zclass_output into @data(counter) where parguid = @<ls_params>-parguid and visible = '' and written_by = @sy-uname.
-    if sy-subrc > 0.
-    select single max( counter ) into @data(temp) from zclass_output where parguid = @<ls_params>-parguid.
-    counter = temp + 1.
-    endif.
-   modify zclass_output from @( value #( parguid = <ls_params>-parguid counter = counter text = lastrun visible = '' written_by = sy-uname ) ).
+    READ ENTITY IN LOCAL MODE zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) RESULT DATA(lt_params).
+    DATA(lastrun) = |{ sy-datlo DATE = USER  } { sy-timlo TIME = USER }|.
 
-    call method (class_details-class_name)=>main EXPORTING parguid = class_details-parguid .
-  endloop.
+    LOOP AT lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).
+      " find our parameters
+      SELECT SINGLE * INTO @DATA(class_details)
+        FROM zdemo_i_param
+        WHERE parguid = @<ls_params>-parguid.
+      " get any existing history record
+      SELECT SINGLE counter FROM zclass_output
+        INTO @DATA(counter)
+        WHERE parguid = @<ls_params>-parguid AND visible = '' AND written_by = @myname.
+      IF sy-subrc > 0.
+        SELECT SINGLE MAX( counter ) INTO @DATA(temp) FROM zclass_output WHERE parguid = @<ls_params>-parguid.
+        counter = temp + 1.
+      ENDIF.
+      MODIFY zclass_output FROM @( VALUE #( parguid    = <ls_params>-parguid
+                                            counter    = counter
+                                            text       = lastrun
+                                            visible    = ''
+                                            written_by = myname ) ).
 
-
+      CALL METHOD (class_details-class_name)=>main
+        EXPORTING parguid = class_details-parguid.
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD clear.
@@ -65,5 +77,6 @@ CLASS lhc_zdemo_i_param IMPLEMENTATION.
 
   endloop.
   ENDMETHOD.
+
 
 ENDCLASS.

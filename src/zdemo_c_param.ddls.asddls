@@ -58,11 +58,11 @@ define root view entity zdemo_c_param
       @UI.identification: [ { position: 41, label: 'Checkbox' } ]
       @UI.lineItem: [ { position: 41, label: 'Checkbox' } ]
       checkbox,
-      @UI.identification: [ { position: 42, label: 'Date' } ]
-      @UI.lineItem: [ { position: 42, label: 'Date' } ]
+      @UI.identification: [ { position: 42, label: 'Some date' } ]
+      @UI.lineItem: [ { position: 42, label: 'Some date' } ]
       somedate,
-      @UI.identification: [ { position: 43, label: 'Time' } ]
-      @UI.lineItem: [ { position: 43, label: 'Time' } ]
+      @UI.identification: [ { position: 43, label: 'Some time' } ]
+      @UI.lineItem: [ { position: 43, label: 'Some time' } ]
       sometime,
 
       ////  end of your fields

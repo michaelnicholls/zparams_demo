@@ -23,19 +23,21 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
 
 
   METHOD clear_output.
-  delete from zclass_output where parguid = @parguid and written_by = @sy-uname.
+  data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
+  delete from zclass_output where parguid = @parguid and written_by = @myname.
   ENDMETHOD.
 
 
   METHOD write_line.
+   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
   " get the highest line number so far
 select single  max( counter )  into @data(max_count) from zclass_output where parguid = @parguid.
 
-modify zclass_output from @( value #(    parguid = parguid text = text visible = visible written_by = sy-uname counter = max_count + 1  ) ).
+modify zclass_output from @( value #(    parguid = parguid text = text visible = visible written_by = myname counter = max_count + 1  ) ).
   ENDMETHOD.
 
-
   METHOD write_timestamp.
- write_line( parguid = parguid text = |{ text }{ sy-datlo date = user  } { sy-timlo time = user }| ).
+    write_line( parguid = parguid
+                text    = |{ text }{ sy-datlo DATE = USER  } { sy-timlo TIME = USER }| ).
   ENDMETHOD.
 ENDCLASS.

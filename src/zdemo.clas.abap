@@ -15,10 +15,9 @@ ENDCLASS.
 
 
 CLASS ZDEMO IMPLEMENTATION.
-
-
   METHOD main.
     " do your work here
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the parameters
     SELECT SINGLE * FROM zdemo_i_param INTO @DATA(params) WHERE parguid = @parguid.
@@ -33,7 +32,7 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA result TYPE p LENGTH 9 DECIMALS 2.
     DATA status TYPE string.
     zparam_helper=>write_timestamp( parguid = parguid
-                                    text    = |{ sy-uname } : Started at | ).
+                                    text    = |{ myname } : Started at | ).
     DATA(ops) = '+-*/'.
     DO strlen( ops ) TIMES.
       DATA(op) = substring( val = ops
@@ -51,10 +50,10 @@ CLASS ZDEMO IMPLEMENTATION.
 
       IF status IS INITIAL.
         zparam_helper=>write_line( parguid = parguid
-                                   text    = | { prefix } { result }| ).
+                                   text    = |{ prefix } { result }| ).
       ELSE.
         zparam_helper=>write_line( parguid = parguid
-                                   text    = | { status }|   ).
+                                   text    = |{ status }|   ).
       ENDIF.
     ENDDO.
     zparam_helper=>write_timestamp( parguid = parguid
