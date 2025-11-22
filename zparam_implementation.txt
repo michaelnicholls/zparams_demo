@@ -1,69 +1,258 @@
+CLASS lcl_buffer DEFINITION.
+  PUBLIC SECTION.
+
+    TYPES: BEGIN OF ty_buffer.
+             INCLUDE TYPE zdemo_i_param   AS lv_data.
+    TYPES:   flag TYPE c LENGTH 1,
+           END OF ty_buffer.
 
 
-CLASS lhc_zdemo_i_param DEFINITION INHERITING FROM cl_abap_behavior_handler.
+    CLASS-DATA mt_buffer TYPE TABLE OF ty_buffer.
+
+ENDCLASS.
+CLASS lhc_ZDEMO_i_PARAM DEFINITION INHERITING FROM cl_abap_behavior_handler.
+pubLIC SECTION.
   PRIVATE SECTION.
 
     METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
       IMPORTING keys REQUEST requested_authorizations FOR zdemo_i_param RESULT result.
-    METHODS setuser FOR DETERMINE ON MODIFY
-      IMPORTING keys FOR zdemo_i_param~setuser.
-    METHODS execute FOR MODIFY
-      IMPORTING keys FOR ACTION zdemo_i_param~execute.
-    METHODS clear FOR MODIFY
-      IMPORTING keys FOR ACTION zdemo_i_param~clear.
 
+    
+    METHODS create FOR MODIFY
+      IMPORTING entities FOR CREATE zdemo_i_param.
+
+    METHODS update FOR MODIFY
+      IMPORTING entities FOR UPDATE zdemo_i_param.
+
+    METHODS delete FOR MODIFY
+      IMPORTING keys FOR DELETE zdemo_i_param.
+
+    METHODS read FOR READ
+      IMPORTING keys FOR READ zdemo_i_param RESULT result.
+
+    METHODS lock FOR LOCK
+      IMPORTING keys FOR LOCK zdemo_i_param.
+
+    METHODS rba_Outputs FOR READ
+      IMPORTING keys_rba FOR READ zdemo_i_param\_Outputs FULL result_requested RESULT result LINK association_links.
+
+    METHODS cba_Outputs FOR MODIFY
+      IMPORTING entities_cba FOR CREATE zdemo_i_param\_Outputs.
+    METHODS clear FOR MODIFY
+      IMPORTING keys FOR ACTION ZDEMO_i_PARAM~clear.
+
+    METHODS execute FOR MODIFY
+      IMPORTING keys FOR ACTION ZDEMO_i_PARAM~execute.
 
 ENDCLASS.
 
-CLASS lhc_zdemo_i_param IMPLEMENTATION.
+CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
 
   METHOD get_instance_authorizations.
   ENDMETHOD.
 
-  METHOD setUser.
-  DATA lt_items_upd TYPE TABLE FOR UPDATE zdemo_i_param.
-  read ENTITIES of zdemo_i_param
-  IN LOCAL MODE ENTITY zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) result data(lt_x).
-  "lt_items_upd = CORRESPONDING #( keys ).
- " select single max( variant ) INTO @data(maxvar) from zdemo_param WHERE uname = @sy-uname." GROUP BY variant .
-  loop at lt_x ASSIGNING FIELD-SYMBOL(<ls_x>).
-  <ls_x>-Uname = sy-uname.
- if <ls_x>-global_flag is not initial. <ls_x>-uname = ''. endif.
+ 
 
-  ENDLOOP.
-  lt_items_upd = CORRESPONDING #( lt_x ).
-  modify entity IN LOCAL MODE zdemo_i_param UPDATE FIELDS ( Uname   ) with lt_items_upd REPORTED data(ls_reported).
-  reported = CORRESPONDING #( DEEP ls_reported ).
+  METHOD create.
+  data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
+
+   LOOP AT entities INTO DATA(ls_create).
+   if ls_create-global_flag is initial. ls_create-uname = myname. endif.
+   ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
+
+  insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create-%data ) ) into table lcl_buffer=>mt_buffer.
+
+  endLOOP.
+
+
   ENDMETHOD.
 
-  METHOD execute.
-  READ ENTITY IN LOCAL MODE zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) RESULT DATA(lt_params).
-  data(lastrun) = |{ sy-datlo date = user  } { sy-timlo time = user }|.
+  METHOD update.
+  LOOP AT entities INTO DATA(ls_update).
+     READ TABLE lcl_buffer=>mt_buffer ASSIGNING FIELD-SYMBOL(<ls_buffer>) WITH KEY parguid = ls_update-parguid .
+      IF sy-subrc <> 0.
+        " not yet in buffer, read from table
 
-  loop at lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).
-  " find our parameters
-  select single * into @data(class_details)
-    from zdemo_i_param  where parguid = @<ls_params>-parguid.
-    " get any existing history record
-    select single counter from zclass_output into @data(counter) where parguid = @<ls_params>-parguid and visible = '' and written_by = @sy-uname.
-    if sy-subrc > 0.
-    select single max( counter ) into @data(temp) from zclass_output where parguid = @<ls_params>-parguid.
-    counter = temp + 1.
-    endif.
-   modify zclass_output from @( value #( parguid = <ls_params>-parguid counter = counter text = lastrun visible = '' written_by = sy-uname ) ).
+        SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
 
-    call method (class_details-class_name)=>main EXPORTING parguid = class_details-parguid .
-  endloop.
+        INSERT VALUE #( flag = 'U' lv_data = ls_db ) INTO TABLE lcl_buffer=>mt_buffer ASSIGNING <ls_buffer>.
+        IF ls_update-%control-Int1 is not iNITIAL. <ls_buffer>-lv_data-int1 = ls_update-int1. ENDIF.
+        IF ls_update-%control-Int2 is not iNITIAL. <ls_buffer>-lv_data-int2 = ls_update-int2. ENDIF.
+        if ls_update-%control-Op is nOT INitIAL. <ls_buffer>-lv_data-op = ls_update-op. ENDIF.
+        if ls_update-%control-Variantname is not iNITIAL. <ls_buffer>-lv_data-variantname = ls_update-variantname. ENDIF.
+        if ls_update-%control-checkbox is nOT INitIAL. <ls_buffer>-lv_data-checkbox = ls_update-checkbox. ENDIF.
+        if ls_update-%control-somedate is not iNITIAL. <ls_buffer>-lv_data-somedate = ls_update-somedate. ENDIF.
+        if ls_update-%control-sometime is not iNITIAL. <ls_buffer>-lv_data-sometime = ls_update-sometime. ENDIF.
+      ENDIF.
+  endLOOP.
+  ENDMETHOD.
+
+  METHOD delete.
+LOOP AT keys INTO DATA(ls_delete)..
 
 
+  INSERT VALUE #( flag = 'D' parguid = ls_delete-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+  endLOOP.
+  ENDMETHOD.
+
+  METHOD read.
+  ENDMETHOD.
+
+  METHOD lock.
+  ENDMETHOD.
+
+  METHOD rba_Outputs.
+  ENDMETHOD.
+
+  METHOD cba_Outputs.
   ENDMETHOD.
 
   METHOD clear.
-    READ ENTITY IN LOCAL MODE zdemo_i_param ALL FIELDS WITH CORRESPONDING #( keys ) RESULT DATA(lt_params).
-  loop at lt_params ASSIGNING FIELD-SYMBOL(<ls_params>).
-    zparam_helper=>clear_output( parguid = <ls_params>-parguid ).
 
-  endloop.
+  LOOP AT keys INTO DATA(ls_clear)..
+
+
+  INSERT VALUE #( flag = 'Z' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+  endLOOP.
+
+  ENDMETHOD.
+
+  METHOD execute.
+  LOOP AT keys INTO DATA(ls_clear)..
+
+
+  INSERT VALUE #( flag = 'X' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+  endLOOP.
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS lhc_ZDEMO_i_OUTPUT DEFINITION INHERITING FROM cl_abap_behavior_handler.
+  PRIVATE SECTION.
+
+    METHODS update FOR MODIFY
+      IMPORTING entities FOR UPDATE zdemo_i_output.
+
+    METHODS delete FOR MODIFY
+      IMPORTING keys FOR DELETE zdemo_i_output.
+
+    METHODS read FOR READ
+      IMPORTING keys FOR READ zdemo_i_output RESULT result.
+
+    METHODS rba_Params FOR READ
+      IMPORTING keys_rba FOR READ zdemo_i_output\_Params FULL result_requested RESULT result LINK association_links.
+
+ENDCLASS.
+
+CLASS lhc_ZDEMO_i_OUTPUT IMPLEMENTATION.
+
+  METHOD update.
+  ENDMETHOD.
+
+  METHOD delete.
+
+  data(x) = 'x'.
+  ENDMETHOD.
+
+  METHOD read.
+  ENDMETHOD.
+
+  METHOD rba_Params.
+  ENDMETHOD.
+
+ENDCLASS.
+
+CLASS lsc_ZDEMO_i_PARAM DEFINITION INHERITING FROM cl_abap_behavior_saver.
+pubLIC SECTION.
+"class-data tab1 type table of string.
+  PROTECTED SECTION.
+
+    METHODS finalize REDEFINITION.
+
+    METHODS check_before_save REDEFINITION.
+
+    METHODS save REDEFINITION.
+
+    METHODS cleanup REDEFINITION.
+
+    METHODS cleanup_finalize REDEFINITION.
+
+ENDCLASS.
+
+CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
+
+  METHOD finalize.
+  ENDMETHOD.
+
+  METHOD check_before_save.
+  ENDMETHOD.
+
+  METHOD save.
+    DATA lt_data TYPE STANDARD TABLE OF zdemo_i_param.
+
+    " find creations
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'C' )
+                       (  row-lv_data ) ).
+    DATA table_line TYPE zdemo_param.
+
+    LOOP AT lt_data INTO DATA(lv_data).
+      MOVE-CORRESPONDING lv_data TO table_line.
+      MODIFY zdemo_param FROM @( table_line ).
+    ENDLOOP.
+    " find deletions
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'D' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+      DELETE FROM zdemo_param WHERE parguid = @lv_data-parguid.
+    ENDLOOP.
+    " find updates
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'U' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+      MOVE-CORRESPONDING lv_data TO table_line.
+      MODIFY zdemo_param FROM @table_line.
+    ENDLOOP.
+    " find clear outputs
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'Z' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+      zparam_helper=>clear_output( parguid = lv_data-parguid ).
+    ENDLOOP.
+
+    " find executions
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'X' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+      "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
+      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+      DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
+      SELECT SINGLE counter FROM zclass_output
+        WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname
+        INTO @DATA(counter).
+      IF sy-subrc > 0.
+        SELECT SINGLE MAX( counter ) FROM zclass_output
+          WHERE parguid = @lv_data-parguid
+          INTO @DATA(temp).
+        counter = temp + 1.
+      ENDIF.
+      MODIFY zclass_output FROM @( VALUE #( parguid    = lv_data-parguid
+                                            counter    = counter
+                                            text       = lastrun
+                                            visible    = ''
+                                            written_by = myname ) ).
+
+      "
+      zdemo=>main( parguid = lv_data-parguid ).
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD cleanup.
+  ENDMETHOD.
+
+  METHOD cleanup_finalize.
   ENDMETHOD.
 
 ENDCLASS.
