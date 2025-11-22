@@ -1,36 +1,31 @@
-managed implementation in class zbp_demo_i_param unique;
+
+unmanaged implementation in class zbp_demo_i_param unique;
 strict ( 2 );
 
-define behavior for zdemo_i_param //alias <alias_name>
-persistent table zdemo_param
+define behavior for ZDEMO_I_PARAM //alias <alias_name>
+
 lock master
 authorization master ( instance )
 //etag master <field_name>
-
 {
-  create;
+  create ( authorization : global );
   update;
   delete;
-  field ( readonly ) Uname, lastrun;
+ field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
-  field (readonly, numbering : managed) parguid;
-  determination setUser on modify {create;} 
-  action execute ;
+    association _outputs { create; }
+  action execute;
   action clear;
-
-	association _outputs;
 }
-define behavior for ZDEMO_I_output
-persistent table zclass_output
+
+define behavior for ZDEMO_I_OUTPUT //alias <alias_name>
+//late numbering
 lock dependent by _params
 authorization dependent by _params
-
- {
- field ( readonly) Parguid, Counter;
-association _params {}
-	
-
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) Parguid, Counter;
+  association _params;
 }
-
-
-
