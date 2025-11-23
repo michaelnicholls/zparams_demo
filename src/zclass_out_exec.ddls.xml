@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>ZCLASS_OUT_EXEC</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>last execution</DDTEXT>
+    <DDTEXT>last execution details</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

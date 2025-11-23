@@ -76,6 +76,8 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
         SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
 
         INSERT VALUE #( flag = 'U' lv_data = ls_db ) INTO TABLE lcl_buffer=>mt_buffer ASSIGNING <ls_buffer>.
+        "
+        " add your fields here =====
         IF ls_update-%control-Int1 is not iNITIAL. <ls_buffer>-lv_data-int1 = ls_update-int1. ENDIF.
         IF ls_update-%control-Int2 is not iNITIAL. <ls_buffer>-lv_data-int2 = ls_update-int2. ENDIF.
         if ls_update-%control-Op is nOT INitIAL. <ls_buffer>-lv_data-op = ls_update-op. ENDIF.
