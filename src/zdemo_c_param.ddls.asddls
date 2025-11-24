@@ -1,11 +1,8 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
-@EndUserText.label: 'consumption'
-
-//@Metadata.ignorePropagatedAnnotations: true
-
+@EndUserText.label: 'Parameters demo'
+@UI.headerInfo.typeNamePlural: 'Variants for parameters demo'
 @UI.headerInfo.title.value: 'class_description'
-
 define root view entity zdemo_c_param
   as projection on zdemo_i_param
 
@@ -24,7 +21,7 @@ define root view entity zdemo_c_param
       @UI.hidden: true
   key parguid,
 
-      @UI.lineItem: [ { position: 5, label: 'Description' } ]
+ //     @UI.lineItem: [ { position: 5, label: 'Description' } ]
       class_description,
 
       @UI.identification: [ { position: 10, label: 'Variant' } ]
@@ -87,6 +84,5 @@ define root view entity zdemo_c_param
                         dataAction: 'clear',
                         position: 70,
                         label: 'Clear last run' } ]
-      
       _outputs: redirected to composition child Zdemo_c_OUTPUT
 }

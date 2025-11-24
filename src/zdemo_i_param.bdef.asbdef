@@ -2,10 +2,8 @@ unmanaged implementation in class zbp_demo_i_param unique;
 strict ( 2 );
 
 define behavior for zdemo_i_param //alias <alias_name>
-//persistent table zdemo_param
 lock master
 authorization master ( instance )
-//etag master <field_name>
 
 {
   create;
@@ -13,15 +11,12 @@ authorization master ( instance )
   delete  (features : instance);
  field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
-
-//  determination setUser on modify {create;}
   action execute ;
   action clear;
 
 	association _outputs {create;}
 }
 define behavior for ZDEMO_I_output
-//persistent table zclass_output
 lock dependent by _params
 authorization dependent by _params
 
