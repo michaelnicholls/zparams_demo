@@ -43,6 +43,8 @@ pubLIC SECTION.
 
     METHODS execute FOR MODIFY
       IMPORTING keys FOR ACTION ZDEMO_i_PARAM~execute.
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR zdemo_i_param RESULT result.
 
 ENDCLASS.
 
@@ -58,6 +60,7 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
 
    LOOP AT entities INTO DATA(ls_create).
    if ls_create-global_flag is initial. ls_create-uname = myname. endif.
+   if ls_create-Variantname is INITIAL. ls_create-Variantname = |variant { substring(  val = sy-datlo off = 4 ) } { sy-timlo }|. endif.
    ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
 
   insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create-%data ) ) into table lcl_buffer=>mt_buffer.
@@ -76,17 +79,12 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
         SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
 
         INSERT VALUE #( flag = 'U' lv_data = ls_db ) INTO TABLE lcl_buffer=>mt_buffer ASSIGNING <ls_buffer>.
-        if ls_update-%control-Variantname is not iNITIAL. <ls_buffer>-lv_data-variantname = ls_update-variantname. ENDIF.
 
         "
-        " add your fields here =====
-        IF ls_update-%control-Int1 is not iNITIAL. <ls_buffer>-lv_data-int1 = ls_update-int1. ENDIF.
-        IF ls_update-%control-Int2 is not iNITIAL. <ls_buffer>-lv_data-int2 = ls_update-int2. ENDIF.
-        if ls_update-%control-Op is nOT INitIAL. <ls_buffer>-lv_data-op = ls_update-op. ENDIF.
-        if ls_update-%control-price is not iNITIAL. <ls_buffer>-lv_data-price = ls_update-price. ENDIF.
-        if ls_update-%control-checkbox is nOT INitIAL. <ls_buffer>-lv_data-checkbox = ls_update-checkbox. ENDIF.
-        if ls_update-%control-somedate is not iNITIAL. <ls_buffer>-lv_data-somedate = ls_update-somedate. ENDIF.
-        if ls_update-%control-sometime is not iNITIAL. <ls_buffer>-lv_data-sometime = ls_update-sometime. ENDIF.
+        <ls_buffer> =  CORRESPONDING #( base ( <ls_buffer> ) ls_update USING CONTROL ).
+          if <ls_buffer>-Variantname is INITIAL. <ls_buffer>-Variantname = |variant { substring(  val = sy-datlo off = 4 ) } { sy-timlo }|. endif.
+
+
       ENDIF.
   endLOOP.
   ENDMETHOD.
@@ -130,6 +128,27 @@ LOOP AT keys INTO DATA(ls_delete)..
   INSERT VALUE #( flag = 'X' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
   endLOOP.
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+
+  data lt_result like line of result.
+
+  select * from zdemo_i_param for all entries in @keys
+  where parguid = @keys-parguid into table @data(params).
+
+  loop at params ASSIGNING FIELD-SYMBOL(<param>).
+ lt_result-parguid = <param>-parguid.
+
+  if <param>-global_flag is not initial.
+   lt_result-%delete = if_abap_behv=>fc-o-disabled.
+   else.
+   lt_result-%delete = if_abap_behv=>fc-o-enabled.
+   endif.
+
+   append lt_result to result.
+
+  ENDLOOP..
   ENDMETHOD.
 
 ENDCLASS.
@@ -189,7 +208,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
 
   METHOD save.
     DATA lt_data TYPE STANDARD TABLE OF zdemo_i_param.
-
+ DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     " find creations
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'C' )
                        (  row-lv_data ) ).
@@ -204,6 +223,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       DELETE FROM zdemo_param WHERE parguid = @lv_data-parguid.
+      delete from zclass_output where parguid = @lv_data-parguid and written_by = @myname.
     ENDLOOP.
     " find updates
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'U' )
@@ -224,7 +244,6 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
-      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
       DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
       SELECT SINGLE counter FROM zclass_output
         WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname
