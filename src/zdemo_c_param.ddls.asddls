@@ -2,7 +2,7 @@
 
 @EndUserText.label: 'consumption'
 
-@Metadata.ignorePropagatedAnnotations: true
+//@Metadata.ignorePropagatedAnnotations: true
 
 @UI.headerInfo.title.value: 'class_description'
 
@@ -72,20 +72,21 @@ define root view entity zdemo_c_param
 
       ////  end of your fields
   //    @UI.identification: [ { position: 50, label: 'Last run' } ]
-      @UI.lineItem: [ { position: 50, label: 'Last run' } ]
+      @UI.lineItem: [ { position: 70, label: 'Last run' } ]
       lastrun,
-   
+    
       @UI.lineItem: [ { type: #FOR_ACTION,
                         inline: true,
                         dataAction: 'execute',
                         position: 60,
+                        
                         label: 'Execute' },
                        
                       { type: #FOR_ACTION,
-                        inline: true,
+                   //     inline: true,
                         dataAction: 'clear',
                         position: 70,
                         label: 'Clear last run' } ]
-
+      
       _outputs: redirected to composition child Zdemo_c_OUTPUT
 }

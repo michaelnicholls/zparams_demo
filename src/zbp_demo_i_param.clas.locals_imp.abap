@@ -60,7 +60,7 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
 
    LOOP AT entities INTO DATA(ls_create).
    if ls_create-global_flag is initial. ls_create-uname = myname. endif.
-   if ls_create-Variantname is INITIAL. ls_create-Variantname = |variant { substring(  val = sy-datlo off = 4 ) } { sy-timlo }|. endif.
+   if ls_create-Variantname is INITIAL. ls_create-Variantname = |variant { substring(  val = sy-datum off = 4 ) } { sy-uzeit }|. endif.
    ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
 
   insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create-%data ) ) into table lcl_buffer=>mt_buffer.
@@ -82,7 +82,7 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
 
         "
         <ls_buffer> =  CORRESPONDING #( base ( <ls_buffer> ) ls_update USING CONTROL ).
-          if <ls_buffer>-Variantname is INITIAL. <ls_buffer>-Variantname = |variant { substring(  val = sy-datlo off = 4 ) } { sy-timlo }|. endif.
+          if <ls_buffer>-Variantname is INITIAL. <ls_buffer>-Variantname = |variant { substring(  val = sy-datum off = 4 ) } { sy-uzeit }|. endif.
 
 
       ENDIF.
@@ -244,7 +244,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
-      DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
+      DATA(lastrun) = |{ sy-datum DATE = USER } { sy-uzeit TIME = USER }|.
       SELECT SINGLE counter FROM zclass_output
         WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname
         INTO @DATA(counter).

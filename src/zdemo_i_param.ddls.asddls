@@ -40,6 +40,7 @@ define root view entity zdemo_i_param
 
       /// end of your parameters
       //p.lastrun,
+     
       e.text as lastrun,
 
 

@@ -38,6 +38,6 @@ modify zclass_output from @( value #(    parguid = parguid text = text visible =
 
   METHOD write_timestamp.
     write_line( parguid = parguid
-                text    = |{ text }{ sy-datlo DATE = USER  } { sy-timlo TIME = USER }| ).
+                text    = |{ text }{ sy-datum DATE = USER  } { sy-uzeit TIME = USER }| ).
   ENDMETHOD.
 ENDCLASS.
