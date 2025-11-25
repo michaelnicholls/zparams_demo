@@ -6,19 +6,19 @@ I have attached an example called ZDEMO. It needs a static method called MAIN wi
   
 We need two new tables to be created.  
 The first is for storing the parameters for a global class, similar to the PARAMETERS statement in traditional ABAP reports.
-I have called this [ZDEMO_PARAM](zdemo_param_table.txt).  
+I have called this [ZCLASS_PARAMS](zclass_params.txt).  It can be shared by all classes.
 The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.  
 This table I've called [ZCLASS_OUTPUT](zclass_output_table.txt). It can be shared by all your classes.  
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
 
 To support this we have 2 interface level views, one for the parameters eg [zdemo_i_param](zdemo_i_param_view.txt) and another for the output eg [zdemo_i_output](zdemo_i_output_view.txt).
-The zdemo_i_param view has fields for the class name and a description of the class, which will be used at runtime.  
+The zdemo_i_param view has fields for the class name and a description of the class, which will be used at runtime.  There is also a list of users who can create global variants.  
 
 There are also 2 projection/consumption level views, eg [zdemo_c_param](zdemo_c_param_view.txt) and [zdemo_c_output](zdemo_c_output_view.txt), which provide the main annotations for the Fiori app.  
 
 To keep track of the last execution, we have another view [zclass_out_exec](zclass_out_exec_view.txt).  
 
-There are two behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](zdemo_i_param_behaviour.txt) and [zdemo_c_param](zdemo_c_param_behaviour.txt).
+There are two unmanaged behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](zdemo_i_param_behaviour.txt) and [zdemo_c_param](zdemo_c_param_behaviour.txt).
 
 After generating the behaviour implementaation class, add the code for the execute and clear actions and the setUser derivation eg [zparam_implementation](zparam_implementation.txt).  
 
