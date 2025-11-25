@@ -13,6 +13,7 @@ authorization master ( instance )
   field (readonly : update) global_flag;
 
   action execute ;
+  action (features : instance) init;
   action clear;
   factory action copyVariant [1];
 

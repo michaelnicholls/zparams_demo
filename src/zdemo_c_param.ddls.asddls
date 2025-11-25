@@ -84,6 +84,13 @@ define root view entity zdemo_c_param
                         
                         label: 'Copy' },
                        
+                        { type: #FOR_ACTION,
+                       // inline: true,
+                        dataAction: 'init',
+                        position: 85,
+                        
+                        label: 'Initialize' },
+                       
                       { type: #FOR_ACTION,
                    //     inline: true,
                         dataAction: 'clear',

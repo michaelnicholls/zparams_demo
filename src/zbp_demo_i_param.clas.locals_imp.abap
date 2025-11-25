@@ -47,6 +47,8 @@ pubLIC SECTION.
       IMPORTING keys REQUEST requested_features FOR zdemo_i_param RESULT result.
     METHODS copyvariant FOR MODIFY
       IMPORTING keys FOR ACTION zdemo_i_param~copyvariant.
+    METHODS init FOR MODIFY
+      IMPORTING keys FOR ACTION zdemo_i_param~init.
 
 ENDCLASS.
 
@@ -129,48 +131,62 @@ LOOP AT keys INTO DATA(ls_delete)..
   ENDMETHOD.
 
   METHOD execute.
-  LOOP AT keys INTO DATA(ls_clear)..
+  select  from zdemo_i_param FIELDS parguid, class_name for all entries in @keys
+  where parguid = @keys-parguid into table @data(params).
+  LOOP AT params INTO DATA(param).
 
 
-  INSERT VALUE #( flag = 'X' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  INSERT VALUE #( flag = 'X' parguid = param-parguid class_name = param-class_name ) INTO TABLE lcl_buffer=>mt_buffer.
 
   endLOOP.
   ENDMETHOD.
 
   METHOD get_instance_features.
+    DATA lt_result LIKE LINE OF result.
 
-  data lt_result like line of result.
+    SELECT * FROM zdemo_i_param
+      FOR ALL ENTRIES IN @keys
+      WHERE parguid = @keys-parguid
+      INTO TABLE @DATA(params).
 
-  select * from zdemo_i_param for all entries in @keys
-  where parguid = @keys-parguid into table @data(params).
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
+      DATA(editor) = abap_false.
+      FIND |,{ myname },| IN |,{ <param>-global_editors },|.
 
+      IF sy-subrc = 0. editor = abap_true.ENDIF.
+      " check if init method exists
+      DATA r_classdescr TYPE REF TO cl_abap_classdescr.
+      DATA(initclass_ok) = if_abap_behv=>fc-o-disabled.
+      TRY.
+          r_classdescr ?= cl_abap_typedescr=>describe_by_name( <param>-class_name ).
+          " look for INIT method
 
-  DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-  loop at params ASSIGNING FIELD-SYMBOL(<param>).
-  data(editor) = abap_false.
-  find  ',' && myname && ',' in ',' && <param>-global_editors && ','.
+          IF line_exists( r_classdescr->methods[ name = 'INIT' ] ). initclass_ok = if_abap_behv=>fc-o-enabled. ENDIF.
 
- if sy-subrc = 0. editor = abap_true.endif.
+        CATCH cx_root.
+      ENDTRY.
+      lt_result-parguid = <param>-parguid.
 
- lt_result-parguid = <param>-parguid.
+      IF <param>-global_flag IS NOT INITIAL. "  global variant
+        IF editor = abap_false.
+          lt_result-%delete = if_abap_behv=>fc-o-disabled.
+          lt_result-%update = if_abap_behv=>fc-o-disabled.
+          initclass_ok = if_abap_behv=>fc-o-disabled.
+        ELSE.
+          lt_result-%delete = if_abap_behv=>fc-o-enabled.
+          lt_result-%update = if_abap_behv=>fc-o-enabled.
+        ENDIF.
 
-  if <param>-global_flag is not initial.
-     if editor = abap_false.
-         lt_result-%delete = if_abap_behv=>fc-o-disabled.
-         lt_result-%update = if_abap_behv=>fc-o-disabled.
-     else.
-       lt_result-%delete = if_abap_behv=>fc-o-enabled.
+      ELSE.
+        lt_result-%delete = if_abap_behv=>fc-o-enabled.
         lt_result-%update = if_abap_behv=>fc-o-enabled.
-   endif.
+      ENDIF.
+      lt_result-%action-init = initclass_ok.
 
-   else.
-   lt_result-%delete = if_abap_behv=>fc-o-enabled.
-   lt_result-%update = if_abap_behv=>fc-o-enabled.
-   endif.
+      APPEND lt_result TO result.
 
-   append lt_result to result.
-
-  ENDLOOP..
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD copyVariant.
@@ -185,6 +201,17 @@ LOOP AT keys INTO DATA(ls_delete)..
   insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create ) ) into table lcl_buffer=>mt_buffer.
 
    endloop.
+  ENDMETHOD.
+
+  METHOD init.
+  select  from zdemo_i_param FIELDS parguid, class_name for all entries in @keys
+  where parguid = @keys-parguid into table @data(params).
+  LOOP AT params INTO DATA(param).
+
+
+  INSERT VALUE #( flag = 'I' parguid = param-parguid class_name = param-class_name ) INTO TABLE lcl_buffer=>mt_buffer.
+
+  endLOOP.
   ENDMETHOD.
 
 ENDCLASS.
@@ -244,7 +271,8 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
 
   METHOD save.
     DATA lt_data TYPE STANDARD TABLE OF zdemo_i_param.
- DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     " find creations
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'C' )
                        (  row-lv_data ) ).
@@ -259,7 +287,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       DELETE FROM zdemo_param WHERE parguid = @lv_data-parguid.
-      delete from zclass_output where parguid = @lv_data-parguid and written_by = @myname.
+      DELETE FROM zclass_output WHERE parguid = @lv_data-parguid AND written_by = @myname.
     ENDLOOP.
     " find updates
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'U' )
@@ -297,7 +325,19 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                                             written_by = myname ) ).
 
       "
-      zdemo=>main( parguid = lv_data-parguid ).
+      DATA(meth) = 'MAIN'.
+      CALL METHOD (lv_data-class_name)=>(meth)
+        EXPORTING parguid = lv_data-parguid.
+      " zdemo=>main( parguid = lv_data-parguid ).
+    ENDLOOP.
+    " find initializations
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'I' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+      meth = 'INIT'.
+      CALL METHOD (lv_data-class_name)=>(meth)
+        EXPORTING parguid = lv_data-parguid.
+
     ENDLOOP.
   ENDMETHOD.
 

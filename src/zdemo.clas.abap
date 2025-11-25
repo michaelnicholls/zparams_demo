@@ -6,7 +6,8 @@ CLASS zdemo DEFINITION
   PUBLIC SECTION.
     CLASS-METHODS:
       " make sure you have a MAIN method with this importing parameter
-      main IMPORTING parguid TYPE sysuuid_x16.
+      main IMPORTING parguid TYPE sysuuid_x16,
+      init importing parguid type sysuuid_x16.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -20,7 +21,7 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the parameters
-    SELECT SINGLE * FROM zdemo_i_param INTO @DATA(params) WHERE parguid = @parguid.
+    SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @parguid INTO @DATA(params).
     " make local variables
 
     FINAL(int1) = params-Int1.
@@ -59,4 +60,12 @@ CLASS ZDEMO IMPLEMENTATION.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).
   ENDMETHOD.
+  METHOD INIT.
+    SELECT SINGLE * FROM zdemo_param  WHERE parguid = @parguid INTO @DATA(params).
+    params-somedate = sy-datum + params-int1.
+    params-sometime = sy-uzeit - params-int2.
+    modify zdemo_param from params.
+
+  ENDMETHOD.
+
 ENDCLASS.
