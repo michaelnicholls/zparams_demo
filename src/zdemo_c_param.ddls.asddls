@@ -21,19 +21,16 @@ define root view entity zdemo_c_param
       @UI.hidden: true
   key parguid,
 
- //     @UI.lineItem: [ { position: 5, label: 'Description' } ]
       class_description,
 
       @UI.identification: [ { position: 10, label: 'Variant' } ]
-      @UI.lineItem: [ { position: 10, label: 'Variant' } ]
-   
-      Variantname        as Variantname,
-         @UI.identification: [ { position: 15, label: 'Global' } ]
-      @UI.lineItem: [ { position: 15, label: 'Global' } ]
-   
+      Variantname as variantname,
+      @UI.lineItem: [ { position: 12, label: 'Variant' } ]
+      variant_display        as variant_display,
+      @UI.identification: [ { position: 15, label: 'Global' } ]
       global_flag,
 
- //    Variant,
+ 
 
       @UI.hidden: true
       uname,

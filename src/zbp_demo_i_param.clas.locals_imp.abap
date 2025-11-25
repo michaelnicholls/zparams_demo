@@ -59,9 +59,14 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
 
    LOOP AT entities INTO DATA(ls_create).
+
+  find  ',' && myname && ',' in ',' && ls_create-global_editors && ','.
+   if sy-subrc <> 0. clear ls_create-global_flag .  endif.
    if ls_create-global_flag is initial. ls_create-uname = myname. endif.
    if ls_create-Variantname is INITIAL. ls_create-Variantname = |variant { substring(  val = sy-datum off = 4 ) } { sy-uzeit }|. endif.
    ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
+
+
 
   insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create-%data ) ) into table lcl_buffer=>mt_buffer.
 
@@ -137,13 +142,28 @@ LOOP AT keys INTO DATA(ls_delete)..
   select * from zdemo_i_param for all entries in @keys
   where parguid = @keys-parguid into table @data(params).
 
+
+  DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
   loop at params ASSIGNING FIELD-SYMBOL(<param>).
+  data(editor) = abap_false.
+  find  ',' && myname && ',' in ',' && <param>-global_editors && ','.
+
+ if sy-subrc = 0. editor = abap_true.endif.
+
  lt_result-parguid = <param>-parguid.
 
   if <param>-global_flag is not initial.
-   lt_result-%delete = if_abap_behv=>fc-o-disabled.
+     if editor = abap_false.
+         lt_result-%delete = if_abap_behv=>fc-o-disabled.
+         lt_result-%update = if_abap_behv=>fc-o-disabled.
+     else.
+       lt_result-%delete = if_abap_behv=>fc-o-enabled.
+        lt_result-%update = if_abap_behv=>fc-o-enabled.
+   endif.
+
    else.
    lt_result-%delete = if_abap_behv=>fc-o-enabled.
+   lt_result-%update = if_abap_behv=>fc-o-enabled.
    endif.
 
    append lt_result to result.

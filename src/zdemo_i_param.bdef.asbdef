@@ -7,7 +7,7 @@ authorization master ( instance )
 
 {
   create;
-  update ; //(features : instance);
+  update (features : instance);
   delete  (features : instance);
  field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
