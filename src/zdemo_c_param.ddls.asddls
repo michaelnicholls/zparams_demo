@@ -32,7 +32,7 @@ define root view entity zdemo_c_param
      
       global_flag,
 
- 
+    global_editors,
 
       @UI.hidden: true
       uname,
@@ -48,9 +48,7 @@ define root view entity zdemo_c_param
       @UI.lineItem: [ { position: 30, label: 'Integer2' } ]
       Int2               as Int2,
 
-      @UI.identification: [ { position: 40, label: 'Operator' } ]
-      @UI.lineItem: [ { position: 40, label: 'Operator' } ]
-      Op                 as Op,
+  
       @UI.identification: [ { position: 41, label: 'Checkbox' } ]
       @UI.lineItem: [ { position: 41, label: 'Checkbox' } ]
       checkbox,

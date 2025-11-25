@@ -7,6 +7,7 @@ CLASS zdemo DEFINITION
     CLASS-METHODS:
       " make sure you have a MAIN method with this importing parameter
       main IMPORTING parguid TYPE sysuuid_x16,
+      " optionally you can have an INIT method with the same importing parameter
       init importing parguid type sysuuid_x16.
 
   PROTECTED SECTION.
@@ -61,10 +62,10 @@ CLASS ZDEMO IMPLEMENTATION.
                                     text    = |Finished at | ).
   ENDMETHOD.
   METHOD INIT.
-    SELECT SINGLE * FROM zdemo_param  WHERE parguid = @parguid INTO @DATA(params).
+    SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
     params-somedate = sy-datum + params-int1.
     params-sometime = sy-uzeit - params-int2.
-    modify zdemo_param from params.
+    modify zclass_params from params.
 
   ENDMETHOD.
 

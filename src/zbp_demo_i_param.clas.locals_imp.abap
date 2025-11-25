@@ -60,11 +60,13 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
 
 
   METHOD create.
+  " get the global_editors
+  select single  from zdemo_i_param FIELDS global_editors into @data(global_editors).
   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
 
    LOOP AT entities INTO DATA(ls_create).
 
-  find  ',' && myname && ',' in ',' && ls_create-global_editors && ','.
+  find  ',' && myname && ',' in ',' && global_editors && ','.
    if sy-subrc <> 0. clear ls_create-global_flag .  endif.
    if ls_create-global_flag is initial. ls_create-uname = myname. endif.
    if ls_create-Variantname is INITIAL. ls_create-Variantname = |variant { substring(  val = sy-datum off = 4 ) } { sy-uzeit }|. endif.
@@ -276,17 +278,17 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
     " find creations
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'C' )
                        (  row-lv_data ) ).
-    DATA table_line TYPE zdemo_param.
+    DATA table_line TYPE zclass_params.
 
     LOOP AT lt_data INTO DATA(lv_data).
       MOVE-CORRESPONDING lv_data TO table_line.
-      MODIFY zdemo_param FROM @( table_line ).
+      MODIFY zclass_params FROM @( table_line ).
     ENDLOOP.
     " find deletions
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'D' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      DELETE FROM zdemo_param WHERE parguid = @lv_data-parguid.
+      DELETE FROM zclass_params WHERE parguid = @lv_data-parguid.
       DELETE FROM zclass_output WHERE parguid = @lv_data-parguid AND written_by = @myname.
     ENDLOOP.
     " find updates
@@ -294,7 +296,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       MOVE-CORRESPONDING lv_data TO table_line.
-      MODIFY zdemo_param FROM @table_line.
+      MODIFY zclass_params FROM @table_line.
     ENDLOOP.
     " find clear outputs
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'Z' )
@@ -307,7 +309,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'X' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
+
       DATA(lastrun) = |{ sy-datum DATE = USER } { sy-uzeit TIME = USER }|.
       SELECT SINGLE counter FROM zclass_output
         WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname

@@ -7,7 +7,7 @@
 //@UI.headerInfo.title.value: 'class_description'
 
 define root view entity zdemo_i_param
-  as select from zdemo_param as p left outer join zclass_out_exec as e on
+  as select from zclass_params as p left outer join zclass_out_exec as e on
   e.parguid = p.parguid and e.WrittenBy = $session.user
 
   composition [0..*] of ZDEMO_I_output as _outputs
@@ -34,7 +34,7 @@ define root view entity zdemo_i_param
       p.int2         as Int2,
 
 
-      p.op           as Op,
+ //     p.op           as Op,
       p.checkbox,
       p.somedate,
       p.sometime,
