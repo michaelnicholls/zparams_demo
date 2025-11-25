@@ -18,13 +18,14 @@ define root view entity zdemo_i_param
 //      variant      as Variant,
       p.variantname  as Variantname,
       case when p.uname = ''then  concat_with_space(p.variantname,' <global>',1) else p.variantname end as variant_display,
+     
       cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
       p.uname,
 
       'demo class' as class_description, // put a description of your class here
 
       'ZDEMO'      as class_name, // put your class name here
-      'TRAIN-00,SYSTEMSETUP' as global_editors,
+      'TRAIN-00,SYSTEMSETUP' as global_editors, // these are users who can edit global variants
 
       //  put your parameters below here
 
@@ -41,7 +42,7 @@ define root view entity zdemo_i_param
    
 
       /// end of your parameters
-      //p.lastrun,
+      
      
       e.text as lastrun,
 

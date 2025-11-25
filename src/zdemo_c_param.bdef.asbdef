@@ -8,6 +8,7 @@ define behavior for zdemo_c_param //alias <alias_name>
   use delete;
   use action clear;
 	use action execute;
+	use action copyVariant;
   use association _outputs {  }
 }
 define behavior for zdemo_c_output

@@ -20,14 +20,16 @@ define root view entity zdemo_c_param
                      targetElement: '_outputs' } ]
       @UI.hidden: true
   key parguid,
-
+    
       class_description,
 
       @UI.identification: [ { position: 10, label: 'Variant' } ]
+     
       Variantname as variantname,
       @UI.lineItem: [ { position: 12, label: 'Variant' } ]
       variant_display        as variant_display,
       @UI.identification: [ { position: 15, label: 'Global' } ]
+     
       global_flag,
 
  
@@ -75,6 +77,12 @@ define root view entity zdemo_c_param
                         position: 60,
                         
                         label: 'Execute' },
+                        { type: #FOR_ACTION,
+                       // inline: true,
+                        dataAction: 'copyVariant',
+                        position: 60,
+                        
+                        label: 'Copy' },
                        
                       { type: #FOR_ACTION,
                    //     inline: true,

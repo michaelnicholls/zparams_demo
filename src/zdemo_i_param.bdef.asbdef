@@ -11,8 +11,10 @@ authorization master ( instance )
   delete  (features : instance);
  field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
+
   action execute ;
   action clear;
+  factory action copyVariant [1];
 
 	association _outputs {create;}
 }

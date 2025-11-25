@@ -45,6 +45,8 @@ pubLIC SECTION.
       IMPORTING keys FOR ACTION ZDEMO_i_PARAM~execute.
     METHODS get_instance_features FOR INSTANCE FEATURES
       IMPORTING keys REQUEST requested_features FOR zdemo_i_param RESULT result.
+    METHODS copyvariant FOR MODIFY
+      IMPORTING keys FOR ACTION zdemo_i_param~copyvariant.
 
 ENDCLASS.
 
@@ -169,6 +171,20 @@ LOOP AT keys INTO DATA(ls_delete)..
    append lt_result to result.
 
   ENDLOOP..
+  ENDMETHOD.
+
+  METHOD copyVariant.
+  DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+  select * from zdemo_i_param for all entries in @keys
+  where parguid = @keys-parguid into table @data(params).
+   loop at params into data(ls_create).
+      ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
+    ls_create-uname = myname.
+  ls_create-Variantname = ls_create-Variantname && ' - copy'.
+
+  insert value #( flag = 'C' lv_data = corrESPONDING #( ls_create ) ) into table lcl_buffer=>mt_buffer.
+
+   endloop.
   ENDMETHOD.
 
 ENDCLASS.
