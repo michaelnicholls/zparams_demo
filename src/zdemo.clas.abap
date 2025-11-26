@@ -62,6 +62,8 @@ CLASS ZDEMO IMPLEMENTATION.
                                     text    = |Finished at | ).
   ENDMETHOD.
   METHOD INIT.
+    zparam_helper=>write_timestamp( parguid = parguid
+                                    text    = |Values initialized at | ).
     SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
     params-somedate = sy-datum + params-int1.
     params-sometime = sy-uzeit - params-int2.

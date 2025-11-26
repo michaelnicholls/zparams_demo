@@ -8,6 +8,7 @@ association to parent zdemo_i_param as _params
     key parguid as Parguid,
     key counter as Counter,
     text as Text,
+    sequence,
     _params
 }
 where written_by = $session.user and visible = 'X'
