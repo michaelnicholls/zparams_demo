@@ -29,7 +29,7 @@ There is a service definition [zdemo_par_svc](zdemo_par_svc.txt) which exposes t
 
 After building an appropriate service binding, and publishing it, the Fiori app can be tested and then converted into a real Fiori app for deployment through the FLP.  
 
-The source code for a sample class file that uses the parameters can be found at [zdemo_class](src/zclass_out_exec.ddls.asddls).  
+The source code for a sample class file that uses the parameters can be found at [zdemo_class](src/zdemo.clas.abap).  
 The main method is required, and an optional init method can be used to set values.  If present, it will be available from the Fiori app.  
 
 There is a helper class [zparam_helper](src/zparam_helper.clas.abap) which has methods for clearing output, writing a timestamp message, and writing new lines.  
