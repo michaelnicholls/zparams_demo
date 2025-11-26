@@ -5,6 +5,7 @@ I have attached an example called ZDEMO. It needs a static method called MAIN wi
 
   
 We need two new tables to be created.  
+
 The first is for storing the parameters for a global class, similar to the PARAMETERS statement in traditional ABAP reports.
 I have called this [ZCLASS_PARAMS](zclass_params.txt).  It can be shared by all classes.
 The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.  
@@ -31,7 +32,7 @@ After building an appropriate service binding, and publishing it, the Fiori app 
 The source code for a sample class file that uses the parameters can be found at [zdemo_class](zdemo_class.txt).  
 The main method is required, and an optional init method can be used to set values.  If present, it will be available from the Fiori app.  
 
-There is a helper class [zparam_helper](zparam_helper.txt) which has methods for clearing output, writing a timestamp message, and writing new lines.  
+There is a helper class [zparam_helper](src/zparam_helper.clas.abap) which has methods for clearing output, writing a timestamp message, and writing new lines.  
 
 These objects are also available in an abapGit repository.  
 
