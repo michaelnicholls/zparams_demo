@@ -12,16 +12,16 @@ The second table contains any outputs from the global class. In traditional repo
 This table I've called [ZCLASS_OUTPUT](zclass_output_table.txt). It can be shared by all your classes.  
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
 
-To support this we have 2 interface level views, one for the parameters eg [zdemo_i_param](zdemo_i_param_view.txt) and another for the output eg [zdemo_i_output](zdemo_i_output_view.txt).
-The zdemo_i_param view has fields for the class name and a description of the class, which will be used at runtime.  There is also a list of users who can create global variants.  
+To support this we have 2 interface level views, one for the parameters eg [zdemo_i_param](src/zdemo_i_param.ddls.asddls) and another for the output eg [zdemo_i_output](src/zdemo_i_output.ddls.asddls).
+The zdemo_i_param view has fields for the class name and a description of the class, which will be used at runtime.  There is also a comma separated list of users who can create global variants.  
 
-There are also 2 projection/consumption level views, eg [zdemo_c_param](zdemo_c_param_view.txt) and [zdemo_c_output](zdemo_c_output_view.txt), which provide the main annotations for the Fiori app.  
+There are also 2 projection/consumption level views, eg [zdemo_c_param](src/zdemo_c_param.ddls.asddls) and [zdemo_c_output](src/zdemo_c_output.ddls.asddls), which provide the main annotations for the Fiori app.  
 
-To keep track of the last execution, we have another view [zclass_out_exec](zclass_out_exec_view.txt).  
+To keep track of the last execution, we have another view [zclass_out_exec](src/zclass_out_exec.ddls.asddls).  
 
-There are two unmanaged behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](zdemo_i_param_behaviour.txt) and [zdemo_c_param](zdemo_c_param_behaviour.txt).
+There are two unmanaged behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](src/zdemo_i_param.bdef.asbdef) and [zdemo_c_param](src/zdemo_c_param.bdef.asbdef).
 
-After generating the behaviour implementaation class, add the code for the execute and clear actions and the setUser derivation eg [zparam_implementation](zparam_implementation.txt).  
+After generating the behaviour implementaation class, add the code for the execute, copy, initialize,  and clear actions and the setUser derivation eg [zparam_implementation](src/zbp_demo_i_param.clas.locals_imp.abap).  
 
 
 
@@ -29,7 +29,7 @@ There is a service definition [zdemo_par_svc](zdemo_par_svc.txt) which exposes t
 
 After building an appropriate service binding, and publishing it, the Fiori app can be tested and then converted into a real Fiori app for deployment through the FLP.  
 
-The source code for a sample class file that uses the parameters can be found at [zdemo_class](zdemo_class.txt).  
+The source code for a sample class file that uses the parameters can be found at [zdemo_class](src/zclass_out_exec.ddls.asddls).  
 The main method is required, and an optional init method can be used to set values.  If present, it will be available from the Fiori app.  
 
 There is a helper class [zparam_helper](src/zparam_helper.clas.abap) which has methods for clearing output, writing a timestamp message, and writing new lines.  
