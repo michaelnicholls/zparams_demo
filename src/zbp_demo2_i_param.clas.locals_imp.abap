@@ -2,67 +2,66 @@ CLASS lcl_buffer DEFINITION.
   PUBLIC SECTION.
 
     TYPES: BEGIN OF ty_buffer.
-             INCLUDE TYPE zdemo_i_param   AS lv_data.
+             INCLUDE TYPE zdemo2_i_param   AS lv_data.
     TYPES:   flag TYPE c LENGTH 1,
            END OF ty_buffer.
 
 
     CLASS-DATA mt_buffer TYPE TABLE OF ty_buffer.
-       class-data myclassname type string value 'ZDEMO'.
+    class-data myclassname type string value 'ZDEMO2'.
 
 ENDCLASS.
-CLASS lhc_ZDEMO_i_PARAM DEFINITION INHERITING FROM cl_abap_behavior_handler.
-pubLIC SECTION.
+CLASS lhc_ZDEMO2_I_PARAM DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
-    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
-      IMPORTING keys REQUEST requested_authorizations FOR zdemo_i_param RESULT result.
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR zdemo2_i_param RESULT result.
 
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR zdemo2_i_param RESULT result.
 
     METHODS create FOR MODIFY
-      IMPORTING entities FOR CREATE zdemo_i_param.
+      IMPORTING entities FOR CREATE zdemo2_i_param.
 
     METHODS update FOR MODIFY
-      IMPORTING entities FOR UPDATE zdemo_i_param.
+      IMPORTING entities FOR UPDATE zdemo2_i_param.
 
     METHODS delete FOR MODIFY
-      IMPORTING keys FOR DELETE zdemo_i_param.
+      IMPORTING keys FOR DELETE zdemo2_i_param.
 
     METHODS read FOR READ
-      IMPORTING keys FOR READ zdemo_i_param RESULT result.
+      IMPORTING keys FOR READ zdemo2_i_param RESULT result.
 
     METHODS lock FOR LOCK
-      IMPORTING keys FOR LOCK zdemo_i_param.
+      IMPORTING keys FOR LOCK zdemo2_i_param.
 
     METHODS rba_Outputs FOR READ
-      IMPORTING keys_rba FOR READ zdemo_i_param\_Outputs FULL result_requested RESULT result LINK association_links.
+      IMPORTING keys_rba FOR READ zdemo2_i_param\_Outputs FULL result_requested RESULT result LINK association_links.
 
     METHODS cba_Outputs FOR MODIFY
-      IMPORTING entities_cba FOR CREATE zdemo_i_param\_Outputs.
+      IMPORTING entities_cba FOR CREATE zdemo2_i_param\_Outputs.
+
     METHODS clear FOR MODIFY
-      IMPORTING keys FOR ACTION ZDEMO_i_PARAM~clear.
+      IMPORTING keys FOR ACTION zdemo2_i_param~clear.
+
+    METHODS copyVariant FOR MODIFY
+      IMPORTING keys FOR ACTION zdemo2_i_param~copyVariant.
 
     METHODS execute FOR MODIFY
-      IMPORTING keys FOR ACTION ZDEMO_i_PARAM~execute.
-    METHODS get_instance_features FOR INSTANCE FEATURES
-      IMPORTING keys REQUEST requested_features FOR zdemo_i_param RESULT result.
-    METHODS copyvariant FOR MODIFY
-      IMPORTING keys FOR ACTION zdemo_i_param~copyvariant.
+      IMPORTING keys FOR ACTION zdemo2_i_param~execute.
+
     METHODS init FOR MODIFY
-      IMPORTING keys FOR ACTION zdemo_i_param~init.
+      IMPORTING keys FOR ACTION zdemo2_i_param~init.
 
 ENDCLASS.
 
-CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
-
-  METHOD get_instance_authorizations.
-  ENDMETHOD.
+CLASS lhc_ZDEMO2_I_PARAM IMPLEMENTATION.
 
 
 
-  METHOD create.
+ METHOD create.
   " get the global_editors
-  select single  from zdemo_i_param FIELDS global_editors into @data(global_editors).
+  select single  from zdemo2_i_param FIELDS global_editors into @data(global_editors).
   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
 
    LOOP AT entities INTO DATA(ls_create).
@@ -88,7 +87,7 @@ CLASS lhc_ZDEMO_i_PARAM IMPLEMENTATION.
       IF sy-subrc <> 0.
         " not yet in buffer, read from table
 
-        SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
+        SELECT SINGLE * FROM zdemo2_i_param  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
 
         INSERT VALUE #( flag = 'U' lv_data = ls_db ) INTO TABLE lcl_buffer=>mt_buffer ASSIGNING <ls_buffer>.
 
@@ -139,7 +138,7 @@ LOOP AT keys INTO DATA(ls_delete)..
   LOOP AT params INTO DATA(param).
 
 
-  INSERT VALUE #( flag = 'X' parguid = param-parguid ) INTO TABLE lcl_buffer=>mt_buffer.
+  INSERT VALUE #( flag = 'X' parguid = param-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
   endLOOP.
   ENDMETHOD.
@@ -147,7 +146,7 @@ LOOP AT keys INTO DATA(ls_delete)..
   METHOD get_instance_features.
     DATA lt_result LIKE LINE OF result.
 
-    SELECT * FROM zdemo_i_param
+    SELECT * FROM zdemo2_i_param
       FOR ALL ENTRIES IN @keys
       WHERE parguid = @keys-parguid
       INTO TABLE @DATA(params).
@@ -194,7 +193,7 @@ LOOP AT keys INTO DATA(ls_delete)..
 
   METHOD copyVariant.
   DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-  select * from zdemo_i_param for all entries in @keys
+  select * from zdemo2_i_param for all entries in @keys
   where parguid = @keys-parguid into table @data(params).
    loop at params into data(ls_create).
       ls_create-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  )..
@@ -217,27 +216,24 @@ LOOP AT keys INTO DATA(ls_delete)..
   endLOOP.
   ENDMETHOD.
 
+  METHOD get_instance_authorizations.
+
+  ENDMETHOD.
+
 ENDCLASS.
 
-CLASS lhc_ZDEMO_i_OUTPUT DEFINITION INHERITING FROM cl_abap_behavior_handler.
+CLASS lhc_ZDEMO2_I_OUTPUT DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
-
-
-
-
     METHODS read FOR READ
-      IMPORTING keys FOR READ zdemo_i_output RESULT result.
+      IMPORTING keys FOR READ zdemo2_i_output RESULT result.
 
     METHODS rba_Params FOR READ
-      IMPORTING keys_rba FOR READ zdemo_i_output\_Params FULL result_requested RESULT result LINK association_links.
+      IMPORTING keys_rba FOR READ zdemo2_i_output\_Params FULL result_requested RESULT result LINK association_links.
 
 ENDCLASS.
 
-CLASS lhc_ZDEMO_i_OUTPUT IMPLEMENTATION.
-
-
-
+CLASS lhc_ZDEMO2_I_OUTPUT IMPLEMENTATION.
 
   METHOD read.
   ENDMETHOD.
@@ -247,9 +243,7 @@ CLASS lhc_ZDEMO_i_OUTPUT IMPLEMENTATION.
 
 ENDCLASS.
 
-CLASS lsc_ZDEMO_i_PARAM DEFINITION INHERITING FROM cl_abap_behavior_saver.
-pubLIC SECTION.
-"class-data tab1 type table of string.
+CLASS lsc_ZDEMO2_I_PARAM DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
 
     METHODS finalize REDEFINITION.
@@ -264,7 +258,7 @@ pubLIC SECTION.
 
 ENDCLASS.
 
-CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
+CLASS lsc_ZDEMO2_I_PARAM IMPLEMENTATION.
 
   METHOD finalize.
   ENDMETHOD.
@@ -273,7 +267,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-    DATA lt_data TYPE STANDARD TABLE OF zdemo_i_param.
+    DATA lt_data TYPE STANDARD TABLE OF zdemo2_i_param.
 
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     " find creations
@@ -284,7 +278,6 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
     LOOP AT lt_data INTO DATA(lv_data).
       MOVE-CORRESPONDING lv_data TO table_line.
       table_line-classname = lcl_buffer=>myclassname.
-
       MODIFY zclass_params FROM @( table_line ).
     ENDLOOP.
     " find deletions
@@ -299,6 +292,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
       MOVE-CORRESPONDING lv_data TO table_line.
+      table_line-classname = lcl_buffer=>myclassname.
       MODIFY zclass_params FROM @table_line.
     ENDLOOP.
     " find clear outputs
@@ -344,6 +338,7 @@ CLASS lsc_ZDEMO_i_PARAM IMPLEMENTATION.
         EXPORTING parguid = lv_data-parguid.
 
     ENDLOOP.
+
   ENDMETHOD.
 
   METHOD cleanup.

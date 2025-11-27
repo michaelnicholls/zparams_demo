@@ -1,0 +1,5 @@
+@EndUserText.label: 'service'
+define service ZDEMO2_PAR_SVC {
+  expose ZDEMO2_C_PARAM;
+  expose ZDEMO2_C_OUTPUT;
+}

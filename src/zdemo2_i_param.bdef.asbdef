@@ -1,7 +1,7 @@
-unmanaged implementation in class zbp_demo_i_param unique;
+unmanaged implementation in class zbp_demo2_i_param unique;
 strict ( 2 );
 
-define behavior for zdemo_i_param //alias <alias_name>
+define behavior for ZDEMO2_I_PARAM //alias <alias_name>
 lock master
 authorization master ( instance )
 
@@ -9,7 +9,7 @@ authorization master ( instance )
   create;
   update (features : instance);
   delete  (features : instance);
-  field ( readonly ) Uname,  lastrun;
+ field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
 
   action execute ;
@@ -17,9 +17,9 @@ authorization master ( instance )
   action clear;
   factory action copyVariant [1];
 
-  association _outputs {create;}
+    association _outputs {create;}
 }
-define behavior for ZDEMO_I_output
+define behavior for ZDEMO2_I_OUTPUT //alias <alias_name>
 lock dependent by _params
 authorization dependent by _params
 
@@ -29,5 +29,5 @@ authorization dependent by _params
 
 association _params;
 
-	
+
 }
