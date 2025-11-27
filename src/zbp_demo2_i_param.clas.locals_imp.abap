@@ -61,7 +61,7 @@ CLASS lhc_ZDEMO2_I_PARAM IMPLEMENTATION.
 
  METHOD create.
   " get the global_editors
-  select single  from zdemo2_i_param FIELDS global_editors into @data(global_editors).
+  select single  from zdemo2_i_param FIELDS global_editors where classname = @lcl_buffer=>myclassname into @data(global_editors).
   data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
 
    LOOP AT entities INTO DATA(ls_create).
@@ -160,11 +160,13 @@ LOOP AT keys INTO DATA(ls_delete)..
       " check if init method exists
       DATA r_classdescr TYPE REF TO cl_abap_classdescr.
       DATA(initclass_ok) = if_abap_behv=>fc-o-disabled.
+      data(mainclass_ok) = if_abap_behv=>fc-o-disabled.
       TRY.
           r_classdescr ?= cl_abap_typedescr=>describe_by_name( lcl_buffer=>myclassname ).
           " look for INIT method
 
           IF line_exists( r_classdescr->methods[ name = 'INIT' ] ). initclass_ok = if_abap_behv=>fc-o-enabled. ENDIF.
+          IF line_exists( r_classdescr->methods[ name = 'MAIN' ] ). mainclass_ok = if_abap_behv=>fc-o-enabled. ENDIF.
 
         CATCH cx_root.
       ENDTRY.
@@ -185,6 +187,7 @@ LOOP AT keys INTO DATA(ls_delete)..
         lt_result-%update = if_abap_behv=>fc-o-enabled.
       ENDIF.
       lt_result-%action-init = initclass_ok.
+      lt_result-%action-execute = mainclass_ok.
 
       APPEND lt_result TO result.
 

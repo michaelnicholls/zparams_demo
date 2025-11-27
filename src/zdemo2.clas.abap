@@ -36,7 +36,8 @@ CLASS ZDEMO2 IMPLEMENTATION.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Values initialized at | ).
     SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
-    params-int3  = params-int3 + params-int4.
+    params-int3  = substring( val = sy-uzeit off = 2 len = 2 ).
+    params-int4  = substring( val = sy-uzeit off = 4 len = 2 ).
     modify zclass_params from params.
 
   ENDMETHOD.

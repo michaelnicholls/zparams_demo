@@ -12,7 +12,7 @@ authorization master ( instance )
   field ( readonly ) Uname,  lastrun;
   field (readonly : update) global_flag;
 
-  action execute ;
+  action (features : instance) execute ;
   action (features : instance) init;
   action clear;
   factory action copyVariant [1];

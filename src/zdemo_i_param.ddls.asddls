@@ -34,10 +34,12 @@ define root view entity zdemo_i_param
  
       @UI.hidden: true
       p.uname,
+      @UI.hidden: true
+      p.classname,
 
       'demo class' as class_description, // put a description of your class here
 
-      'TRAIN-00,SYSTEMSETUP' as global_editors, // these are users who can edit global variants
+      'TRAIN-00,CB9980000003' as global_editors, // these are users who can edit global variants
 
       //  put your parameters below here
 
