@@ -18,29 +18,31 @@ define root view entity zdemo_c_param
 
       ///////  put your fields here /////
 
-      @UI.identification: [ { position: 20, label: 'Integer1' } ]
-      @UI.lineItem: [ { position: 20, label: 'Integer1' } ]
+        @UI.fieldGroup: [{label: 'Integer1', position: 40, qualifier: 'VALUES' }]
+      @UI.lineItem: [ { position: 40, label: 'Integer1' } ]
       Int1               as Int1,
 
-      @UI.identification: [ { position: 30, label: 'Integer2' } ]
-      @UI.lineItem: [ { position: 30, label: 'Integer2' } ]
+      @UI.lineItem: [ { position: 42, label: 'Integer2' } ]
+      @UI.fieldGroup: [{label: 'Integer2', position: 42, qualifier: 'VALUES' }]
       Int2               as Int2,
   
-      @UI.identification: [ { position: 41, label: 'Checkbox' } ]
-      @UI.lineItem: [ { position: 41, label: 'Checkbox' } ]
+      @UI.lineItem: [ { position: 44, label: 'Checkbox' } ]
+      @UI.fieldGroup: [{label: 'Checkbox', position: 44, qualifier: 'VALUES' }]
+      
       checkbox,
     
-      @UI.identification: [ { position: 43, label: 'Some date' } ]
-      @UI.lineItem: [ { position: 43, label: 'Some date' } ]
+      @UI.lineItem: [ { position: 46, label: 'Some date' } ]
+      @UI.fieldGroup: [{label: 'Some date', position: 46, qualifier: 'VALUES' }]
       somedate,
       
-      @UI.identification: [ { position: 44, label: 'Some time' } ]
-      @UI.lineItem: [ { position: 44, label: 'Some time' } ]
+      @UI.lineItem: [ { position: 48, label: 'Some time' } ]
+      @UI.fieldGroup: [{label: 'Some time', position: 48, qualifier: 'VALUES' }]
       sometime,
       
-      @UI.identification: [ { position: 45, label: 'Price' } ]
-      @UI.lineItem: [ { position: 45, label: 'Price' } ]
+      @UI.lineItem: [ { position: 50, label: 'Price' } ]
+      @UI.fieldGroup: [{label: 'Price', position: 50, qualifier: 'VALUES' }]
        price,
+
 
       ////  end of your fields
       lastrun,

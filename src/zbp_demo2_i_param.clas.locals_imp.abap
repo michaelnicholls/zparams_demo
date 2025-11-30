@@ -341,7 +341,7 @@ CLASS lsc_ZDEMO2_I_PARAM IMPLEMENTATION.
         EXPORTING parguid = lv_data-parguid.
 
     ENDLOOP.
-
+    clear lcl_buffer=>mt_buffer.
   ENDMETHOD.
 
   METHOD cleanup.

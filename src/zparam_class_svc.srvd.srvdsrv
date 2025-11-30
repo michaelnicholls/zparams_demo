@@ -1,0 +1,4 @@
+@EndUserText.label: 'service'
+define service Zparam_class_svc {
+  expose ZPARAm_C_CLASSES;
+}

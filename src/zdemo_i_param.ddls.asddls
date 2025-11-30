@@ -8,38 +8,48 @@ define root view entity zdemo_i_param
   composition [0..*] of ZDEMO_I_output as _outputs
 
 {
-
-     @UI.facet: [ { id: 'details',
-                     purpose: #STANDARD,
+    @UI.facet: [ { label: 'Variant', id: 'COLLFAC1', type: #COLLECTION, position: 10 },
+                   { label: 'Parameters', id: 'COLLFAC2', type: #COLLECTION, position: 20 },
+                   { parentId: 'COLLFAC1',
+                     label: 'Variant details',
+                     type: #FIELDGROUP_REFERENCE,
                      position: 10,
-                     label: 'Details',
-                     type: #IDENTIFICATION_REFERENCE },
+                     targetQualifier: 'VARIANT' },
+                   { parentId: 'COLLFAC2',
+                     label: 'Parameter values',
+                     type: #FIELDGROUP_REFERENCE,
+                     position: 20,
+                     targetQualifier: 'VALUES' },
                    { id: 'Results',
                      purpose: #STANDARD,
-                     position: 20,
+                     position: 30,
                      label: 'Results',
                      type: #LINEITEM_REFERENCE,
                      targetElement: '_outputs' } ]
   @UI.hidden: true
   key p.parguid,
 
-       @UI.identification: [ { position: 10, label: 'Variant' } ]
-       p.variantname  as Variantname,
-          
-       @UI.lineItem: [ { position: 12, label: 'Variant' } ]
-       case when p.uname = ''then  concat_with_space(p.variantname,' <global>',1) else p.variantname end as variant_display,
- 
-       @UI.identification: [ { position: 15, label: 'Global' } ]
-      cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
- 
+        @UI.fieldGroup: [ { label: 'Variant name', position: 10, qualifier: 'VARIANT' } ]
+      @UI.identification: [ { position: 10, label: 'Variant' } ]
+      p.variantname   as Variantname,
+
+      @UI.lineItem: [ { position: 12, label: 'Variant' } ]
+      case when p.uname = ''then  concat_with_space(p.variantname, ' <global>', 1) else p.variantname end as variant_display,
+
+      @UI.fieldGroup: [ { label: 'Global', position: 20, qualifier: 'VARIANT' } ]
+      @UI.identification: [ { position: 15, label: 'Global' } ]
+      cast(case when p.uname = '' then 'X' else '' end as boole_d)    as global_flag,
+
       @UI.hidden: true
       p.uname,
+
       @UI.hidden: true
       p.classname,
 
-      'demo class' as class_description, // put a description of your class here
+      'demo class'   as class_description, // put a description of your class here
 
       'TRAIN-00,CB9980000003' as global_editors, // these are users who can edit global variants
+
 
       //  put your parameters below here
 

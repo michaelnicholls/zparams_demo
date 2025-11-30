@@ -1,0 +1,5 @@
+CLASS zbp_param_i_classes DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zparam_i_classes.
+ENDCLASS.
+
+CLASS zbp_param_i_classes IMPLEMENTATION.
+ENDCLASS.
