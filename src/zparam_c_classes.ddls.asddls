@@ -20,5 +20,19 @@ define root view entity ZPARAm_C_CLASSES
 
       @UI.identification: [ { position: 20, label: 'Description' } ]
       @UI.lineItem: [ { position: 20, label: 'Description' } ]
-      ClassDescription
+      ClassDescription,
+ 
+         @UI.lineItem: [ { type: #FOR_ACTION,
+                        inline: true,
+                        dataAction: 'addVariant',
+                        position: 60,
+                        label: 'Add global params' }]
+                       
+      dummy,
+           @UI.identification: [ { position: 40, label: 'Editors' } ]
+      @UI.lineItem: [ { position: 40, label: 'Editors' } ]
+     
+      editors
+      
+      
 }

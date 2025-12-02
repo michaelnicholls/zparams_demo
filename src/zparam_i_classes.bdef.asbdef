@@ -12,5 +12,6 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly : update ) Classname;
+ action (features : instance) addVariant ;
 
 }
