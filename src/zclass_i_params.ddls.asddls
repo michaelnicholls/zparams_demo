@@ -25,6 +25,7 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     p.uname as Uname,
           cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
     p.classname as Classname,
+     @UI.hidden: true
     c.classdescription,
     c.editors as editors,
     p.int1 as Int1,

@@ -2,7 +2,7 @@
 
 @EndUserText.label: 'consumption'
 
-
+@UI.headerInfo.typeNamePlural: 'Parameters for zdemo'
 @UI.headerInfo.title.value: 'classdescription'
 
 define root view entity Zdemo_C_PARAMS provider contract transactional_query
