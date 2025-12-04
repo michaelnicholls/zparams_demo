@@ -4,29 +4,29 @@
   <asx:values>
    <SRVB>
     <METADATA>
-     <NAME>ZDEMO_PARAMS</NAME>
+     <NAME>ZDEMO2_OUTPUT</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>zdemo parameters app</DESCRIPTION>
+     <DESCRIPTION>zdemo2 output app</DESCRIPTION>
      <RESPONSIBLE>TRAIN-00</RESPONSIBLE>
      <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>
-      <NAME>ZDEMO_PARAMS</NAME>
+      <NAME>ZDEMO2_OUTPUT</NAME>
      </BIND_TYPE_IMPL>
      <BIND_TYPE>ODATA</BIND_TYPE>
      <BIND_TYPE_VERSION>V2</BIND_TYPE_VERSION>
      <SERVICES>
       <item>
-       <SERVICE_NAME>ZDEMO_PARAMS</SERVICE_NAME>
+       <SERVICE_NAME>ZDEMO2_OUTPUT</SERVICE_NAME>
        <SERVICE_CONTENT>
         <item>
          <SERVICE_VERSION>0001</SERVICE_VERSION>
          <RELEASE_STATE>NOT_RELEASED</RELEASE_STATE>
          <SRVD_REF>
-          <URI>/sap/bc/adt/ddic/srvd/sources/zdemo_params</URI>
+          <URI>/sap/bc/adt/ddic/srvd/sources/zdemo2_output</URI>
           <TYPE>SRVD/SRV</TYPE>
-          <NAME>ZDEMO_PARAMS</NAME>
+          <NAME>ZDEMO2_OUTPUT</NAME>
          </SRVD_REF>
          <BIND_TYPE_DATA>
           <CONTENT>

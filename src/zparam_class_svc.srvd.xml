@@ -5,7 +5,7 @@
    <SRVD>
     <NAME>ZPARAM_CLASS_SVC</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>service</DESCRIPTION>
+    <DESCRIPTION>class setup service</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <SOURCE_URI>./zparam_class_svc/source/main</SOURCE_URI>

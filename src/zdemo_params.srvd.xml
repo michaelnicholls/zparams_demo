@@ -5,7 +5,7 @@
    <SRVD>
     <NAME>ZDEMO_PARAMS</NAME>
     <TYPE>SRVD/SRV</TYPE>
-    <DESCRIPTION>demo params</DESCRIPTION>
+    <DESCRIPTION>zdemo parameters service</DESCRIPTION>
     <LANGUAGE>EN</LANGUAGE>
     <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     <SOURCE_URI>./zdemo_params/source/main</SOURCE_URI>

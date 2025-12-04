@@ -16,10 +16,12 @@ on o.parguid = p.parguid
     o.written_by as WrittenBy,
     @UI.hidden: true
     o.visible as Visible,
+      @UI.lineItem: [{position: 30, label: 'Sequence'}]
     o.sequence as Sequence,
     @UI.hidden: true
     p.classname as classname,
     o.criticality as criticality,
-    @UI.hidden: true
-   cast(case when p.uname = '' then 'X' else '' end as boole_d)    as global_flag
+     @UI.lineItem: [{position: 40}]
+  @UI.selectionField: [{position: 10}]
+   cast(case when p.uname = '' then 'X' else '' end as typ_p_adwp_global)    as global_flag
 } where o.written_by = $session.user and o.visible = 'X' 

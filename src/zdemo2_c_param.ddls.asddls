@@ -26,7 +26,5 @@ define root view entity ZDEMO2_C_PARAM
       @UI.lineItem: [ { position: 30, label: 'Integer4' } ]
       Int4               as Int4,
         ////  end of your fields
-      lastrun,
-    
-      _outputs: redirected to composition child ZDEMO2_C_OUTPUT
+      lastrun
 }

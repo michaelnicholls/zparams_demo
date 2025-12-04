@@ -22,8 +22,9 @@ CLASS ZDEMO2 IMPLEMENTATION.
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the parameters
-    SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
+    SELECT SINGLE * FROM zclass_i_params  WHERE parguid = @parguid INTO @DATA(params).
     " make local variables
+  data(global) = cond #( when params-global_flag is initial then `` else `<Global>` ). " use back tickcs
 
     FINAL(int3) = params-Int3.
     FINAL(int4) = params-int4.

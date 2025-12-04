@@ -45,7 +45,7 @@ define root view entity zdemo_c_param
 
 
       ////  end of your fields
-      lastrun,
-    
-      _outputs: redirected to composition child Zdemo_c_OUTPUT
+      lastrun //,
+//    
+//      _outputs: redirected to composition child Zdemo_c_OUTPUT
 }

@@ -3,34 +3,14 @@
 @EndUserText.label: 'Outputs'
 
 
-@UI.headerInfo.title.value: 'Counter'
-
-define view entity Zdemo_c_OUTPUT
-  as projection on ZDEMO_I_output
-
+@UI.headerInfo.typeNamePlural: 'Output from ZDEMO'
+define root view entity zdemo_c_output as projection on zclass_i_output
 {
-      @UI.facet: [ { id: 'details',
-                     purpose: #STANDARD,
-                     position: 10,
-                     label: 'Details',
-                     type: #IDENTIFICATION_REFERENCE } ]
-                   
-        @UI.hidden: true
-                 
-  key Parguid,
-
-      // @UI.identification: [{position: 10, label: 'Line number'}]
-    //  @UI.lineItem: [ { position: 10, label: 'Line number' } ]
-  key Counter,
-
-      @UI.identification: [ { position: 20, label: 'Sequence' } ]
-      @UI.lineItem: [ { position: 20, label: 'Sequence' } ]
-      sequence,
-
-      @UI.identification: [ { position: 20, label: 'Text' } ]
-      @UI.lineItem: [ { position: 20, label: 'Text' } ]
-      Text,
-
-      /* Associations */
-      _params : redirected to parent zdemo_c_param
-}
+    @UI.hidden: true
+    key Parguid,
+    @UI.hidden: true
+    key Counter,
+    Text,
+    Sequence,
+    criticality
+} where classname = 'ZDEMO'

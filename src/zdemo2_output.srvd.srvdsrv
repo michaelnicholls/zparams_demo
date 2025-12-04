@@ -1,0 +1,4 @@
+@EndUserText.label: 'outpuy service'
+define service ZDEMO2_OUTPUT {
+  expose ZDEMO2_C_OUTPUT;
+}

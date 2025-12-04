@@ -6,14 +6,9 @@
 "ZDEMO2_I_PARAM"
 ],
 "ASSOCIATED":
-[
-"ZDEMO2_C_OUTPUT",
-"ZDEMO2_I_OUTPUT"
-],
+[],
 "BASE":
-[
-"ZDEMO2_I_PARAM"
-],
+[],
 "ANNO_REF":
 [],
 "SCALAR_FUNCTION":
