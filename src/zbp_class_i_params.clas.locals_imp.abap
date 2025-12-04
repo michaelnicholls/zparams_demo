@@ -150,12 +150,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
       ENDTRY.
       lt_result-parguid = <param>-parguid.
 
-    "  IF <param>-global_flag IS NOT INITIAL. "  global variant
-     "   IF editor = abap_false.
-       "   lt_result-%delete = if_abap_behv=>fc-o-disabled.
-      "    lt_result-%action- = if_abap_behv=>fc-o-disabled.
-       "   initclass_ok = if_abap_behv=>fc-o-disabled.
-       if matching = 1.
+       if matching = 1. " just one varaint
 
           lt_result-%action-copy = if_abap_behv=>fc-o-enabled.
           if editor = abap_true.
@@ -163,17 +158,22 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
           else.
             lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
             endif.
-          else.
+       else. " more than 1
           lt_result-%action-copy = if_abap_behv=>fc-o-disabled.
-          lt_result-%action-initialize = if_abap_behv=>fc-o-enabled.
+          if <param>-Uname = myname or editor = abap_true.
+            lt_result-%action-initialize = if_abap_behv=>fc-o-enabled.
+          else.
+          lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+          ENDIF.
+
         ENDIF.
 
-*      ELSE.
-*        lt_result-%delete = if_abap_behv=>fc-o-enabled.
-*        lt_result-%update = if_abap_behv=>fc-o-enabled.
-*      ENDIF.
-*      lt_result-%action-init = initclass_ok.
-*      lt_result-%action-execute = mainclass_ok.
+    if mainclass_ok <> if_abap_behv=>fc-o-enabled.
+      lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
+      endif.
+   if initclass_ok <> if_abap_behv=>fc-o-enabled.
+      lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+      endif.
 
       APPEND lt_result TO result.
 
@@ -247,7 +247,7 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'Z' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      zparam_helper=>clear_output( parguid = lv_data-parguid ).
+      zparam_helper=>clear_output( parguid = lv_data-parguid all = abap_true ).
     ENDLOOP.
 
     " find executions

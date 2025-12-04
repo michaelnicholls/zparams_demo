@@ -11,7 +11,7 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly ) Parguid, global_flag, lastrun;
-  action execute;
+  action (features : instance) execute;
   action clear;
   action (features : instance) initialize;
   action (features : instance) copy;

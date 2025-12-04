@@ -24,6 +24,7 @@ CLASS ZDEMO IMPLEMENTATION.
     " get the parameters
     SELECT SINGLE * FROM zdemo_i_param  WHERE parguid = @parguid INTO @DATA(params).
     " make local variables
+   data(global) = cond #( when params-global_flag is initial then `` else `<Global>` ). " use back tickcs
 
     FINAL(int1) = params-Int1.
     FINAL(int2) = params-int2.
@@ -52,10 +53,10 @@ CLASS ZDEMO IMPLEMENTATION.
 
       IF status IS INITIAL.
         zparam_helper=>write_line( parguid = parguid
-                                   text    = |{ prefix } { result }| ).
+                                   text    = |{  global }{ prefix } { result }| ).
       ELSE.
         zparam_helper=>write_line( parguid = parguid
-                                   text    = |{ status }|   ).
+                                   text    = |  { global } { status }| criticality = zparam_helper=>red  ).
       ENDIF.
     ENDDO.
     zparam_helper=>write_timestamp( parguid = parguid
