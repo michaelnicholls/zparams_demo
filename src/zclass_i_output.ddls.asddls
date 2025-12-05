@@ -18,7 +18,7 @@ on o.parguid = p.parguid
     o.visible as Visible,
       @UI.lineItem: [{position: 30, label: 'Sequence'}]
     o.sequence as Sequence,
-    @UI.hidden: true
+  //  @UI.hidden: true
     p.classname as classname,
     o.criticality as criticality,
      @UI.lineItem: [{position: 40}]

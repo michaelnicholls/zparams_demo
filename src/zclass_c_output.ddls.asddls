@@ -1,6 +1,6 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'consumption'
-@UI.headerInfo.typeNamePlural: 'Output from ZDEMO'
+@UI.headerInfo.typeNamePlural: 'All outputs'
 define root view entity zclass_c_output as projection on zclass_i_output
 {
     @UI.hidden: true
@@ -9,5 +9,7 @@ define root view entity zclass_c_output as projection on zclass_i_output
     key Counter,
     Text,
     Sequence,
-    criticality
-} where classname = 'ZDEMO'
+    criticality,
+    global_flag,
+    classname
+}// where classname = 'ZDEMO'

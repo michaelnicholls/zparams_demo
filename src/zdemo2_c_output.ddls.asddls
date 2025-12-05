@@ -15,5 +15,6 @@ define root  view entity ZDEMO2_C_OUTPUT
     Text,
     Sequence,
     criticality,
-    global_flag
+    global_flag,
+    classname
 } where classname = 'ZDEMO2'

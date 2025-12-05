@@ -12,11 +12,5 @@ define behavior for ZDEMO2_C_PARAM //alias <alias_name>
   use action clear;
   use action copyVariant;
 
-  use association _outputs { create; }
-}
 
-define behavior for ZDEMO2_C_OUTPUT //alias <alias_name>
-{
-
-  use association _params;
 }

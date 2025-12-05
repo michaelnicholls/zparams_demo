@@ -1,4 +1,0 @@
-@EndUserText.label: 'outpuy service'
-define service Zdemo_OUTPUT {
-  expose zdemo_c_output;
-}

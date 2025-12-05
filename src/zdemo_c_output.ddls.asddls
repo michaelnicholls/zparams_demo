@@ -12,5 +12,7 @@ define root view entity zdemo_c_output as projection on zclass_i_output
     key Counter,
     Text,
     Sequence,
-    criticality
+    criticality,
+    classname,
+    global_flag
 } where classname = 'ZDEMO'
