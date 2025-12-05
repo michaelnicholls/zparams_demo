@@ -2,7 +2,7 @@
 @EndUserText.label: 'output'
 @Metadata.ignorePropagatedAnnotations: true
 define view entity ZDEMO2_I_OUTPUT as select from zclass_output
-association to parent zdemo2_i_param as _params
+association to parent ZDEMO2_I_PARAM as _params
     on $projection.Parguid = _params.parguid
 {
     key parguid as Parguid,

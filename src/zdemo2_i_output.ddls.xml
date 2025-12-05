@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>ZDEMO2_I_OUTPUT</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>output for zdemo2</DDTEXT>
+    <DDTEXT>obsolete</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>
