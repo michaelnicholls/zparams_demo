@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>ZDEMO_C_PARAM</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>consumption for zdemo parameters</DDTEXT>
+    <DDTEXT>obsolete</DDTEXT>
     <SOURCE_TYPE>P</SOURCE_TYPE>
    </DDLS>
   </asx:values>
