@@ -5,6 +5,11 @@ CLASS zparam_helper DEFINITION
 
   PUBLIC SECTION.
   class-DATA: green type n VALUE 3, orange type n value 2, red type n value 1, normal type n value 0.
+    class-methods get_params IMPORTING parguid type sysuuid_x16
+                RETURNING VALUE(params) type zclass_i_params.
+
+      class-methods set_params IMPORTING parguid type sysuuid_x16
+                new_params type zclass_i_params.
 
     CLASS-METHODS clear_output IMPORTING parguid TYPE sysuuid_x16
                                         !all type boole_d default ' '. " clears existing outputs
@@ -67,4 +72,18 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
     criticality = zparam_helper=>green
                 text    = |{ text }{ sy-datum DATE = USER  } { sy-uzeit TIME = USER }| ).
   ENDMETHOD.
+  METHOD GET_PARAMS.
+
+  select single * from zclass_i_params where Parguid = @parguid into @params.
+
+  ENDMETHOD.
+
+  METHOD SET_PARAMS.
+  data p type zclass_params.
+  move-CORRESPONDING new_params to p.
+
+  modify zclass_params from @p.
+
+  ENDMETHOD.
+
 ENDCLASS.

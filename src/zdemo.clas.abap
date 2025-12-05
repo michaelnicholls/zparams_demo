@@ -22,7 +22,8 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the parameters
-    SELECT SINGLE * FROM zclass_i_params  WHERE parguid = @parguid INTO @DATA(params).
+  "  SELECT SINGLE * FROM zclass_i_params  WHERE parguid = @parguid INTO @DATA(params).
+  data(params) = zparam_helper=>get_params( parguid ).
     " make local variables
    data(global) = cond #( when params-global_flag is initial then `` else `<Global>` ). " use back tickcs
 
@@ -65,10 +66,12 @@ CLASS ZDEMO IMPLEMENTATION.
   METHOD INIT.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Values initialized at | ).
-    SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
+    "SELECT SINGLE * FROM zclass_params  WHERE parguid = @parguid INTO @DATA(params).
+    data(params) = zparam_helper=>get_params( parguid ).
     params-somedate = sy-datum + params-int1.
     params-sometime = sy-uzeit - params-int2.
-    modify zclass_params from params.
+    "modify zclass_params from params.
+    zparam_helper=>set_params( parguid = parguid new_params = params ).
 
   ENDMETHOD.
 
