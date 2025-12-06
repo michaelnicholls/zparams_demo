@@ -28,6 +28,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
      @UI.hidden: true
     c.classdescription,
     c.editors as editors,
+    
+    ///  all real parameters go here
     p.int1 as Int1,
     p.int2 as Int2,
     p.op as Op,
@@ -37,8 +39,12 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     p.int3 as Int3,
     p.int4 as Int4,
     p.price as Price,
-    p.changedat as Changedat,
-    e.text as lastrun
+    
+    ///  end of real parameters
+ //   p.changedat as Changedat,
+    e.text as lastrun,
+    @UI.hidden: true
+    c.navigation as navigation
 }
 
 

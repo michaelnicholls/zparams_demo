@@ -56,7 +56,8 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       ////  end of your fields
     @UI.identification: [ { position: 80, label: 'Last run' } ]
       @UI.lineItem: [ { position: 80, label: 'Last run' }   ]  
-      lastrun
+      lastrun,
+      navigation
 
 }
  where Classname = 'ZDEMO' and ( Uname = $session.user  or Uname = '' )

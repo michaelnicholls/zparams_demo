@@ -29,10 +29,14 @@ define root view entity ZPARAm_C_CLASSES
                         label: 'Add global params' }]
                        
       dummy,
-           @UI.identification: [ { position: 40, label: 'Editors' } ]
+      
+      @UI.identification: [ { position: 40, label: 'Editors' } ]
       @UI.lineItem: [ { position: 40, label: 'Editors' } ]
-     
-      editors
+      editors,
+      @UI.identification: [ { position: 40, label: 'Navigation to output' } ]
+      @UI.lineItem: [ { position: 40, label: 'Navigation to output' } ]
+      navigation
+ 
       
       
 }
