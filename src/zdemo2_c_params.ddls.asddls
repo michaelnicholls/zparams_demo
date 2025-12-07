@@ -34,6 +34,9 @@ define root view entity ZDEMO2_C_PARAMS provider contract transactional_query
 
       ////  end of your fields
       lastrun,
+       @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  
+     semanticObjectAction: 'output_zdemo2' }]  // put your action here
+       @Consumption.semanticObject: 'params'  // put your semantic object here
       navigation
 
 }

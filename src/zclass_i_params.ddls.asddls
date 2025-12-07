@@ -45,8 +45,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
      @UI.identification: [ { position: 80, label: 'Last run' } ]
       @UI.lineItem: [ { position: 80, label: 'Last run' }   ]  
     e.text as lastrun,
-    @UI.hidden: true
-    c.navigation as navigation
+    
+    'See output' as navigation
 }
 
 
