@@ -21,7 +21,7 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
                         label: 'Execute' },
                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
-                        { type: #FOR_ACTION,    inline: true,
+                        { type: #FOR_ACTION,   // inline: true,
                         dataAction: 'clear',
                         position: 70,
                         label: 'Clear last run' } ]

@@ -32,11 +32,11 @@ define root view entity ZPARAm_C_CLASSES
       
       @UI.identification: [ { position: 40, label: 'Editors' } ]
       @UI.lineItem: [ { position: 40, label: 'Editors' } ]
-      editors,
-      @UI.identification: [ { position: 40, label: 'Navigation to output' } ]
-      @UI.lineItem: [ { position: 40, label: 'Navigation to output' } ]
-      navigation
- 
+      editors //,
+//      @UI.identification: [ { position: 40, label: 'Navigation to output' } ]
+//      @UI.lineItem: [ { position: 40, label: 'Navigation to output' } ]
+//      navigation
+// 
       
       
 }
