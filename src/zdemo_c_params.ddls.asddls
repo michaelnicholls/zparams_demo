@@ -37,6 +37,9 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       @UI.identification: [ { position: 43, label: 'Some time' } ]
       @UI.lineItem: [ { position: 43, label: 'Some time' }]
       Sometime,
+    @UI.identification: [ { position: 44, label: 'Price' } ]
+      @UI.lineItem: [ { position: 44, label: 'Price' }]
+      Price,
 
       ////  end of your fields
        lastrun,
