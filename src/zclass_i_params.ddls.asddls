@@ -21,10 +21,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
                         label: 'Execute' },
                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
-                        { type: #FOR_ACTION,   // inline: true,
-                        dataAction: 'clear',
-                        position: 70,
-                        label: 'Clear last run' } ]
+                        { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear last run' }
+                         ]
     @UI.hidden: true               
     key p.parguid as Parguid,
     
@@ -34,7 +32,7 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     @UI.identification: [ { position: 15, label: 'Global' } ]
     @UI.lineItem: [ { position: 15, label: 'Global' } ]
     cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
-    @UI.hidden: true
+   // @UI.hidden: true
     p.classname as Classname,
     @UI.hidden: true
     c.classdescription,

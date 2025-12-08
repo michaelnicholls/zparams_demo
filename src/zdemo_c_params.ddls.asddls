@@ -12,7 +12,6 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
   key Parguid,
 
       classdescription,
-
       global_flag,
       Uname,
 
@@ -46,7 +45,7 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
     @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  inline: true,
      semanticObjectAction: 'output_zdemo' }]  // put your action here
        @Consumption.semanticObject: 'params'  // put your semantic object here
-       
+//       
      
       navigation
 

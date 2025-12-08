@@ -21,6 +21,8 @@ on o.parguid = p.parguid
   //  @UI.hidden: true
   
     @UI.selectionField: [{position: 10}]
+    @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_output_userVH', 
+                                                      element: 'classname'  }  }]
     p.classname as classname,
     o.criticality as criticality,
     @UI.lineItem: [{position: 40}]

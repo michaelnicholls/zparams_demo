@@ -10,7 +10,6 @@ define root view entity ZDEMO2_C_PARAMS provider contract transactional_query
 
 {
   key Parguid,
-
       classdescription,
 
       global_flag,
