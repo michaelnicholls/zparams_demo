@@ -1,6 +1,6 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
-@EndUserText.label: 'consumption'
+@EndUserText.label: 'ZDEMO2' // useful title here
 
 @UI.headerInfo.typeNamePlural: 'Parameters for zdemo2'
 @UI.headerInfo.title.value: 'classdescription'
