@@ -130,7 +130,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
-     select count( * ) from zclass_i_params where Classname = @<param>-Classname into @data(matching).
+     select count( * ) from zclass_i_params where Classname = @<param>-Classname and ( uname is initial or uname = @myname ) into @data(matching).
       DATA(editor) = abap_false.
       FIND |,{ myname },| IN |,{ <param>-editors },|.
 
