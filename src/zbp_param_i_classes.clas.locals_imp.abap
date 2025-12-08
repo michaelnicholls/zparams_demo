@@ -71,6 +71,9 @@ CLASS lsc_zparam_i_classes IMPLEMENTATION.
                     len = 1 ) <> 'Z'.
         buff-classname = |Z{ buff-classname }|.
       ENDIF.
+      if buff-editors is initial.
+        buff-editors = cl_abap_context_info=>get_user_technical_name( ).
+      endif.
       MODIFY zparam_classes FROM @buff.
 
     ENDLOOP.
