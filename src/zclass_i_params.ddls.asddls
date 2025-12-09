@@ -29,13 +29,14 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     @UI.hidden
     p.uname as Uname,
     
-    @UI.identification: [ { position: 15, label: 'Global' } ]
+ //   @UI.identification: [ { position: 15, label: 'Global' } ]
     @UI.lineItem: [ { position: 15, label: 'Global' } ]
     cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
    // @UI.hidden: true
     p.classname as Classname,
     @UI.hidden: true
-    c.classdescription,
+        concat_with_space(c.classdescription,
+      case when p.uname  = '' then '<global>' else '' end ,1) as classdescription,
     @UI.hidden
     c.editors as editors,
     

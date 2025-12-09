@@ -39,7 +39,8 @@ define root view entity ZDEMO2_C_PARAMS provider contract transactional_query
        @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  inline: true,
      semanticObjectAction: 'output_zdemo2' }]  // put your action here
        @Consumption.semanticObject: 'params'  // put your semantic object here
-      navigation
+ //     navigation
+ latest_criticality
 
 }
  where Classname = 'ZDEMO2' and ( Uname = $session.user  or Uname = '' )
