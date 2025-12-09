@@ -24,7 +24,7 @@ CLASS ZDEMO IMPLEMENTATION.
     " get the parameters
     DATA(params) = zparam_helper=>get_params( parguid ).
     " make local variables
-    DATA(global) = COND #( WHEN params-global_flag IS INITIAL THEN `` ELSE `<Global>` ). " use back tickcs
+    DATA(global) = COND #( WHEN params-global_flag IS INITIAL THEN `` ELSE `<Global>` ). " use back ticks
 
     FINAL(int1) = params-Int1.
     FINAL(int2) = params-int2.
