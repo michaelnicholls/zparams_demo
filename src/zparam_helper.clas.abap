@@ -4,7 +4,12 @@ CLASS zparam_helper DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-  class-DATA: green type n VALUE 3, orange type n value 2, red type n value 1, normal type n value 0.
+  class-DATA:
+  green type n VALUE 3,
+  orange type n value 2,
+  red type n value 1,
+   normal type n value 0.
+
     class-methods get_params IMPORTING parguid type sysuuid_x16
                 RETURNING VALUE(params) type zclass_i_params.
 
@@ -21,6 +26,8 @@ CLASS zparam_helper DEFINITION
                                        !text    TYPE string
                                        !criticality type n default 0
                                        !visible TYPE boole_d DEFAULT 'X'. " writes a line to the end of the outputs
+    class-METHODS set_latest_criticality IMPORTING parguid type sysuuid_x16
+                       !criticality type n default 0.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -83,6 +90,19 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
   move-CORRESPONDING new_params to p.
 
   modify zclass_params from @p.
+
+  ENDMETHOD.
+
+  METHOD SET_LATEST_CRITICALITY.
+
+      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+      select single counter from zclass_output where parguid = @parguid and visible = ' ' and written_by = @myname into @data(counter).
+
+      update zclass_output set criticality = @criticality
+                where parguid    = @parguid
+                  and counter    = @counter
+                  and visible    = ''
+                   and      written_by = @myname.
 
   ENDMETHOD.
 

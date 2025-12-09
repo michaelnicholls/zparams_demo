@@ -5,6 +5,7 @@ define view entity zclass_out_exec as select distinct from zclass_output
 {
     key written_by as WrittenBy,
     key parguid,
-    text
+    text,
+    criticality as latest_criticality
     
 } where visible = '' and written_by = $session.user

@@ -36,6 +36,7 @@ CLASS ZDEMO IMPLEMENTATION.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |{ myname } : Started at | ).
     DATA(ops) = '+-*/'.
+    data(criticality) = zparam_helper=>normal.
     DO strlen( ops ) TIMES.
       DATA(op) = substring( val = ops
                             off = sy-index - 1
@@ -46,7 +47,12 @@ CLASS ZDEMO IMPLEMENTATION.
         WHEN '+'. result = Int1 + Int2.
         WHEN '-'. result = Int1 - Int2.
         WHEN '*'. result = Int1 * Int2.
-        WHEN '/'. IF int2 = 0. status = 'No division by zero'. ELSE. result = Int1 / Int2. ENDIF.
+        WHEN '/'.
+            IF int2 = 0.
+             status = 'No division by zero'. criticality = zparam_helper=>red.
+           ELSE.
+           result = Int1 / Int2.
+         ENDIF.
         WHEN OTHERS. status = |Bad or missing operator { op }|.
       ENDCASE.
 
@@ -59,6 +65,7 @@ CLASS ZDEMO IMPLEMENTATION.
                                    criticality = zparam_helper=>red  ).
       ENDIF.
     ENDDO.
+    zparam_helper=>set_latest_criticality( parguid = parguid criticality = criticality ).
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).
   ENDMETHOD.

@@ -47,7 +47,8 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
        @Consumption.semanticObject: 'params'  // put your semantic object here
 //       
      
-      navigation
+//      navigation,
+      latest_criticality
 
 }
  where Classname = 'ZDEMO' and ( Uname = $session.user  or Uname = '' )
