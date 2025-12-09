@@ -31,6 +31,12 @@ CLASS ZDEMO2 IMPLEMENTATION.
 
     zparam_helper=>write_line( parguid = parguid
                                     text    = |int3: { int3 }, int4: { int4  } | ).
+     data(crit) = zparam_helper=>green.
+     if  params-startdate > params-enddate.      crit = zparam_helper=>red. endif.
+    zparam_helper=>write_line(  parguid = parguid
+    text = |Difference between { params-enddate date = user } and { params-startdate date = user } is {  params-enddate - params-startdate } days |
+    criticality = crit
+     ).
 
   ENDMETHOD.
   METHOD INIT.

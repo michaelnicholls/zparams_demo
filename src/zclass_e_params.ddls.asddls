@@ -8,5 +8,7 @@ extend view entity zclass_i_params with
   p.sometime as Sometime,
   p.int3     as Int3,
   p.int4     as Int4,
-  p.price    as Price
+  p.price    as Price,
+  p.startdate as startdate,
+  p.enddate as enddate
 }

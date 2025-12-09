@@ -26,11 +26,14 @@ define root view entity ZDEMO2_C_PARAMS provider contract transactional_query
       @UI.lineItem: [ { position: 30, label: 'Integer4' } ]
       Int4               as Int4,
       
-     @UI.identification: [ { position: 40, label: 'Billing date' } ]
-      @UI.lineItem: [ { position: 40, label: 'Billing date' } ]
-       Somedate, 
+     @UI.identification: [ { position: 40, label: 'Start date' } ]
+      @UI.lineItem: [ { position: 40, label: 'Start date' } ]
+        
  
-
+    startdate,
+     @UI.identification: [ { position: 42, label: 'End date' } ]
+      @UI.lineItem: [ { position: 42, label: 'End date' } ]
+    enddate,
       ////  end of your fields
       lastrun,
        @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  inline: true,
