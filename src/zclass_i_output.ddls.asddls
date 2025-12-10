@@ -9,7 +9,7 @@ on o.parguid = p.parguid
 {
     key o.parguid as Parguid,
     key o.counter as Counter,
-    @UI.lineItem: [{position: 20, label: 'Text', criticality: 'criticality'}]
+    @UI.lineItem: [{position: 20, label: 'Text', criticality: 'criticality', criticalityRepresentation: #WITHOUT_ICON}]
     
     o.text as Text,
     @UI.hidden: true

@@ -5,10 +5,10 @@ CLASS zparam_helper DEFINITION
 
   PUBLIC SECTION.
   class-DATA:
-  green type n VALUE 3,
-  orange type n value 2,
-  red type n value 1,
-   normal type n value 0.
+    green type n VALUE 3,
+    orange type n value 2,
+    red type n value 1,
+    normal type n value 0.
 
     class-methods get_params IMPORTING parguid type sysuuid_x16
                 RETURNING VALUE(params) type zclass_i_params.

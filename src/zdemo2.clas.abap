@@ -19,29 +19,30 @@ ENDCLASS.
 CLASS ZDEMO2 IMPLEMENTATION.
   METHOD main.
     " do your work here
+    " TODO: variable is assigned but never used (ABAP cleaner)
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the parameters
-  data(params) = zparam_helper=>get_params( parguid ).
+    DATA(params) = zparam_helper=>get_params( parguid ).
     " make local variables
-  data(global) = cond #( when params-global_flag is initial then `` else `<Global>` ). " use back tickcs
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(global) = COND #( WHEN params-global_flag IS INITIAL THEN `` ELSE `<Global>` ). " use back tickcs
 
     FINAL(int3) = params-Int3.
     FINAL(int4) = params-int4.
 
     zparam_helper=>write_line( parguid = parguid
-                                    text    = |int3: { int3 }, int4: { int4  } | ).
-     data(crit) = zparam_helper=>green.
-     if  params-startdate > params-enddate.      crit = zparam_helper=>red. endif.
-          if  params-startdate = params-enddate.      crit = zparam_helper=>orange. endif.
-
-    zparam_helper=>write_line(  parguid = parguid
-    text = |Difference between { params-startdate date = user } and { params-enddate date = user } is {  params-enddate - params-startdate } days |
-    criticality = crit
-     ).
-         zparam_helper=>set_latest_criticality( parguid = parguid criticality = crit ).
-
-
+                               text    = |int3: { int3 }, int4: { int4  } | ).
+    DATA(crit) = zparam_helper=>green.
+    IF params-startdate > params-enddate. crit = zparam_helper=>red. ENDIF.
+    IF params-startdate = params-enddate. crit = zparam_helper=>orange. ENDIF.
+    data(daystext) = cond string( when params-enddate - params-startdate = 1 then 'day' else 'days'  ).
+    zparam_helper=>write_line(
+        parguid     = parguid
+        text        = |Difference between { params-startdate DATE = USER } and { params-enddate DATE = USER } is {  params-enddate - params-startdate } { daystext } |
+        criticality = crit ).
+    zparam_helper=>set_latest_criticality( parguid     = parguid
+                                           criticality = crit ).
   ENDMETHOD.
   METHOD INIT.
     zparam_helper=>write_timestamp( parguid = parguid
