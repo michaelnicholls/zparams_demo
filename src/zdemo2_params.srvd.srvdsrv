@@ -1,4 +1,0 @@
-@EndUserText.label: 'demo params'
-define service ZDEMO2_PARAMS {
-  expose ZDEMO2_C_PARAMS;
-}
