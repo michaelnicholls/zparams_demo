@@ -1,7 +1,9 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'ZDEMO'  // useful title here
-
+///////
+/////  REMEMBER TO UPDATE THE WHERE CONDITION AT THE END
+///////
 @UI.headerInfo.typeNamePlural: 'Parameters for zdemo'
 @UI.headerInfo.title.value: 'classdescription'
 
@@ -10,10 +12,15 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
 
 {
   key Parguid,
-
-        classdescription,
+      classdescription,
       global_flag,
       Uname,
+      lastrun,
+      @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  inline: true,
+      semanticObjectAction: 'output_zdemo' }]  // put your action here
+      @Consumption.semanticObject: 'params'  // put your semantic object here
+      latest_criticality,
+     
 
       ///////  put your fields here /////
 
@@ -38,17 +45,10 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       Sometime,
     @UI.identification: [ { position: 44, label: 'Price' } ]
       @UI.lineItem: [ { position: 44, label: 'Price' }]
-      Price,
+      Price
 
       ////  end of your fields
-       lastrun,
-    @UI.lineItem: [{position: 100, type: #FOR_INTENT_BASED_NAVIGATION, label : 'See output',  inline: true,
-     semanticObjectAction: 'output_zdemo' }]  // put your action here
-       @Consumption.semanticObject: 'params'  // put your semantic object here
-//       
-     
-//      navigation,
-      latest_criticality
+  
 
 }
  where Classname = 'ZDEMO' and ( Uname = $session.user  or Uname = '' )
