@@ -34,11 +34,11 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS lock FOR LOCK
       IMPORTING keys FOR LOCK zclass_i_params.
-    METHODS clear FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~clear.
+*    METHODS clear FOR MODIFY
+*      IMPORTING keys FOR ACTION zclass_i_params~clear.
 
     METHODS execute FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~execute.
+      IMPORTING keys FOR ACTION zclass_i_params~execute. " RESULT result.
     METHODS initialize FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~initialize.
     METHODS get_instance_features FOR INSTANCE FEATURES
@@ -92,28 +92,30 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   METHOD lock.
   ENDMETHOD.
 
-  METHOD clear.
-  LOOP AT keys INTO DATA(ls_clear)..
-
-
-  INSERT VALUE #( flag = 'Z' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
-  endlOOP.
-  ENDMETHOD.
+*  METHOD clear.
+*  LOOP AT keys INTO DATA(ls_clear)..
+*
+*
+*  INSERT VALUE #( flag = 'Z' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+*  endlOOP.
+*  ENDMETHOD.
 
   METHOD execute.
-  LOOP AT keys INTO DATA(ls_clear)..
+  LOOP AT keys INTO DATA(ls_exec)..
 
-
-  INSERT VALUE #( flag = 'X'  parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  if ls_exec-%param-clear_first is not initial.
+  INSERT VALUE #( flag = 'Z'  parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  endif.
+  INSERT VALUE #( flag = 'X'  parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
   endLOOP.
   ENDMETHOD.
 
   METHOD initialize.
-  LOOP AT keys INTO DATA(ls_clear)..
+  LOOP AT keys INTO DATA(ls_init).
 
 
-  INSERT VALUE #( flag = 'I' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  INSERT VALUE #( flag = 'I' parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
   endLOOP.
   ENDMETHOD.
@@ -189,6 +191,8 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
   endLOOP.
   ENDMETHOD.
+
+
 
 ENDCLASS.
 

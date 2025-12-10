@@ -11,8 +11,9 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly ) Parguid, global_flag, lastrun;
-  action (features : instance) execute;
-  action clear;
+  action (features : instance) execute parameter zparam_prompts ; //result [1] $self;
+
+  //action clear;
   action (features : instance) initialize;
   action (features : instance) copy;
 
