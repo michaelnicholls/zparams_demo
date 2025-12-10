@@ -34,7 +34,7 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA result TYPE p LENGTH 9 DECIMALS 2.
     DATA status TYPE string.
     zparam_helper=>write_timestamp( parguid = parguid
-                                    text    = |{ myname } : Started at | ).
+                                    text    = |{ global }{ myname } : Started at | ).
     DATA(ops) = '+-*/'.
     data(criticality) = zparam_helper=>normal.
     DO strlen( ops ) TIMES.
@@ -58,10 +58,10 @@ CLASS ZDEMO IMPLEMENTATION.
 
       IF status IS INITIAL.
         zparam_helper=>write_line( parguid = parguid
-                                   text    = |{  global }{ prefix } { result }| ).
+                                   text    = |{ prefix } { result }| ).
       ELSE.
         zparam_helper=>write_line( parguid     = parguid
-                                   text        = |  { global } { status }|
+                                   text        = | { status }|
                                    criticality = zparam_helper=>red  ).
       ENDIF.
     ENDDO.

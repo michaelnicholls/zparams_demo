@@ -251,7 +251,7 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'Z' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      zparam_helper=>clear_output( parguid = lv_data-parguid all = abap_true ).
+      zparam_helper=>clear_output( parguid = lv_data-parguid  ).
     ENDLOOP.
 
     " find executions
