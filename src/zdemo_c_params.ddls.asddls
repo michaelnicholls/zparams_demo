@@ -25,27 +25,27 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
 
       ///////  put your fields here /////
 
-      @UI.identification: [ { position: 20, label: 'Integer1' } ]
-      @UI.lineItem: [ { position: 20, label: 'Integer1' } ]
+      @UI.identification: [ { position: 20 } ]
+      @UI.lineItem: [ { position: 20 } ]
       Int1               as Int1,
 
-      @UI.identification: [ { position: 30, label: 'Integer2' } ]
-      @UI.lineItem: [ { position: 30, label: 'Integer2' } ]
+      @UI.identification: [ { position: 30 } ]
+      @UI.lineItem: [ { position: 30 } ]
       Int2               as Int2,
  
-      @UI.identification: [ { position: 41, label: 'Checkbox' } ]
-      @UI.lineItem: [ { position: 41, label: 'Checkbox' } ]
+      @UI.identification: [ { position: 41 }]
+      @UI.lineItem: [ { position: 41} ]
       Checkbox,
 
-      @UI.identification: [ { position: 42, label: 'Some date' } ]
-      @UI.lineItem: [ { position: 42, label: 'Some date' } ]
+      @UI.identification: [ { position: 42 } ]
+      @UI.lineItem: [ { position: 42 } ]
       Somedate,
 
-      @UI.identification: [ { position: 43, label: 'Some time' } ]
-      @UI.lineItem: [ { position: 43, label: 'Some time' }]
+      @UI.identification: [ { position: 43 } ]
+      @UI.lineItem: [ { position: 43 }]
       Sometime,
-    @UI.identification: [ { position: 44, label: 'Price' } ]
-      @UI.lineItem: [ { position: 44, label: 'Price' }]
+    @UI.identification: [ { position: 44 } ]
+      @UI.lineItem: [ { position: 44 }]
       Price
 
       ////  end of your fields

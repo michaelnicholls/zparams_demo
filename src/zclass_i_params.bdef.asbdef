@@ -8,7 +8,7 @@ authorization master ( instance )
 //etag master <field_name>
 {
   create ;
-  update;
+  update (features : instance);
   delete;
   field ( readonly ) Parguid, global_flag, lastrun;
   action (features : instance) execute parameter zparam_prompts ; //result [1] $self;

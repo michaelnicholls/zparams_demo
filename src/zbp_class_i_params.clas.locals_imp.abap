@@ -169,7 +169,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
           ENDIF.
 
         ENDIF.
-
+    lt_result-%update = lt_result-%action-initialize.
     if mainclass_ok <> if_abap_behv=>fc-o-enabled.
       lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
       endif.
