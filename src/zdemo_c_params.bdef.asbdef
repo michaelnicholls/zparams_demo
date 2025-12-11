@@ -8,7 +8,7 @@ define behavior for Zdemo_C_PARAMS //alias <alias_name>
 //  use delete;
 
   use action execute;
-  //use action clear;
+  use action clear;
   use action initialize;
   use action copy;
 }
