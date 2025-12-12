@@ -17,12 +17,17 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       global_flag,
       Uname,
       lastrun,
+//      @UI.lineItem: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
+//      @UI.identification: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
+//      @Consumption.semanticObject: 'paramszdemo'
+//      
       latest_criticality,
      
 
       ///////  put your fields here /////
 
-      @UI.lineItem: [ { position: 20} ]
+       @UI.identification: [ { position: 20 } ]
+     @UI.lineItem: [ { position: 20} ]
       Int1               as Int1,
 
       @UI.identification: [ { position: 30 } ]
@@ -47,7 +52,7 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       
    @UI.lineItem: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
    @UI.identification: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
-     @Consumption.semanticObject: 'paramszdemo'
+        @Consumption.semanticObject: 'paramszdemo'
     navigation
   
 

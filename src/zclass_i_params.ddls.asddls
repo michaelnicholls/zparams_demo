@@ -15,10 +15,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
   
    @UI.identification: [ { type: #FOR_ACTION,
                         //: true,
-                        dataAction: 'execute',
-                        position: 60,
-                        label: 'Execute' },
-                        {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
+                        dataAction: 'execute', position: 60, label: 'Execute' },
+                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
                         { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' } ]
       @UI.lineItem: [ { position: 50, label: 'Last run' },
