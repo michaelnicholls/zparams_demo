@@ -3,7 +3,7 @@
 @EndUserText.label: 'ZDEMO'  // useful title here
 ///////
 /////  REMEMBER TO UPDATE THE WHERE CONDITION AT THE END
-////// and the semanticObjectAction
+////// and the approprate navigation from zclass_e_params
 ///////
 @UI.headerInfo.typeNamePlural: 'Parameters for zdemo'
 @UI.headerInfo.title.value: 'classdescription'
@@ -44,6 +44,7 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
     @UI.identification: [ { position: 44 } ]
       @UI.lineItem: [ { position: 44 }]
       Price,
+    
       nav_zdemo
   
 
