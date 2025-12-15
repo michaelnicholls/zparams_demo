@@ -1,0 +1,2 @@
+sap.ui.define([],function(){"use strict";return{show_output:function(t){var e=sap.ushell.Container.getService("Navigation");e.navigate({target:{semanticObject:"zdemo_output",action:"show"}})},refresh:function(t){location.reload(true)}}});                 
+//# sourceMappingURL=ObjectPageExt.controller.js.map                                                                                                                                                                                                           

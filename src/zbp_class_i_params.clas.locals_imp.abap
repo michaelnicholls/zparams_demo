@@ -48,6 +48,14 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR ACTION zclass_i_params~copy.
     METHODS clear FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~clear.
+    METHODS clear_object FOR MODIFY
+      IMPORTING keys FOR ACTION zclass_i_params~clear_object.
+
+    METHODS execute_object FOR MODIFY
+      IMPORTING keys FOR ACTION zclass_i_params~execute_object.
+
+    METHODS initialize_object FOR MODIFY
+      IMPORTING keys FOR ACTION zclass_i_params~initialize_object.
 
 ENDCLASS.
 
@@ -80,6 +88,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD delete.
+  loop at keys ASSIGNING FIELD-SYMBOL(<key>).
+  INSERT VALUE #( flag = 'D' parguid = <key>-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  endloop.
   ENDMETHOD.
 
   METHOD read.
@@ -113,15 +124,17 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
                       parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
     ENDLOOP.
+
   ENDMETHOD.
 
   METHOD initialize.
-  LOOP AT keys INTO DATA(ls_init).
+    LOOP AT keys INTO DATA(ls_init).
 
+      INSERT VALUE #( flag    = 'I'
+                      parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
-  INSERT VALUE #( flag = 'I' parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+    ENDLOOP.
 
-  endLOOP.
   ENDMETHOD.
 
   METHOD get_instance_features.
@@ -131,8 +144,6 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
       FOR ALL ENTRIES IN @keys
       WHERE parguid = @keys-parguid
       INTO TABLE @DATA(params).
-
-
 
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
@@ -173,6 +184,8 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
           ENDIF.
 
         ENDIF.
+     lt_result-%delete = if_abap_behv=>fc-o-disabled.
+     if <param>-Uname is not initial. lt_result-%delete = if_abap_behv=>fc-o-enabled. endif.
     lt_result-%update = lt_result-%action-initialize.
     if mainclass_ok <> if_abap_behv=>fc-o-enabled.
       lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
@@ -181,7 +194,10 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
       lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
       endif.
 
-      APPEND lt_result TO result.
+      lt_result-%action-execute_object    = lt_result-%action-execute.
+      lt_result-%action-initialize_object = lt_result-%action-initialize.
+
+     APPEND lt_result TO result.
 
     ENDLOOP.
 
@@ -203,6 +219,49 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
                       parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
 
     ENDLOOP.
+
+
+  ENDMETHOD.
+
+  METHOD clear_object.
+    LOOP AT keys INTO DATA(ls_clear).
+
+      INSERT VALUE #( flag    = 'Z'
+                      parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+    ENDLOOP.
+    reported-zclass_i_params = value #(
+      (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = 'Use refresh' ) ) ).
+
+  ENDMETHOD.
+
+  METHOD execute_object.
+    LOOP AT keys INTO DATA(ls_exec).
+
+      IF ls_exec-%param-clear_first IS NOT INITIAL.
+        INSERT VALUE #( flag    = 'Z'
+                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      ENDIF.
+      INSERT VALUE #( flag    = 'X'
+                      parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+    ENDLOOP.
+    reported-zclass_i_params = value #(
+        (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = 'Use refresh' ) ) ).
+
+  ENDMETHOD.
+
+  METHOD initialize_object.
+      LOOP AT keys INTO DATA(ls_init).
+
+        INSERT VALUE #( flag    = 'I'
+                      parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+
+        ENDLOOP.
+    reported-zclass_i_params = VALUE #(
+        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+                                        text     = 'Use refresh' ) ) ).
+
   ENDMETHOD.
 
 ENDCLASS.
@@ -231,6 +290,7 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
+
    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
   DATA lt_data TYPE STANDARD TABLE OF zclass_i_params.
     " find copy

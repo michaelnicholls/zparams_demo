@@ -1,20 +1,26 @@
 unmanaged implementation in class zbp_class_i_params unique;
 strict ( 2 );
 
+
 define behavior for zclass_i_params //alias <alias_name>
+
+
 //late numbering
 lock master
+
 authorization master ( instance )
-//etag master <field_name>
+
+
 {
-  create ;
-  update (features : instance);
-  delete;
+  create;
+  update ( features : instance );
+  delete ( features : instance );
   field ( readonly ) Parguid, global_flag, lastrun;
-  action (features : instance) execute parameter zparam_prompts ; //result [1] $self;
-
-  action clear;
-  action (features : instance) initialize;
-  action (features : instance) copy;
-
+  action ( features : instance ) execute parameter zparam_prompts; // on list
+  action ( features : instance ) execute_object parameter zparam_prompts; // on object
+  action clear; // on list
+  action clear_object; // on object
+  action ( features : instance ) initialize; // on list
+  action ( features : instance ) initialize_object; // on object
+  action ( features : instance ) copy;
 }

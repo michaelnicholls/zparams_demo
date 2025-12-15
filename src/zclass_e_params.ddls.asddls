@@ -21,5 +21,10 @@ extend view entity zclass_i_params with
   @EndUserText.label: 'Start date'
   p.startdate as startdate,
   @EndUserText.label: 'End date'
-  p.enddate as enddate
-}
+  p.enddate as enddate,
+    @UI.identification:  [{ type: #FOR_INTENT_BASED_NAVIGATION, semanticObject: 'zdemo_output' ,semanticObjectAction: 'show', position: 90,label: 'Show output'}]
+  
+  @UI.lineItem: [{ type: #WITH_INTENT_BASED_NAVIGATION, semanticObjectAction: 'show', position: 90,label: 'Show output'}]
+  @Consumption.semanticObject: 'zdemo_output'
+  'See output' as nav_zdemo
+  }

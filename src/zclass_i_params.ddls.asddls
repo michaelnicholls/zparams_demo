@@ -15,10 +15,10 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
   
    @UI.identification: [ { type: #FOR_ACTION,
                         //: true,
-                        dataAction: 'execute', position: 60, label: 'Execute' },
-                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
+                        dataAction: 'execute_object', position: 60, label: 'Execute' },
+                         {type: #FOR_ACTION, dataAction: 'initialize_object',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
-                        { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' } ]
+                        { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' } ]
       @UI.lineItem: [ { position: 50, label: 'Last run' },
                         { type: #FOR_ACTION,
                         inline: true,
@@ -47,12 +47,13 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     c.editors as editors,
     
  
- //    @UI.identification: [ { position: 80, label: 'Last run' } ]
+     @UI.identification: [ { position: 80, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
     @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
-    e.text as lastrun,
-    e.latest_criticality,
+    case when e.text is null then '-' else e.text end as lastrun,
+    @UI.hidden: true
+    e.latest_criticality
     
-    'See output' as navigation
+   
 }
 
 

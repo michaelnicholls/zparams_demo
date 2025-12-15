@@ -17,10 +17,6 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       global_flag,
       Uname,
       lastrun,
-//      @UI.lineItem: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
-//      @UI.identification: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
-//      @Consumption.semanticObject: 'paramszdemo'
-//      
       latest_criticality,
      
 
@@ -48,12 +44,7 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
     @UI.identification: [ { position: 44 } ]
       @UI.lineItem: [ { position: 44 }]
       Price,
-
-      
-   @UI.lineItem: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
-   @UI.identification: [ { position: 90,type: #FOR_INTENT_BASED_NAVIGATION ,semanticObjectAction: 'output', label: 'See output' } ]
-        @Consumption.semanticObject: 'paramszdemo'
-    navigation
+      nav_zdemo
   
 
 }
