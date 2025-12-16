@@ -9,6 +9,9 @@ on o.parguid = p.parguid
 {
      @UI.selectionField: [{position: 5}]
      @EndUserText.label: 'Parameter UUID'
+       @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_output_userVH', 
+                                                      element: 'parguid'  }  }]
+     
     key o.parguid as Parguid,
     key o.counter as Counter,
     @UI.lineItem: [{position: 20, label: 'Text', cssDefault.width: '60%' ,criticality: 'criticality', criticalityRepresentation: #WITHOUT_ICON}]
