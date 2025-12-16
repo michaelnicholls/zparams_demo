@@ -8,10 +8,11 @@ We need three new tables to be created.
 
 The first is for storing the parameters for a global class, similar to the PARAMETERS statement in traditional ABAP reports.
 I have called this [ZCLASS_PARAMS](zclass_params.txt).  It can be shared by all classes.  
+It is a base table, and parameters should be added to [ZCLASS_PARAMS_LOCAL](zclass_params_local.txt).  
 The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.  
 This table I've called [ZCLASS_OUTPUT](zclass_output_table.txt). It can be shared by all your classes.  
 The third table is used to define all the classes that use this mechanism. It includes a description, plus a list of users who are allowed to change default parameters.  
-This is called [ZPARAM_CLASSES](zparam_clases.txt).
+This is called [ZPARAM_CLASSES](zparam_classes.txt).
 
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
 
