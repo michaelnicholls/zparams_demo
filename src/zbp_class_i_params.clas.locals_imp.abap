@@ -35,8 +35,6 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS lock FOR LOCK
       IMPORTING keys FOR LOCK zclass_i_params.
-*    METHODS clear FOR MODIFY
-*      IMPORTING keys FOR ACTION zclass_i_params~clear.
 
     METHODS execute FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~execute. " RESULT result.
@@ -106,13 +104,6 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   METHOD lock.
   ENDMETHOD.
 
-*  METHOD clear.
-*  LOOP AT keys INTO DATA(ls_clear)..
-*
-*
-*  INSERT VALUE #( flag = 'Z' parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
-*  endlOOP.
-*  ENDMETHOD.
 
   METHOD execute.
     LOOP AT keys INTO DATA(ls_exec).
@@ -330,7 +321,7 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'X' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
+
       DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
       SELECT SINGLE counter FROM zclass_output
         WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname
@@ -356,7 +347,6 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'I' )
                        (  row-lv_data ) ).
     LOOP AT lt_data INTO lv_data.
-      "   SELECT SINGLE parguid FROM zdemo_param INTO @DATA(parguid).
       select single classname from zclass_i_params where Parguid = @lv_data-Parguid into @myclassname.
     meth = 'INIT'.
       CALL METHOD (myclassname)=>(meth)

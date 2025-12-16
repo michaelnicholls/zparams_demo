@@ -10,6 +10,6 @@ define root view entity zclass_c_output as projection on zclass_i_output
     Text,
     Sequence,
     criticality,
-    global_flag,
+  //  global_flag,
     classname
 }

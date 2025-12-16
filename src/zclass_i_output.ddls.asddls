@@ -11,7 +11,7 @@ on o.parguid = p.parguid
      @EndUserText.label: 'Parameter UUID'
     key o.parguid as Parguid,
     key o.counter as Counter,
-    @UI.lineItem: [{position: 20, label: 'Text', criticality: 'criticality', criticalityRepresentation: #WITHOUT_ICON}]
+    @UI.lineItem: [{position: 20, label: 'Text', cssDefault.width: '60%' ,criticality: 'criticality', criticalityRepresentation: #WITHOUT_ICON}]
     
     o.text as Text,
     @UI.hidden: true

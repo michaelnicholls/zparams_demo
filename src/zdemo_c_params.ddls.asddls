@@ -12,29 +12,31 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
 
 {
   key Parguid,
+
       classdescription,
       global_flag,
       Uname,
       lastrun,
-  //    classname,
+      //    classname,
       latest_criticality,
-     
+
 
       ///////  put your fields here /////
 
-       @UI.identification: [ { position: 20 } ]
-     @UI.lineItem: [ { position: 20} ]
-      Int1               as Int1,
+      @UI.identification: [ { position: 20 } ]
+      @UI.lineItem: [ { position: 20 } ]
+      Int1                as Int1,
 
       @UI.identification: [ { position: 30 } ]
       @UI.lineItem: [ { position: 30 } ]
-      Int2               as Int2,
-     @UI.identification: [ { position: 33 } ]
+      Int2                as Int2,
+
+      @UI.identification: [ { position: 33 } ]
       @UI.lineItem: [ { position: 33 } ]
-      Int3               as Int3,
- 
-      @UI.identification: [ { position: 41 }]
-      @UI.lineItem: [ { position: 41} ]
+      Int3                as Int3,
+
+      @UI.identification: [ { position: 41 } ]
+      @UI.lineItem: [ { position: 41 } ]
       Checkbox,
 
       @UI.identification: [ { position: 42 } ]
@@ -42,15 +44,15 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       Somedate,
 
       @UI.identification: [ { position: 43 } ]
-      @UI.lineItem: [ { position: 43 }]
+      @UI.lineItem: [ { position: 43 } ]
       Sometime,
-    @UI.identification: [ { position: 44 } ]
-      @UI.lineItem: [ { position: 44 }]
+
+      @UI.identification: [ { position: 44 } ]
+      @UI.lineItem: [ { position: 44 } ]
       Price,
-     
-nav_all //,      nav_zdemo
-  
 
+      /////// leave nav_all below - it prvides the link to see the output
+      nav_all
 }
- where Classname = 'ZDEMO' and ( Uname = $session.user  or Uname = '' )
 
+where Classname = 'ZDEMO' and (Uname = $session.user or Uname = '')

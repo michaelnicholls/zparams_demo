@@ -17,10 +17,10 @@ authorization master ( instance )
   delete ( features : instance );
   field ( readonly ) Parguid, global_flag, lastrun;
   action ( features : instance ) execute parameter zparam_prompts; // on list
-  action ( features : instance ) execute_object parameter zparam_prompts; // on object
+  action ( features : instance ) execute_object parameter zparam_prompts; // on object page
   action clear; // on list
-  action clear_object; // on object
+  action clear_object; // on object page
   action ( features : instance ) initialize; // on list
-  action ( features : instance ) initialize_object; // on object
+  action ( features : instance ) initialize_object; // on object page
   action ( features : instance ) copy;
 }
