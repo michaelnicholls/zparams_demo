@@ -1,5 +1,5 @@
-@EndUserText.label : 'parameters for classes add your parameters after variantname'
-@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@EndUserText.label : 'parameters for z classes'
+@AbapCatalog.enhancement.category : #EXTENSIBLE_CHARACTER_NUMERIC
 @AbapCatalog.tableCategory : #TRANSPARENT
 @AbapCatalog.deliveryClass : #A
 @AbapCatalog.dataMaintenance : #RESTRICTED
@@ -8,13 +8,6 @@ define table zclass_params {
   key mandt   : abap.clnt not null;
   key parguid : sysuuid_x16 not null;
   uname       : syst_uname not null;
-  variantname : abap.char(20);
-  int1        : abap.int4;
-  int2        : abap.int4;
-  op          : abap.char(1);
-  checkbox    : boole_d;
-  somedate    : abap.dats;
-  sometime    : abap.tims;
-  price       : abap.dec(10,2);
+  classname   : wdr_classname;
 
 }
