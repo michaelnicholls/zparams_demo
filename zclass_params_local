@@ -1,0 +1,17 @@
+@EndUserText.label : 'local class parameters'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+extend type zclass_params with zclass_params_local {
+
+  int1      : abap.int4;
+  int2      : abap.int4;
+  op        : abap.char(1);
+  checkbox  : boole_d;
+  somedate  : abap.dats;
+  sometime  : abap.tims;
+  price     : abap.dec(10,2);
+  int3      : abap.int4;
+  int4      : abap.int4;
+  startdate : abap.dats;
+  enddate   : abap.dats;
+
+}
