@@ -3,7 +3,6 @@
 @EndUserText.label: 'ZDEMO'  // useful title here
 ///////
 /////  REMEMBER TO UPDATE THE WHERE CONDITION AT THE END
-////// and the approprate navigation from zclass_e_params
 ///////
 @UI.headerInfo.typeNamePlural: 'Parameters for zdemo'
 @UI.headerInfo.title.value: 'classdescription'
@@ -17,6 +16,7 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       global_flag,
       Uname,
       lastrun,
+  //    classname,
       latest_criticality,
      
 
@@ -29,6 +29,9 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
       @UI.identification: [ { position: 30 } ]
       @UI.lineItem: [ { position: 30 } ]
       Int2               as Int2,
+     @UI.identification: [ { position: 33 } ]
+      @UI.lineItem: [ { position: 33 } ]
+      Int3               as Int3,
  
       @UI.identification: [ { position: 41 }]
       @UI.lineItem: [ { position: 41} ]
@@ -44,8 +47,8 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
     @UI.identification: [ { position: 44 } ]
       @UI.lineItem: [ { position: 44 }]
       Price,
-    
-      nav_zdemo
+     
+nav_all //,      nav_zdemo
   
 
 }

@@ -7,6 +7,8 @@ define root view entity zclass_i_output
 on o.parguid = p.parguid
 
 {
+     @UI.selectionField: [{position: 5}]
+     @EndUserText.label: 'Parameter UUID'
     key o.parguid as Parguid,
     key o.counter as Counter,
     @UI.lineItem: [{position: 20, label: 'Text', criticality: 'criticality', criticalityRepresentation: #WITHOUT_ICON}]
@@ -20,12 +22,12 @@ on o.parguid = p.parguid
     o.sequence as Sequence,
   //  @UI.hidden: true
   
-    @UI.selectionField: [{position: 10}]
+   // @UI.selectionField: [{position: 10}]
     @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_output_userVH', 
                                                       element: 'classname'  }  }]
     p.classname as classname,
     o.criticality as criticality,
     @UI.lineItem: [{position: 40}]
-    @UI.selectionField: [{position: 20}]
+ //   @UI.selectionField: [{position: 20}]
    cast(case when p.uname = '' then 'X' else '' end as typ_p_adwp_global)    as global_flag
 } where o.written_by = $session.user and o.visible = 'X' 

@@ -1,0 +1,2 @@
+sap.ui.define(["sap/m/MessageToast"],function(s){"use strict";return{show_output:function(t){s.show("Custom handler invoked.")}}});                                                                                                                            
+//# sourceMappingURL=ListReportExt.controller.js.map                                                                                                                                                                                                           

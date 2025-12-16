@@ -23,7 +23,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
                         { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' }
                          ]
-    @UI.hidden: true               
+    @UI.hidden: true    
+    @EndUserText.label: 'Parameter UUID'           
     key p.parguid as Parguid,
     
     @UI.hidden

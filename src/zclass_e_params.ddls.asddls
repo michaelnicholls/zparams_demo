@@ -1,9 +1,7 @@
 //
 // add all parameters here
 //
-// plus a navigation name for each class
-// eg nav_zdemo for zdemo with semantic object plus action
-//
+
 
 extend view entity zclass_i_params with
 
@@ -41,10 +39,19 @@ extend view entity zclass_i_params with
   @EndUserText.label: 'End date'
   p.enddate    as enddate,
   
-  @Consumption.semanticObject: 'zdemo_output'
+  
+ 
+//  @Consumption.semanticObject: 'zdemo_output'
+//  @UI.lineItem: [ { type: #WITH_INTENT_BASED_NAVIGATION,
+//                    semanticObjectAction: 'show', 
+//                    position: 90,
+//                    label: 'Show output' } ]
+//  'Show output' as nav_zdemo,
+   @Consumption.semanticObject: 'zparams'
   @UI.lineItem: [ { type: #WITH_INTENT_BASED_NAVIGATION,
-                    semanticObjectAction: 'show', 
+                    semanticObjectAction: 'showall', 
                     position: 90,
                     label: 'Show output' } ]
-  'Show output' as nav_zdemo
+  'Show output' as nav_all
+ 
 }
