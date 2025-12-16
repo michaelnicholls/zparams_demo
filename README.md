@@ -12,7 +12,9 @@ It is a base table, and parameters should be added to [ZCLASS_PARAMS_LOCAL](zcla
 The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.  
 This table I've called [ZCLASS_OUTPUT](zclass_output_table.txt). It can be shared by all your classes.  
 The third table is used to define all the classes that use this mechanism. It includes a description, plus a list of users who are allowed to change default parameters.  
-This is called [ZPARAM_CLASSES](zparam_classes.txt).
+This is called [ZPARAM_CLASSES](zparam_classes.txt).  
+This table is managed by a Fiori app that is based on two views, [ZPARAM_I_CLASSES](src/zparam_i_classes.ddls.asddls) and [ZPARAM_C_CLASSES](src/zparam_c_classes.ddls.asddls,
+two behaviour definitions, and a service definition and binding.  It is then made available through a Fiori elements app. 
 
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
 
