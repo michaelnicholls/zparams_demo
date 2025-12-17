@@ -15,7 +15,9 @@ The third table is used to define all the classes that use this mechanism. It in
 This is called [ZPARAM_CLASSES](zparam_classes.txt).  
 This table is managed by a Fiori app that is based on two views, [ZPARAM_I_CLASSES](src/zparam_i_classes.ddls.asddls) and [ZPARAM_C_CLASSES](src/zparam_c_classes.ddls.asddls,
 two behaviour definitions [ZPARAM_I_CLASSES](src/zparam_i_classes.bdef.asbdef) and [ZPARAM_C_CLASSES](src/zparam_c_classes.bdef.asbdef), and a service definition and binding.  It is then made available through a Fiori elements app.  
-The implemenation logic for the behaviour is in [ZBP_I=PARAM_I_CLASSES](src/zbp_param_i_classes.clas.locals_imp.abap)  
+The implemenation logic for the behaviour is in [ZBP_I_PARAM_I_CLASSES](src/zbp_param_i_classes.clas.locals_imp.abap).  
+
+The outputs are made visible to the end user through a Fiori app which is driven by some views, behaviour
 
 The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
 
