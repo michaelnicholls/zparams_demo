@@ -28,6 +28,7 @@ CLASS ZDEMO IMPLEMENTATION.
 
     FINAL(int1) = params-Int1.
     FINAL(int2) = params-int2.
+    final(op) = params-op.
     " delete old outputs
     " zparam_helper=>clear_output(   parguid = parguid ).
 
@@ -35,12 +36,7 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA status TYPE string.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |{ global }{ myname } : Started at | ).
-    DATA(ops) = '+-*/'.
     data(criticality) = zparam_helper=>normal.
-    DO strlen( ops ) TIMES.
-      DATA(op) = substring( val = ops
-                            off = sy-index - 1
-                            len = 1 ).
       DATA(prefix) = |The result of { int1 } { op } { int2 } is |.
 
       CASE Op.
@@ -64,7 +60,6 @@ CLASS ZDEMO IMPLEMENTATION.
                                    text        = | { status }|
                                    criticality = zparam_helper=>red  ).
       ENDIF.
-    ENDDO.
     zparam_helper=>set_latest_criticality( parguid = parguid criticality = criticality ).
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).
@@ -73,8 +68,8 @@ CLASS ZDEMO IMPLEMENTATION.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Values initialized at | ).
     data(params) = zparam_helper=>get_params( parguid ).
-    params-somedate = sy-datum + params-int1.
-    params-sometime = sy-uzeit - params-int2.
+    params-startdate = sy-datum + params-int1.
+    params-enddate = sy-Datum + params-int2.
     zparam_helper=>set_params( parguid = parguid new_params = params ).
 
   ENDMETHOD.

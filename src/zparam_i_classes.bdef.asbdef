@@ -11,7 +11,8 @@ authorization master ( instance )
   create;
   update;
   delete;
+  field (readonly) has_init, has_main;
   field ( readonly : update ) Classname;
  action (features : instance) addVariant ;
-
+   action checkMethods;
 }

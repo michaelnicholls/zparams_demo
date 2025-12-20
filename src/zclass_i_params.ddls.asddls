@@ -39,6 +39,9 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
          case when p.uname  = '' then '<global>' else '' end ,1) as classdescription,
     @UI.hidden
     c.editors as editors,
+    c.has_init as has_init,
+    c.has_main as has_main,
+    
     
  
     @UI.identification: [ { position: 80, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]

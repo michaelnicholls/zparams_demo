@@ -8,5 +8,7 @@ define root view entity zparam_i_classes as select from zparam_classes
     classdescription as ClassDescription,
     editors as editors,
     navigation as navigation,
+    has_init,
+    has_main,
     ' ' as dummy // used to pass information at run time
 }

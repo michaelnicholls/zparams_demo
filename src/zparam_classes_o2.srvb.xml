@@ -4,29 +4,29 @@
   <asx:values>
    <SRVB>
     <METADATA>
-     <NAME>ZCLASS_OUTPUT_O2</NAME>
+     <NAME>ZPARAM_CLASSES_O2</NAME>
      <TYPE>SRVB/SVB</TYPE>
-     <DESCRIPTION>class outputs</DESCRIPTION>
+     <DESCRIPTION>classes with parameters</DESCRIPTION>
      <RESPONSIBLE>TRAIN-00</RESPONSIBLE>
      <MASTER_LANGUAGE>EN</MASTER_LANGUAGE>
     </METADATA>
     <CONTENT>
      <BIND_TYPE_IMPL>
-      <NAME>ZCLASS_OUTPUT_O2</NAME>
+      <NAME>ZPARAM_CLASSES_O2</NAME>
      </BIND_TYPE_IMPL>
      <BIND_TYPE>ODATA</BIND_TYPE>
      <BIND_TYPE_VERSION>V2</BIND_TYPE_VERSION>
      <SERVICES>
       <item>
-       <SERVICE_NAME>ZCLASS_OUTPUT_O2</SERVICE_NAME>
+       <SERVICE_NAME>ZPARAM_CLASSES_O2</SERVICE_NAME>
        <SERVICE_CONTENT>
         <item>
          <SERVICE_VERSION>0001</SERVICE_VERSION>
          <RELEASE_STATE>NOT_RELEASED</RELEASE_STATE>
          <SRVD_REF>
-          <URI>/sap/bc/adt/ddic/srvd/sources/zclass_output</URI>
+          <URI>/sap/bc/adt/ddic/srvd/sources/zparam_classes</URI>
           <TYPE>SRVD/SRV</TYPE>
-          <NAME>ZCLASS_OUTPUT</NAME>
+          <NAME>ZPARAM_CLASSES</NAME>
          </SRVD_REF>
          <BIND_TYPE_DATA>
           <CONTENT>

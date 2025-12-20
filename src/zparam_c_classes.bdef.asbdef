@@ -7,5 +7,5 @@ define behavior for ZPARAm_C_CLASSES //alias <alias_name>
   use update;
   use delete;
   use action addVariant;
-
+  use action checkMethods;
 }

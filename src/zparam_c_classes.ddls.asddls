@@ -26,17 +26,27 @@ define root view entity ZPARAm_C_CLASSES
                         inline: true,
                         dataAction: 'addVariant',
                         position: 60,
-                        label: 'Add global params' }]
+                        label: 'Add global params' },
+                        {type: #FOR_ACTION,
+                        inline: true,
+                        dataAction: 'checkMethods',
+                        position: 60,
+                        label: 'Check existance of methods'
+                        }]
                        
       dummy,
       
       @UI.identification: [ { position: 40, label: 'Editors' } ]
       @UI.lineItem: [ { position: 40, label: 'Editors' } ]
-      editors //,
-//      @UI.identification: [ { position: 40, label: 'Navigation to output' } ]
-//      @UI.lineItem: [ { position: 40, label: 'Navigation to output' } ]
-//      navigation
-// 
+      editors,
+      @UI.identification: [ { position: 42, label: 'Has MAIN' } ]
+      @UI.lineItem: [ { position: 42, label: 'Has MAIN' } ]
+ 
+      has_main,
+      @UI.identification: [ { position: 44, label: 'Has INIT' } ]
+      @UI.lineItem: [ { position: 44, label: 'Has INIT' } ]
+     has_init
+
       
       
 }

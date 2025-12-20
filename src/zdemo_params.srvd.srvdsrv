@@ -1,4 +1,4 @@
-@EndUserText.label: 'demo params'
-define service Zdemo_params {
-  expose Zdemo_C_PARAMS;
+@EndUserText.label: 'demo parameters'
+define service ZDEMO_PARAMS {
+  expose ZDEMO_C_PARAMS;
 }

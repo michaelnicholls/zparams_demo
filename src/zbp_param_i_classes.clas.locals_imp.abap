@@ -8,6 +8,8 @@ CLASS lhc_zparam_i_classes DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
     METHODS addvariant FOR MODIFY
       IMPORTING keys FOR ACTION zparam_i_classes~addvariant.
+    METHODS checkmethods FOR MODIFY
+      IMPORTING keys FOR ACTION zparam_i_classes~checkmethods.
 
 ENDCLASS.
 
@@ -39,6 +41,27 @@ CLASS lhc_zparam_i_classes IMPLEMENTATION.
   loop at t_classes into data(s_class).
   modify    ENTITIES OF zparam_i_classes in LOCAL MODE entity zparam_i_classes update fIELDS ( dummy )
   with VALUE #( ( %tky = s_class-%tky dummy = 'X' ) ).
+  endloop.
+  ENDMETHOD.
+
+  METHOD checkMethods.
+  read entitIES OF zparam_i_classes in LOCAL MODE entity zparam_i_classes all fields witH corRESPONDING #(  keys ) reSULT data(t_classes).
+  loop at t_classes into data(s_class).
+       DATA r_classdescr TYPE REF TO cl_abap_classdescr.
+        data(has_init) = abap_false.
+        data(has_main) = abap_false.
+      IF cl_esh_ca_check=>is_active_class( s_class-classname ) = abap_true.
+      TRY.
+          r_classdescr ?= cl_abap_typedescr=>describe_by_name( s_class-Classname ).
+          " look for INIT and MAIN methods
+        IF line_exists( r_classdescr->methods[ name = 'INIT' ] ). has_init = abap_true. ENDIF.
+        IF line_exists( r_classdescr->methods[ name = 'MAIN' ] ). has_main = abap_true. ENDIF.
+
+        CATCH cx_root.
+      ENDTRY.
+      endif.
+        modify    ENTITIES OF zparam_i_classes in LOCAL MODE entity zparam_i_classes update fIELDS ( has_init has_main )
+            with VALUE #( ( %tky = s_class-%tky has_init = has_init has_main = has_main  ) ).
   endloop.
   ENDMETHOD.
 
@@ -77,15 +100,15 @@ CLASS lsc_zparam_i_classes IMPLEMENTATION.
       MODIFY zparam_classes FROM @buff.
 
     ENDLOOP.
- loop at update-zparam_i_classes aSSIGNING fIELD-SYMBOL(<item_u>).
+    loop at update-zparam_i_classes aSSIGNING fIELD-SYMBOL(<item_u>).
         select single * from zparam_classes where classname = @<item_u>-Classname into @data(ls_db).
     "    ls_db-classdescription = <item_u>-ClassDescription.
         ls_db = corRESPONDING #(  base ( ls_db ) <item_u>  using control ).
         modify zparam_classes from @ls_db.
         if <item_u>-dummy  = 'X'.
-       data: p type zclass_params..
-   p = value #( classname = <item_u>-Classname parguid =  cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ) ).
-    modiFY zclass_params FROM @p.
+            data: p type zclass_params..
+            p = value #( classname = <item_u>-Classname parguid =  cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ) ).
+            modiFY zclass_params FROM @p.
 
         endif.
     endloop.

@@ -7,7 +7,7 @@
 @UI.headerInfo.typeNamePlural: 'Parameters for zdemo'
 @UI.headerInfo.title.value: 'classdescription'
 
-define root view entity Zdemo_C_PARAMS provider contract transactional_query
+define root view entity ZDEMO_C_PARAMS provider contract transactional_query
   as projection on zclass_i_params
 
 {
@@ -37,15 +37,15 @@ define root view entity Zdemo_C_PARAMS provider contract transactional_query
 
       @UI.identification: [ { position: 41 } ]
       @UI.lineItem: [ { position: 41 } ]
-      Checkbox,
+      Op,
 
       @UI.identification: [ { position: 42 } ]
       @UI.lineItem: [ { position: 42 } ]
-      Somedate,
+      startdate,
 
       @UI.identification: [ { position: 43 } ]
       @UI.lineItem: [ { position: 43 } ]
-      Sometime,
+      enddate,
 
       @UI.identification: [ { position: 44 } ]
       @UI.lineItem: [ { position: 44 } ]

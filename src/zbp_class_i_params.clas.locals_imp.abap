@@ -106,10 +106,17 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
 
   METHOD execute.
+
+  "   remember there's a version of this at execute_object
+  "
     LOOP AT keys INTO DATA(ls_exec).
 
       IF ls_exec-%param-clear_first IS NOT INITIAL.
         INSERT VALUE #( flag    = 'Z'
+                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      ENDIF.
+      IF ls_exec-%param-initialize_first IS NOT INITIAL.
+        INSERT VALUE #( flag    = 'I'
                         parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
       ENDIF.
       INSERT VALUE #( flag    = 'X'
@@ -144,22 +151,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
       FIND |,{ myname },| IN |,{ <param>-editors },|.
 
       IF sy-subrc = 0. editor = abap_true.ENDIF.
-      " check if init method exists
-      DATA r_classdescr TYPE REF TO cl_abap_classdescr.
-      DATA(initclass_ok) = if_abap_behv=>fc-o-disabled.
-      DATA(mainclass_ok) = if_abap_behv=>fc-o-disabled.
-      TRY.
-          r_classdescr ?= cl_abap_typedescr=>describe_by_name( <param>-Classname ).
-          " look for INIT method
-
-          IF line_exists( r_classdescr->methods[ name = 'INIT' ] ). initclass_ok = if_abap_behv=>fc-o-enabled. ENDIF.
-       IF line_exists( r_classdescr->methods[ name = 'MAIN' ] ). mainclass_ok = if_abap_behv=>fc-o-enabled. ENDIF.
-
-        CATCH cx_root.
-      ENDTRY.
       lt_result-parguid = <param>-parguid.
 
-       if matching = 1. " just one varaint
+       if matching = 1. " just global variant
 
           lt_result-%action-copy = if_abap_behv=>fc-o-enabled.
           if editor = abap_true.
@@ -179,12 +173,12 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
      lt_result-%delete = if_abap_behv=>fc-o-disabled.
      if <param>-Uname is not initial. lt_result-%delete = if_abap_behv=>fc-o-enabled. endif.
     lt_result-%update = lt_result-%action-initialize.
-    if mainclass_ok <> if_abap_behv=>fc-o-enabled.
+    if <param>-has_main <> abap_true.
       lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
       endif.
-   if initclass_ok <> if_abap_behv=>fc-o-enabled.
+    if <param>-has_init <> abap_true.
       lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
-      endif.
+    endif.
 
       lt_result-%action-execute_object    = lt_result-%action-execute.
       lt_result-%action-initialize_object = lt_result-%action-initialize.
@@ -228,10 +222,17 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD execute_object.
+
+  " there's also a version at execute
+
     LOOP AT keys INTO DATA(ls_exec).
 
-      IF ls_exec-%param-clear_first IS NOT INITIAL.
+     IF ls_exec-%param-clear_first IS NOT INITIAL.
         INSERT VALUE #( flag    = 'Z'
+                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      ENDIF.
+      IF ls_exec-%param-initialize_first IS NOT INITIAL.
+        INSERT VALUE #( flag    = 'I'
                         parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
       ENDIF.
       INSERT VALUE #( flag    = 'X'
@@ -316,6 +317,27 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
     LOOP AT lt_data INTO lv_data.
       zparam_helper=>clear_output( parguid = lv_data-parguid  ).
     ENDLOOP.
+      " find initializations
+
+
+    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'I' )
+                       (  row-lv_data ) ).
+    LOOP AT lt_data INTO lv_data.
+
+
+      select single * from zclass_i_params where Parguid = @lv_data-Parguid into @data(params).
+      DATA(editor) = abap_false.
+      FIND |,{ myname },| IN |,{ params-editors },|.
+      IF sy-subrc = 0. editor = abap_true.ENDIF.
+      " we are either an editor or we're using a user specific variant
+    if params-has_init = abap_true.
+      if editor = abap_true or params-global_flag = abap_false.
+        data(meth) = 'INIT'.
+        CALL METHOD (params-Classname)=>(meth)
+            EXPORTING parguid = lv_data-parguid.
+       endif.
+     endif.
+    ENDLOOP.
 
     " find executions
     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'X' )
@@ -339,16 +361,7 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
                                             written_by = myname ) ).
 
      select single classname from zclass_i_params where Parguid = @lv_data-Parguid into @data(myclassname).
-     DATA(meth) = 'MAIN'.
-      CALL METHOD (myclassname)=>(meth)
-        EXPORTING parguid = lv_data-parguid.
-    ENDLOOP.
-       " find initializations
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'I' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-      select single classname from zclass_i_params where Parguid = @lv_data-Parguid into @myclassname.
-    meth = 'INIT'.
+     meth = 'MAIN'.
       CALL METHOD (myclassname)=>(meth)
         EXPORTING parguid = lv_data-parguid.
     ENDLOOP.
