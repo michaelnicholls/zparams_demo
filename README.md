@@ -1,4 +1,5 @@
 # zparams_demo
+## General information
 This is a demonstration of using PARAMETERs type capabilites when there is no SAP GUI available for the users.  
 It is based on moving the ABAP processing logic from a traditional report and putting it into a global class.  
 I have attached an example called ZDEMO. It needs a static method called MAIN with a specially named importing parameter, which will be called at runtime from a Fiori app.  
@@ -40,9 +41,25 @@ Each class that uses this capability needs the following objects. They should be
   which finds the parameters for ZDEMO, and finds global and user-specific variants.
 - unmanaged behaviour definition projection ZDEMO_C_PARAMS, baed on the view with the same name. It's probably easiest to copy ZDEMO_PARAMS.
 
-- service definition ZDEMO_PARAM, which exposes ZDEMO_C_PARAMS
-- service binding ZDEMO_PARM_O2, of type Odata 2
-  
+- service definition ZDEMO_PARAMS, which exposes ZDEMO_C_PARAMS
+- service binding ZDEMO_PARAMS_O2, of type Odata 2
+- a Fiori app, ZDEMO_PARAMS,  that uses the serviec binding ZDEMO_PARAMS_O2
+
+## The end user Fiori app
+This app is based on a list item and object page.  
+The app ZDEMO_PARAMS has some extension code beyond that of the standard Fiori list template. It is probably easiest to copy the app code to a new app and replace the component name, `demoparams`, and the Odata service and VAN names, ZDEMO_C_PARAMS. 
+The standard program `/ui5/ui5_repository_load` can be used to download/upload the objects for the Fiori app. 
+
+## FLP configuration
+A new technical catalog should be created. It can contain all of the end user apps (ZDEMO_PARAMS etc), plus the output, ZCLASS_OUTPUT. The ZCLASS_OUTPUT app tile does not need to be added to a user's space.  
+
+I'd suggest the semantic object zparams for all the apps, and the following actions:
+- showall, for ZCLASS_OUTPUT. By default this uses the component `classoutput`
+- classes, for ZPARAM_CLASSES. By default this uses the component `paramclasses`
+- zdemo, for the specific ZDEMO app. The component will be as specified in component.js of the app.
+
+
+
 
 
 
