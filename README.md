@@ -2,73 +2,50 @@
 This is a demonstration of using PARAMETERs type capabilites when there is no SAP GUI available for the users.  
 It is based on moving the ABAP processing logic from a traditional report and putting it into a global class.  
 I have attached an example called ZDEMO. It needs a static method called MAIN with a specially named importing parameter, which will be called at runtime from a Fiori app.  
-Optionally, there can also be a second method, called INIT, which can be used to set some stabdard values.
+Optionally, there can also be a second method, called INIT, which can be used to set some standard values.
   
-We need three new tables to be created.  
+It is based on three tables: 
+- ZPARAM_CLASSES, which contains the classes which use this capability, including the classname, a description, who is allowed to edit the global parameters, and whether there is a MAIN and/or INIT method
+- ZCLASS_PARAMS, which has the different parameters to be used by the classes. This is keyed by a unique id (parguid). Each class has a global set of parameter values, and users can copy this to theier own version.
+- ZCLASS_OUTPUT, which has all the outputs from when the class is executed
 
-The first is for storing the parameters for a global class, similar to the PARAMETERS statement in traditional ABAP reports.
-I have called this [ZCLASS_PARAMS](zclass_params.txt).  It can be shared by all classes.  
-It is a base table, and parameters should be added to [ZCLASS_PARAMS_LOCAL](zclass_params_local.txt).  
-The second table contains any outputs from the global class. In traditional reports these would be WRITE statements.  
-This table I've called [ZCLASS_OUTPUT](zclass_output_table.txt). It can be shared by all your classes.  
-The third table is used to define all the classes that use this mechanism. It includes a description, plus a list of users who are allowed to change default parameters.  
-This is called [ZPARAM_CLASSES](zparam_classes.txt).  
-This table is managed by a Fiori app that is based on two views, [ZPARAM_I_CLASSES](src/zparam_i_classes.ddls.asddls) and [ZPARAM_C_CLASSES](src/zparam_c_classes.ddls.asddls,
-two behaviour definitions [ZPARAM_I_CLASSES](src/zparam_i_classes.bdef.asbdef) and [ZPARAM_C_CLASSES](src/zparam_c_classes.bdef.asbdef), and a service definition and binding.  It is then made available through a Fiori elements app.  
-The implemenation logic for the behaviour is in [ZBP_I_PARAM_I_CLASSES](src/zbp_param_i_classes.clas.locals_imp.abap).  
+The superset of parameters are maintained in a structure, ZCLASS_PARAMS_LOCAL, which is where new parameters should be added.
 
-The outputs are made visible to the end user through a Fiori app which is driven by some views, behaviour
+There are CDS views which support a Fiori app to maintain ZPARAM_CLASSES. These are named ZPARAM_I/C_CLASSES. There are similarly named behavior definitions, plus a service definition, ZPARAM_CLASSES, and a service binding.  
+To make life easier, the service binding name should be called ZPARAM_CLASSES_O2, as this aligns with the Fiori app ZPARAMS_CLASS. The implementation code is is class ZBP_PARAM_I_CLASSES.
 
-The end user will use a Fiori app to maintain the different parameter values, and execute the class logic.
+The ZCLASS_OUTPUT contents are viewed through a Fiori app that is based on CDS views ZCLASS_I/C_OUTPUT, and a service ZCLASS_OUTPUT. A service binding named ZCLASS_OUTPUT_O2 is assumed by the Fiori app ZCLASS_OUTPUT.  
 
-To support this we have 2 interface level views, one for the parameters eg [zdemo_i_param](src/zdemo_i_param.ddls.asddls) and another for the output eg [zdemo_i_output](src/zdemo_i_output.ddls.asddls).
-The zdemo_i_param view has fields for the class name and a description of the class, which will be used at runtime.  There is also a comma separated list of users who can create global variants.  
+The app is passed a parameter Parguid at run time. There is a value help view, ZCLASS_OUTPUT_USERVH, to provide a list of available outputs.  
+Another view, ZCLASS_OUT_EXEC, provides the most recent run time and criticality for a particular Parguid.  
 
-There are also 2 projection/consumption level views, eg [zdemo_c_param](src/zdemo_c_param.ddls.asddls) and [zdemo_c_output](src/zdemo_c_output.ddls.asddls), which provide the main annotations for the Fiori app.  
+The actual parameters are maintained by the end user through a Fiori app which is created for each class.
 
-To keep track of the last execution, we have another view [zclass_out_exec](src/zclass_out_exec.ddls.asddls).  
+There are some generic repository objects which are required for all classes. 
+These include:
+- view ZCLASS_I_PARAMS, which has some control parameters
+- view ZCLASS_E_PARAMS - this is where extra parameters are added. The parameters are persisted in the append structure ZCLASS_PARAMS_LOCAL, and exposed through view ZCLASS_E_PARAMS. This is where labels should be maintained for the parameters.
+- behaviour definition ZCLASS_I_PARAMS, which has the main logic
+- class ZBP_CLASS_I_PARAMS, which has the implementation code for the runtime
+- class ZPARAM_HELPER, which has some methods to read/write parameter values, and store text in the ZCLASS_OUTPUT table
 
-There are two unmanaged behaviour files for both the interface and consumption parameter views. There are examples [zdemo_i_param](src/zdemo_i_param.bdef.asbdef) and [zdemo_c_param](src/zdemo_c_param.bdef.asbdef).
+## For each class
+Each class that uses this capability needs the following objects. They should be named according to the class. In the following, I assume a class called ZDEMO.
+- ZDEMO_C_PARAMS, which is a projection of ZDEMO_I_PARAMS. This is where the specific parameters for the class are specified. Setting a value for  `@UI.headerInfo.typeNamePlural`  
+  such as `'Parameters for zdemo'`, will assist the end user.
+- There is a WHERE condition at the end of the selection list which specifies the relevent class name. For example,
 
-After generating the behaviour implementaation class, add the code for the execute, copy, initialize,  and clear actions and the setUser derivation eg [zparam_implementation](src/zbp_demo_i_param.clas.locals_imp.abap).  
+  > where Classname = 'ZDEMO' and (Uname = $session.user or Uname = '')
 
+  which finds the parameters for ZDEMO, and finds global and user-specific variants.
+- unmanaged behaviour definition projection ZDEMO_C_PARAMS, baed on the view with the same name. It's probably easiest to copy ZDEMO_PARAMS.
 
-
-There is a service definition [zdemo_par_svc](zdemo_par_svc.txt) which exposes the two consumption views.  
-
-After building an appropriate service binding, and publishing it, the Fiori app can be tested and then converted into a real Fiori app for deployment through the FLP.  
-
-The source code for a sample class file that uses the parameters can be found at [zdemo_class](src/zdemo.clas.abap).  
-The main method is required, and an optional init method can be used to set values.  If present, it will be available from the Fiori app.  
-
-There is a helper class [zparam_helper](src/zparam_helper.clas.abap) which has methods for clearing output, writing a timestamp message, and writing new lines.  
-
-These objects are also available in an abapGit repository.  
-
-
-
-How the app looks on launching  
-<img width="1872" height="855" alt="app1" src="https://github.com/user-attachments/assets/a4fe42d3-be0d-4f7b-85c6-e4b0acd82454" />
-
-Selecting create: 
-
-<img width="1872" height="855" alt="app_create" src="https://github.com/user-attachments/assets/a447c39e-3fcc-4bf5-9f7b-25d13cb91e10" />
-
-
-After using the Create option  
-
-
-<img width="1872" height="855" alt="app_after_create" src="https://github.com/user-attachments/assets/65ed9db6-3404-43e5-930a-d7a68a97bff4" />
-
-Multiple sets of parameters can be created, with each one getting a named variant.  
-
-AFter Saving, select a line and Execute  
-
-<img width="1872" height="855" alt="app_after_execute" src="https://github.com/user-attachments/assets/3d8cc4d8-c250-42ee-ba07-de75131df5f4" />
+- service definition ZDEMO_PARAM, which exposes ZDEMO_C_PARAMS
+- service binding ZDEMO_PARM_O2, of type Odata 2
+  
 
 
 
+  
 
 
-After execution, select the variant  
-<img width="1872" height="855" alt="app see output" src="https://github.com/user-attachments/assets/44846cdf-3ddf-4b67-b657-2c0ea5be3894" />
