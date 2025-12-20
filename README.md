@@ -45,6 +45,8 @@ Each class that uses this capability needs the following objects. They should be
 - service binding ZDEMO_PARAMS_O2, of type Odata 2
 - a Fiori app, ZDEMO_PARAMS,  that uses the serviec binding ZDEMO_PARAMS_O2
 
+  New classes need to be added to the master tabble by using the ZPARAM_CLASSES binding, either as a Fiori app, or in Preview mode in ADT.  
+
 ## The end user Fiori app
 This app is based on a list item and object page.  
 The app ZDEMO_PARAMS has some extension code beyond that of the standard Fiori list template. It is probably easiest to copy the app code to a new app and replace the component name, `demoparams`, and the Odata service and VAN names, ZDEMO_C_PARAMS. 
@@ -58,6 +60,11 @@ I'd suggest the semantic object zparams for all the apps, and the following acti
 - classes, for ZPARAM_CLASSES. By default this uses the component `paramclasses`
 - zdemo, for the specific ZDEMO app. The component will be as specified in component.js of the app.
 
+## Hints
+- remove existing VANs using /n/IWBEP/REG_VOCAN
+- remove old gateway services using /n/iwbep/reg_Service
+- cleanup cache using /n/IWBEP/CACHE_CLEANUP and 
+/n/IWFND/CACHE_CLEANUP
 
 
 
