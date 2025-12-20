@@ -1,3 +1,0 @@
-{"version":3,"file":"ObjectPageExt.controller.js","names":["sap","ui","define","show_output","oEvent","parguid","this","getView","getBindingContext","getObject","Parguid","oCrossAppNav","ushell","Container","getService","navigate","target","semanticObjec+
-t","action","params","refresh","location","reload"],"sources":["ObjectPageExt-dbg.controller.js"],"mappings":"AAAAA,IAAIC,GAAGC,OAAO,GAEX,WACC,aAEA,MAAO,CAEHC,YAAa,SAASC,GACjB,IAAIC,EAAUC,KAAKC,UAAUC,oBAAoBC,YAAYC,QAChE,IAAIC,EAAeX,IAAIY,OAAOC,UAAUC,WAAW+
-,cACjDH,EAAaI,SAAS,CAClBC,OAAQ,CAACC,eAAgB,UAAUC,OAAO,WAC1CC,OAAQ,CAACT,QAAYL,IAG7B,EACAe,QAAS,SAAShB,GACdiB,SAASC,OAAO,KACpB,EAER","ignoreList":[]}                                                                                                           
