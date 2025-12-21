@@ -13,7 +13,7 @@ It is based on three tables:
 The superset of parameters are maintained in a structure, ZCLASS_PARAMS_LOCAL, which is where new parameters should be added.
 
 There are CDS views which support a Fiori app to maintain ZPARAM_CLASSES. These are named ZPARAM_I/C_CLASSES. There are similarly named behavior definitions, plus a service definition, ZPARAM_CLASSES, and a service binding.  
-To make life easier, the service binding name should be called ZPARAM_CLASSES_O2, as this aligns with the Fiori app ZPARAMS_CLASS. The implementation code is is class ZBP_PARAM_I_CLASSES.
+To make life easier, the service binding name should be called ZPARAM_CLASSES_O2, as this aligns with the Fiori app ZPARAMS_CLASS. The implementation code is in class ZBP_PARAM_I_CLASSES.
 
 The ZCLASS_OUTPUT contents are viewed through a Fiori app that is based on CDS views ZCLASS_I/C_OUTPUT, and a service ZCLASS_OUTPUT. A service binding named ZCLASS_OUTPUT_O2 is assumed by the Fiori app ZCLASS_OUTPUT.  
 
@@ -39,11 +39,11 @@ Each class that uses this capability needs the following objects. They should be
   > where Classname = 'ZDEMO' and (Uname = $session.user or Uname = '')
 
   which finds the parameters for ZDEMO, and finds global and user-specific variants.
-- unmanaged behaviour definition projection ZDEMO_C_PARAMS, baed on the view with the same name. It's probably easiest to copy ZDEMO_PARAMS.
+- unmanaged behaviour definition projection ZDEMO_C_PARAMS, based on the view with the same name. It's probably easiest to copy ZDEMO_PARAMS.
 
 - service definition ZDEMO_PARAMS, which exposes ZDEMO_C_PARAMS
 - service binding ZDEMO_PARAMS_O2, of type Odata 2
-- a Fiori app, ZDEMO_PARAMS,  that uses the serviec binding ZDEMO_PARAMS_O2
+- a Fiori app, ZDEMO_PARAMS,  that uses the service binding ZDEMO_PARAMS_O2
 
   New classes need to be added to the master table by using the ZPARAM_CLASSES binding, either as a Fiori app, or in Preview mode in ADT.  
 
