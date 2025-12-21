@@ -1,5 +1,0 @@
-@EndUserText.label: 'service'
-define service Zdemo_par_svc {
-  expose zdemo_c_param;
-  expose Zdemo_c_OUTPUT;
-}
