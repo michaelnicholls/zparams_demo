@@ -62,7 +62,7 @@ I'd suggest the semantic object zparams for all the apps, and the following acti
 
 ## Examples of the app running
 
-Can be found at [params example.pdf](params example.pdf)
+Can be found at [params example.pdf](/params example.pdf)
 
 ## Hints
 - remove existing VANs using /n/IWBEP/REG_VOCAN
