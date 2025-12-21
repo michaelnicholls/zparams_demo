@@ -60,6 +60,10 @@ I'd suggest the semantic object zparams for all the apps, and the following acti
 - classes, for ZPARAM_CLASSES. By default this uses the component `paramclasses`
 - zdemo, for the specific ZDEMO app. The component will be as specified in component.js of the app.
 
+## Examples of the app running
+
+Can be found at [params example.pdf](params example.pdf)
+
 ## Hints
 - remove existing VANs using /n/IWBEP/REG_VOCAN
 - remove old gateway services using /n/iwbep/reg_Service
