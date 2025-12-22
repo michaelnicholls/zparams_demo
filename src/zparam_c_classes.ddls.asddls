@@ -19,7 +19,7 @@ define root view entity ZPARAm_C_CLASSES
   key Classname,
 
       @UI.identification: [ { position: 20, label: 'Description' } ]
-      @UI.lineItem: [ { position: 20, label: 'Description' } ]
+      @UI.lineItem: [ { position: 20, label: 'Description + instructions' ,type: #WITH_URL, url: 'instructionsURL'} ]
       ClassDescription,
  
          @UI.lineItem: [ { type: #FOR_ACTION,
@@ -35,8 +35,8 @@ define root view entity ZPARAm_C_CLASSES
                         }]
                        
       dummy,
-      @UI.lineItem: [{ position: 42, label: 'Instructions', type: #WITH_URL, url: 'instructionsURL' }]
-      instructions,
+  //    @UI.lineItem: [{ position: 42, label: 'Instructions', type: #WITH_URL, url: 'instructionsURL' }]
+  //    instructions,
       @UI.identification: [ { position: 50, label: 'Editors' } ]
       @UI.lineItem: [ { position: 50, label: 'Editors' } ]
       editors,
