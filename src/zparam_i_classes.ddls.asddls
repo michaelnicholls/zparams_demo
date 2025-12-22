@@ -10,5 +10,9 @@ define root view entity zparam_i_classes as select from zparam_classes
     navigation as navigation,
     has_init,
     has_main,
+    'Instructions' as instructions,
+    @UI.hidden: true
+    concat('javascript:window.open("https://michaelnicholls.github.io/zparams/adding_class.html?class=',    concat( classname,'")') ) as instructionsURL,
+    
     ' ' as dummy // used to pass information at run time
 }

@@ -35,17 +35,19 @@ define root view entity ZPARAm_C_CLASSES
                         }]
                        
       dummy,
-      
-      @UI.identification: [ { position: 40, label: 'Editors' } ]
-      @UI.lineItem: [ { position: 40, label: 'Editors' } ]
+      @UI.lineItem: [{ position: 42, label: 'Instructions', type: #WITH_URL, url: 'instructionsURL' }]
+      instructions,
+      @UI.identification: [ { position: 50, label: 'Editors' } ]
+      @UI.lineItem: [ { position: 50, label: 'Editors' } ]
       editors,
-      @UI.identification: [ { position: 42, label: 'Has MAIN' } ]
-      @UI.lineItem: [ { position: 42, label: 'Has MAIN' } ]
+      @UI.identification: [ { position: 64, label: 'Has MAIN' } ]
+      @UI.lineItem: [ { position: 64, label: 'Has MAIN' } ]
  
       has_main,
-      @UI.identification: [ { position: 44, label: 'Has INIT' } ]
-      @UI.lineItem: [ { position: 44, label: 'Has INIT' } ]
-     has_init
+      @UI.identification: [ { position: 66, label: 'Has INIT' } ]
+      @UI.lineItem: [ { position: 66, label: 'Has INIT' } ]
+     has_init,
+     instructionsURL
 
       
       
