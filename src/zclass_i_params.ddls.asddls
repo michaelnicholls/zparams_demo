@@ -15,8 +15,9 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
   
         @UI.identification: [ { type: #FOR_ACTION, dataAction: 'execute_object', position: 60, label: 'Execute' },
                          {type: #FOR_ACTION, dataAction: 'initialize_object',position: 65, label: 'Initialize'},
-                        {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
-                        { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' } ]
+                        {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'} ,
+                        { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' }
+          ]
         @UI.lineItem: [ { position: 50, label: 'Last run' },
                         { type: #FOR_ACTION, inline: true, dataAction: 'execute', position: 60, label: 'Execute' },
                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
@@ -32,9 +33,13 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     
     @UI.lineItem: [ { position: 15, label: 'Global' } ]
     cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
-   // @UI.hidden: true
+  @UI.selectionField: [{position: 5}]
+    
+      @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_userVH',
+                                                      element: 'classname'  }  }]
     p.classname as Classname,
-    @UI.hidden: true
+   
+     @UI.lineItem: [ { position: 20, label: 'Description' } ]
     concat_with_space(c.classdescription,
          case when p.uname  = '' then '<global>' else '' end ,1) as classdescription,
     @UI.hidden
