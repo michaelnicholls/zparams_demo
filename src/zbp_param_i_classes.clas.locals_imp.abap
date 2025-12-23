@@ -83,6 +83,7 @@ CLASS lsc_zparam_i_classes IMPLEMENTATION.
 
     LOOP AT delete-zparam_i_classes ASSIGNING FIELD-SYMBOL(<item_d>).
       DELETE FROM zparam_classes WHERE classname = @<item_d>-Classname.
+      delete from zclass_params where classname = @<item_d>-classname.
     ENDLOOP.
 
     LOOP AT create-zparam_i_classes ASSIGNING FIELD-SYMBOL(<item_c>).
