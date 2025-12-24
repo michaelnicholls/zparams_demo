@@ -8,7 +8,7 @@ CLASS lcl_buffer DEFINITION.
 
   claSS-DATA c_table type table for CREATE zclass_i_params.
     CLASS-DATA mt_buffer TYPE TABLE OF ty_buffer.
-    class-data refresh_message type string value ' - return to class summary'.
+    "class-data refresh_message type string value 'Use Refresh to see latest values'.
 
 
 ENDCLASS.
@@ -217,7 +217,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
     ENDLOOP.
     reported-zclass_i_params = value #(
-      (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = |Output cleared | ) ) ).
+      (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = |Output cleared| ) ) ).
 
   ENDMETHOD.
 
@@ -253,7 +253,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
         ENDLOOP.
     reported-zclass_i_params = VALUE #(
         ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
-                                        text     = |Class parameters initialized| ) ) ).
+                                        text     = |Psrameters initialized - use Refresh to see values| ) ) ).
 
   ENDMETHOD.
 

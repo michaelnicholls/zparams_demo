@@ -45,11 +45,11 @@ CLASS ZDEMO IMPLEMENTATION.
         WHEN '*'. result = Int1 * Int2.
         WHEN '/'.
             IF int2 = 0.
-             status = 'No division by zero'. criticality = zparam_helper=>red.
+             status = 'No division by zero allowed'. criticality = zparam_helper=>red.
            ELSE.
            result = Int1 / Int2.
          ENDIF.
-        WHEN OTHERS. status = |Bad or missing operator { op }|.
+        WHEN OTHERS. status = |Bad or missing operator: { op }. Please select from +-*/.|.
       ENDCASE.
 
       IF status IS INITIAL.
