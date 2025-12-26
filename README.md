@@ -20,10 +20,9 @@ The ZCLASS_OUTPUT contents are viewed through a Fiori app that is based on CDS v
 The app is passed a parameter Parguid at run time. There is a value help view, ZCLASS_OUTPUT_USERVH, to provide a list of available outputs.  
 Another view, ZCLASS_OUT_EXEC, provides the most recent run time and criticality for a particular Parguid.  
 
-The actual parameters are maintained by the end user through a Fiori app which is created for each class.
+The actual parameters are maintained by the end user through a Fiori app which is used by all classes.
 
-There are some generic repository objects which are required for all classes. 
-These include:
+The repository objects for this app include:
 - view ZCLASS_I_PARAMS, which has some control parameters
 - view ZCLASS_E_PARAMS - this is where extra parameters are added. The parameters are persisted in the append structure ZCLASS_PARAMS_LOCAL, and exposed through view ZCLASS_E_PARAMS. This is where labels should be maintained for the parameters.
 - behaviour definition ZCLASS_I_PARAMS, which has the main logic
@@ -31,26 +30,18 @@ These include:
 - class ZPARAM_HELPER, which has some methods to read/write parameter values, and store text in the ZCLASS_OUTPUT table
 
 ## For each class
-Each class that uses this capability needs the following objects. They should be named according to the class. In the following, I assume a class called ZDEMO.
-- ZDEMO_C_PARAMS, which is a projection of ZDEMO_I_PARAMS. This is where the specific parameters for the class are specified. Setting a value for  `@UI.headerInfo.typeNamePlural`  
-  such as `'Parameters for zdemo'`, will assist the end user.
-- There is a WHERE condition at the end of the selection list which specifies the relevent class name. For example,
-
-  > where Classname = 'ZDEMO' and (Uname = $session.user or Uname = '')
-
-  which finds the parameters for ZDEMO, and finds global and user-specific variants.
-- unmanaged behaviour definition projection ZDEMO_C_PARAMS, based on the view with the same name. It's probably easiest to copy ZDEMO_PARAMS.
-
-- service definition ZDEMO_PARAMS, which exposes ZDEMO_C_PARAMS
-- service binding ZDEMO_PARAMS_O2, of type Odata 2
-- a Fiori app, ZDEMO_PARAMS,  that uses the service binding ZDEMO_PARAMS_O2
+Each class that uses this capability needs to do the following.  
+- check the existing fields in ZCLASS_PARAMS, and add any extra parameter fields
+- add the fields to ZCLASS_E_PARAMS and ZCLASS_C_PARAMS, which is a projection of ZDEMO_I_PARAMS
+- create a Fiori UI adaption for the object page, which should be named with the name of the class. For example, for class ZDEMO, create an adaptation named ZDEMO.
+- the generated adaptation will have an id, which can be addde to the ZPARAM_CLASSES table
 
   New classes need to be added to the master table by using the ZPARAM_CLASSES binding, either as a Fiori app, or in Preview mode in ADT.  
 
 ## The end user Fiori app
-This app is based on a list item and object page.  
-The app ZDEMO_PARAMS has some extension code beyond that of the standard Fiori list template. It is probably easiest to copy the app code to a new app and replace the component name, `zdemoparams`, and the Odata service and VAN names, ZDEMO_C_PARAMS. 
-The standard program `/ui5/ui5_repository_load` can be used to download/upload the objects for the Fiori app. 
+This app, named ZCLASS_PARAMS, is based on a list item and object page.  
+
+
 
 ## FLP configuration
 A new technical catalog should be created. It can contain all of the end user apps (ZDEMO_PARAMS etc), plus the output, ZCLASS_OUTPUT. The ZCLASS_OUTPUT app tile does not need to be added to a user's space.  
@@ -58,8 +49,12 @@ A new technical catalog should be created. It can contain all of the end user ap
 I'd suggest the semantic object zparams for all the apps, and the following actions:
 - showall, for ZCLASS_OUTPUT. By default this uses the component `classoutput`
 - classes, for ZPARAM_CLASSES. By default this uses the component `paramclasses`
-- zdemo, for the specific ZDEMO app. The component will be as specified in component.js of the app.
+- addclasses, which can be used to set class specific adaptations
+- an action for each class. This uses the adaptation specific component, such as customer.zclassparams.id_1766470811448_815.
+- The app has a parameter called Classname, which has a value for the class, such as ZDEMO etc
+- the tile should have a label etc which specifies the class name and description.
 
+- 
 ## Examples of the app running
 
 Can be found  [here](params_example.pdf)
