@@ -10,6 +10,7 @@ define root view entity zparam_i_classes as select from zparam_classes
     navigation as navigation,
     has_init,
     has_main,
+    ui5_component,
     @UI.hidden: true
     concat('javascript:window.open("https://michaelnicholls.github.io/zparams/adding_class.html?class=',  
     concat(  

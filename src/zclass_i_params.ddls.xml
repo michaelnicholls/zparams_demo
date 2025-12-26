@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>ZCLASS_I_PARAMS</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>all parameters available for all classes</DDTEXT>
+    <DDTEXT>necessary elements for the class parameters app</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>

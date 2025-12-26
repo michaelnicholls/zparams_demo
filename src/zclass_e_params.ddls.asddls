@@ -37,7 +37,10 @@ extend view entity zclass_i_params with
 
   @EndUserText.label: 'End date'
   p.enddate     as enddate,
-
+  @EndUserText.label: 'First name'
+ p.firstname,
+  @EndUserText.label: 'Last name'
+ p.lastname,
 
   ////////// leave nav_all below
   //////////

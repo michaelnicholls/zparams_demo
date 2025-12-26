@@ -6,7 +6,7 @@
     <DDLNAME>ZCLASS_E_PARAMS</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <PARENTNAME>ZCLASS_I_PARAMS</PARENTNAME>
-    <DDTEXT>local parameters</DDTEXT>
+    <DDTEXT>extra parameters plus labels</DDTEXT>
     <SOURCE_TYPE>X</SOURCE_TYPE>
    </DDLS>
   </asx:values>

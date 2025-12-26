@@ -24,7 +24,7 @@ define root view entity ZCLASS_C_PARAMS
       latest_criticality,
 
 
-      ///////  put your fields here /////
+      ///////  put all the  fields here /////
 
       Int1 as Int1,
       Int2 as Int2,
@@ -38,6 +38,9 @@ define root view entity ZCLASS_C_PARAMS
       Int4,
       Sometime,
       Somedate,
+      firstname,
+      lastname,
+      
       /////// leave nav_all below - it provides the link to see the output
       nav_all
 }

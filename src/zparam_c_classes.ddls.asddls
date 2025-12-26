@@ -47,6 +47,10 @@ define root view entity ZPARAm_C_CLASSES
       @UI.identification: [ { position: 66, label: 'Has INIT' } ]
       @UI.lineItem: [ { position: 66, label: 'Has INIT' } ]
      has_init,
+          @UI.identification: [ { position: 50, label: 'UI5 component' } ]
+      @UI.lineItem: [ { position: 50, label: 'UI5 component' } ]
+ 
+     ui5_component,
      instructionsURL
 
       

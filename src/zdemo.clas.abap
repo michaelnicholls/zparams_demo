@@ -49,17 +49,21 @@ CLASS ZDEMO IMPLEMENTATION.
            ELSE.
            result = Int1 / Int2.
          ENDIF.
-        WHEN OTHERS. status = |Bad or missing operator: { op }. Please select from +-*/.|.
+        WHEN OTHERS.
+        status = |Bad or missing operator: { op }. Please select from +-*/.|.
+        criticality = zparam_helper=>orange.
       ENDCASE.
 
       IF status IS INITIAL.
         zparam_helper=>write_line( parguid = parguid
                                    text    = |{ prefix } { result }| ).
+        zparam_helper=>set_result(  parguid = parguid text = |{ prefix } { result }| ).
       ELSE.
         zparam_helper=>write_line( parguid     = parguid
                                    text        = | { status }|
                                    criticality = zparam_helper=>red  ).
-      ENDIF.
+       zparam_helper=>set_result(  parguid = parguid text = status ).
+       ENDIF.
     zparam_helper=>set_latest_criticality( parguid = parguid criticality = criticality ).
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).

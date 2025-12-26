@@ -1,7 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'parameters used by all classes'
 @Metadata.ignorePropagatedAnnotations: true
-@UI.headerInfo.title.value: 'classdescription'
+@UI.headerInfo.title.value: 'lastrun'
 @UI.createHidden: true
 define root view entity zclass_i_params as select from zclass_params as p 
 left outer join zparam_classes  as c  on c.classname = p.classname left outer join zclass_out_exec as e on e.parguid = p.parguid and e.WrittenBy = $session.user

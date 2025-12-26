@@ -37,12 +37,15 @@ CLASS ZDEMO2 IMPLEMENTATION.
     IF params-startdate > params-enddate. crit = zparam_helper=>red. ENDIF.
     IF params-startdate = params-enddate. crit = zparam_helper=>orange. ENDIF.
     data(daystext) = cond string( when params-enddate - params-startdate = 1 then 'day' else 'days'  ).
+    data(result) = |Difference between { params-startdate DATE = USER } and { params-enddate DATE = USER } is {  params-enddate - params-startdate } { daystext } |.
     zparam_helper=>write_line(
         parguid     = parguid
-        text        = |Difference between { params-startdate DATE = USER } and { params-enddate DATE = USER } is {  params-enddate - params-startdate } { daystext } |
+        text        = result
         criticality = crit ).
     zparam_helper=>set_latest_criticality( parguid     = parguid
                                            criticality = crit ).
+           zparam_helper=>set_result(  parguid = parguid text = result ).
+
   ENDMETHOD.
   METHOD INIT.
     zparam_helper=>write_timestamp( parguid = parguid

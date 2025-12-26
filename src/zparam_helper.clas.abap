@@ -4,30 +4,32 @@ CLASS zparam_helper DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-  class-DATA:
-    green type n VALUE 3,
-    orange type n value 2,
-    red type n value 1,
-    normal type n value 0.
+    CLASS-DATA green  TYPE n LENGTH 1 VALUE 3.
+    CLASS-DATA orange TYPE n LENGTH 1 VALUE 2.
+    CLASS-DATA red    TYPE n LENGTH 1 VALUE 1.
+    CLASS-DATA normal TYPE n LENGTH 1 VALUE 0.
 
-    class-methods get_params IMPORTING parguid type sysuuid_x16
-                RETURNING VALUE(params) type zclass_i_params.
+    CLASS-METHODS get_params IMPORTING parguid       TYPE sysuuid_x16
+                             RETURNING VALUE(params) TYPE zclass_i_params.
 
-      class-methods set_params IMPORTING parguid type sysuuid_x16
-                new_params type zclass_i_params.
+    CLASS-METHODS set_params IMPORTING parguid    TYPE sysuuid_x16
+                                       new_params TYPE zclass_i_params.
 
     CLASS-METHODS clear_output IMPORTING parguid TYPE sysuuid_x16
-                                        !all type boole_d default ' '. " clears existing outputs
+                                         !all    TYPE boole_d DEFAULT ' '. " clears existing outputs
 
     CLASS-METHODS write_timestamp IMPORTING parguid TYPE sysuuid_x16
                                             !text   TYPE string.
 
-    CLASS-METHODS write_line IMPORTING parguid  TYPE sysuuid_x16
-                                       !text    TYPE string
-                                       !criticality type n default 0
-                                       !visible TYPE boole_d DEFAULT 'X'. " writes a line to the end of the outputs
-    class-METHODS set_latest_criticality IMPORTING parguid type sysuuid_x16
-                       !criticality type n default 0.
+    CLASS-METHODS write_line IMPORTING parguid     TYPE sysuuid_x16
+                                       !text       TYPE string
+                                       criticality TYPE n       DEFAULT 0
+                                       !visible    TYPE boole_d DEFAULT 'X'. " writes a line to the end of the outputs
+
+    CLASS-METHODS set_latest_criticality IMPORTING parguid     TYPE sysuuid_x16
+                                                   criticality TYPE n DEFAULT 0.
+   CLASS-METHODS set_result IMPORTING parguid     TYPE sysuuid_x16
+                                                   text TYPE string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -36,22 +38,23 @@ ENDCLASS.
 
 
 CLASS ZPARAM_HELPER IMPLEMENTATION.
-
-
   METHOD clear_output.
-  data(myname) = cl_abap_context_info=>get_user_technical_name(  ).
-  select single classname from zclass_params where parguid = @parguid into @data(myclass).
-  delete from zclass_output where parguid = @parguid and written_by = @myname.
-  if all is not initial.
-    select * from zclass_output as o join zclass_params as p on o~parguid = p~parguid
-        where p~classname = @myclass
-        and o~written_by = @myname
-        into table @data(parguids).
-     if parguids is not INITIAL.
-        delete  zclass_output from table  @parguids.
-    endif.
-    clear parguids.
-   endif.
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    SELECT SINGLE classname FROM zclass_params WHERE parguid = @parguid INTO @DATA(myclass).
+    DELETE FROM zclass_output WHERE parguid = @parguid AND written_by = @myname.
+    IF all IS NOT INITIAL.
+      SELECT *
+        FROM zclass_output AS o
+               JOIN
+                 zclass_params AS p ON o~parguid = p~parguid
+        WHERE p~classname  = @myclass
+          AND o~written_by = @myname
+        INTO TABLE @DATA(parguids).
+      IF parguids IS NOT INITIAL.
+        DELETE zclass_output FROM TABLE @parguids.
+      ENDIF.
+      CLEAR parguids.
+    ENDIF.
   ENDMETHOD.
 
   METHOD write_line.
@@ -99,6 +102,20 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
       select single counter from zclass_output where parguid = @parguid and visible = ' ' and written_by = @myname into @data(counter).
 
       update zclass_output set criticality = @criticality
+                where parguid    = @parguid
+                  and counter    = @counter
+                  and visible    = ''
+                   and      written_by = @myname.
+
+  ENDMETHOD.
+
+  METHOD SET_RESULT.
+
+      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+      select single counter from zclass_output where parguid = @parguid and visible = ' ' and written_by = @myname into @data(counter).
+   " data(result) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER } { text }|.
+    data(result) = text.
+      update zclass_output set text = @result
                 where parguid    = @parguid
                   and counter    = @counter
                   and visible    = ''
