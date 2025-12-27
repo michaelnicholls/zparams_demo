@@ -1,2 +1,2 @@
-sap.ui.define(["sap/suite/ui/generic/template/lib/AppComponent"],function(e){"use strict";return e.extend("classoutput.Component",{metadata:{manifest:"json"}})});                                                                                             
+sap.ui.define(["sap/suite/ui/generic/template/lib/AppComponent"],function(e){"use strict";return e.extend("zclassoutput.Component",{metadata:{manifest:"json"}})});                                                                                             
 //# sourceMappingURL=Component.js.map                                                                                                                                                                                                                          
