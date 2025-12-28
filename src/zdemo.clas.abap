@@ -72,6 +72,11 @@ CLASS ZDEMO IMPLEMENTATION.
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Values initialized at | ).
     data(params) = zparam_helper=>get_params( parguid ).
+    data(hour)  = substring( val = sy-uzeit off = 0 len = 2 ).
+    params-int1  =  hour - conv i( substring( val = sy-uzeit off = 2 len = 2 ) ).
+    params-int2  = substring( val = sy-uzeit off = 4 len = 2 ).
+    data(mod) = conv i( substring(  val = sy-uzeit off = 2 len = 4 ) ) mod 4.
+    params-op = substring(  val = '+-*/' off = mod len = 1 ).
     params-startdate = sy-datum + params-int1.
     params-enddate = sy-Datum + params-int2.
     zparam_helper=>set_params( parguid = parguid new_params = params ).

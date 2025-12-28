@@ -127,6 +127,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD initialize.
+
+  " remember there is an object version
+  "
     LOOP AT keys INTO DATA(ls_init).
 
       INSERT VALUE #( flag    = 'I'
@@ -245,6 +248,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD initialize_object.
+
+  " remember there is a non-object version
+  "
       LOOP AT keys INTO DATA(ls_init).
 
         INSERT VALUE #( flag    = 'I'
