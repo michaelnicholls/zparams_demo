@@ -1,17 +1,32 @@
 CLASS lcl_buffer DEFINITION.
-  PUBLIC SECTION.
 
+  PUBLIC SECTION.
     TYPES: BEGIN OF ty_buffer.
              INCLUDE TYPE zclass_i_params   AS lv_data.
     TYPES:   flag TYPE c LENGTH 1,
            END OF ty_buffer.
 
-  claSS-DATA c_table type table for CREATE zclass_i_params.
+    CLASS-DATA c_table   TYPE TABLE FOR CREATE zclass_i_params.
     CLASS-DATA mt_buffer TYPE TABLE OF ty_buffer.
-    "class-data refresh_message type string value 'Use Refresh to see latest values'.
 
+    CLASS-METHODS checkEditor IMPORTING parguid         TYPE sysuuid_x16
+                              RETURNING VALUE(isEditor) TYPE abap_boolean.
 
 ENDCLASS.
+
+
+CLASS lcl_buffer IMPLEMENTATION.
+  METHOD checkeditor.
+  DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    select single uname, editors from zclass_i_params where parguid = @parguid into @data(params).
+    iseditor = abap_false.
+    if params-uname = myname. iseditor = abap_true. endif.
+    FIND |,{ myname },| IN |,{ params-editors },|.
+    if sy-subrc = 0. iseditor = abap_true. endif.
+  ENDMETHOD.
+
+ENDCLASS.
+
 CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
 
@@ -48,14 +63,19 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS clear FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~clear.
     METHODS clear_object FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~clear_object.
+      IMPORTING keys FOR ACTION zclass_i_params~clear_object
+      result result.
 
     METHODS execute_object FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~execute_object.
+      IMPORTING keys FOR ACTION zclass_i_params~execute_object
+      result result.
 
     METHODS initialize_object FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~initialize_object.
+      IMPORTING keys FOR ACTION zclass_i_params~initialize_object
+      result result.
 
+    methods doInit importing parguid type sysuuid_x16.
+    methods doExec importing parguid type sysuuid_x16.
 ENDCLASS.
 
 CLASS lhc_zclass_i_params IMPLEMENTATION.
@@ -70,25 +90,22 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD update.
+  DATA table_line TYPE zclass_params.
   LOOP AT entities INTO DATA(ls_update).
-     READ TABLE lcl_buffer=>mt_buffer ASSIGNING FIELD-SYMBOL(<ls_buffer>) WITH KEY parguid = ls_update-parguid .
-      IF sy-subrc <> 0.
-        " not yet in buffer, read from table
 
         SELECT SINGLE * FROM zclass_i_params  WHERE parguid = @ls_update-parguid INTO @DATA(ls_db).
 
-        INSERT VALUE #( flag = 'U' lv_data = ls_db ) INTO TABLE lcl_buffer=>mt_buffer ASSIGNING <ls_buffer>.
+           ls_db =  CORRESPONDING #( base ( ls_db ) ls_update USING CONTROL ).
+          move-CORRESPONDING ls_db to table_line.
+             MODIFY zclass_params FROM @table_line.
 
-          <ls_buffer> =  CORRESPONDING #( base ( <ls_buffer> ) ls_update USING CONTROL ).
-
-
-      ENDIF.
       endloOP.
   ENDMETHOD.
 
   METHOD delete.
   loop at keys ASSIGNING FIELD-SYMBOL(<key>).
-  INSERT VALUE #( flag = 'D' parguid = <key>-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+       DELETE FROM zclass_params WHERE parguid = @<key>-parguid.
+
   endloop.
   ENDMETHOD.
 
@@ -112,16 +129,12 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
     LOOP AT keys INTO DATA(ls_exec).
 
       IF ls_exec-%param-clear_first IS NOT INITIAL.
-        INSERT VALUE #( flag    = 'Z'
-                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+        zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
       ENDIF.
       IF ls_exec-%param-initialize_first IS NOT INITIAL.
-        INSERT VALUE #( flag    = 'I'
-                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+        doinit( parguid = ls_exec-parguid ).
       ENDIF.
-      INSERT VALUE #( flag    = 'X'
-                      parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
-
+      doexec( parguid = ls_exec-parguid ).
     ENDLOOP.
 
   ENDMETHOD.
@@ -131,9 +144,7 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   " remember there is an object version
   "
     LOOP AT keys INTO DATA(ls_init).
-
-      INSERT VALUE #( flag    = 'I'
-                      parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+    doinit(  parguid = ls_init-parguid ).
 
     ENDLOOP.
 
@@ -149,11 +160,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
-     select count( * ) from zclass_i_params where Classname = @<param>-Classname and ( uname is initial or uname = @myname ) into @data(matching).
-      DATA(editor) = abap_false.
-      FIND |,{ myname },| IN |,{ <param>-editors },|.
+        select count( * ) from zclass_i_params where Classname = @<param>-Classname and ( uname is initial or uname = @myname ) into @data(matching).
+        data(editor) = lcl_buffer=>checkeditor( parguid = <param>-parguid ).
 
-      IF sy-subrc = 0. editor = abap_true.ENDIF.
       lt_result-parguid = <param>-parguid.
 
        if matching = 1. " just global variant
@@ -193,19 +202,23 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD copy.
-    LOOP AT keys INTO DATA(ls_copy).
+   DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    LOOP AT keys INTO DATA(lv_data).
+ select single * from zclass_params where parguid = @lv_data-Parguid into  @data(current).
 
-      INSERT VALUE #( flag    = 'C'
-                      parguid = ls_copy-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      current-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ).
+      current-uname = myname.
+      MODIFY zclass_params FROM @( current ).
 
     ENDLOOP.
   ENDMETHOD.
 
   METHOD clear.
-    LOOP AT keys INTO DATA(ls_clear).
 
-      INSERT VALUE #( flag    = 'Z'
-                      parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+  " remember there is an object version
+  "
+    LOOP AT keys INTO DATA(ls_clear).
+zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
 
     ENDLOOP.
 
@@ -213,38 +226,44 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD clear_object.
+  "
+  " remember there is a normal version of this
+  "
     LOOP AT keys INTO DATA(ls_clear).
 
-      INSERT VALUE #( flag    = 'Z'
-                      parguid = ls_clear-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
 
     ENDLOOP.
+    read entities of zclass_i_params in local mode ENTITY zclass_i_params
+    all FIELDS WITH CORRESPONDING #( keys )
+    result data(vals).
+    result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
     reported-zclass_i_params = value #(
       (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = |Output cleared| ) ) ).
 
   ENDMETHOD.
 
   METHOD execute_object.
-
-  " there's also a version at execute
+    " there's also a version at execute
 
     LOOP AT keys INTO DATA(ls_exec).
 
-     IF ls_exec-%param-clear_first IS NOT INITIAL.
-        INSERT VALUE #( flag    = 'Z'
-                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      IF ls_exec-%param-clear_first IS NOT INITIAL.
+        zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
       ENDIF.
       IF ls_exec-%param-initialize_first IS NOT INITIAL.
-        INSERT VALUE #( flag    = 'I'
-                        parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+        doinit( parguid = ls_exec-parguid ).
       ENDIF.
-      INSERT VALUE #( flag    = 'X'
-                      parguid = ls_exec-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
+      doexec( parguid = ls_exec-parguid ).
 
     ENDLOOP.
-    reported-zclass_i_params = value #(
-        (   %msg = new_message_with_text(  severity = if_abap_behv_message=>severity-success text = |Class executed -  use Show output to see results| ) ) ).
-
+    read entities of zclass_i_params in local mode ENTITY zclass_i_params
+    all FIELDS WITH CORRESPONDING #( keys )
+    result data(vals).
+    result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
+    reported-zclass_i_params = VALUE #(
+        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+                                        text     = |Class executed -  use Show output to see results| ) ) ).
   ENDMETHOD.
 
   METHOD initialize_object.
@@ -252,14 +271,58 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   " remember there is a non-object version
   "
       LOOP AT keys INTO DATA(ls_init).
-
-        INSERT VALUE #( flag    = 'I'
-                      parguid = ls_init-parguid  ) INTO TABLE lcl_buffer=>mt_buffer.
-
+      doinit(  parguid = ls_init-Parguid ).
         ENDLOOP.
-    reported-zclass_i_params = VALUE #(
-        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
-                                        text     = |Psrameters initialized - use Refresh to see values| ) ) ).
+        read entities of zclass_i_params in local mode ENTITY zclass_i_params
+    all FIELDS WITH CORRESPONDING #( keys )
+    result data(vals).
+    result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
+*    reported-zclass_i_params = VALUE #(
+*        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+*                                        text     = |Psrameters initialized - use Refresh to see values| ) ) ).
+
+  ENDMETHOD.
+
+
+
+  METHOD doexec.
+  DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+        DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
+      SELECT SINGLE counter FROM zclass_output
+        WHERE parguid = @parguid AND visible = '' AND written_by = @myname
+        INTO @DATA(counter).
+      IF sy-subrc > 0.
+        SELECT SINGLE MAX( counter ) FROM zclass_output
+          WHERE parguid = @parguid
+          INTO @DATA(temp).
+        counter = temp + 1.
+      ENDIF.
+      MODIFY zclass_output FROM @( VALUE #( parguid    = parguid
+                                            counter    = counter
+                                            text       = lastrun
+                                            visible    = ''
+                                            written_by = myname ) ).
+
+     select single classname from zclass_i_params where Parguid = @Parguid into @data(myclassname).
+     data(meth) = 'MAIN'.
+      CALL METHOD (myclassname)=>(meth)
+        EXPORTING parguid = parguid.
+
+
+  ENDMETHOD.
+
+  METHOD doinit.
+     select single * from zclass_i_params where Parguid = @Parguid into @data(params).
+      DATA(editor) = lcl_buffer=>checkeditor(  parguid = Parguid ).
+
+      " we are either an editor or we're using a user specific variant
+    if params-has_init = abap_true.
+      if editor = abap_true or params-global_flag = abap_false.
+        data(meth) = 'INIT'.
+        CALL METHOD (params-Classname)=>(meth)
+            EXPORTING parguid = parguid.
+       endif.
+     endif.
 
   ENDMETHOD.
 
@@ -289,90 +352,9 @@ CLASS lsc_ZCLASS_I_PARAMS IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-
-   DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-  DATA lt_data TYPE STANDARD TABLE OF zclass_i_params.
-    " find copy
-    data(x) = lcl_buffer=>mt_buffer.
-     lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'C' )
-                       (  row-lv_data ) ).
-    DATA table_line TYPE zclass_params.
-    loop at lt_data into data(lv_data).
-   select single * from zclass_params where parguid = @lv_data-Parguid into  @data(current).
-
-      current-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ).
-      current-uname = myname.
-      MODIFY zclass_params FROM @( current ).
-    ENDLOOP.
-    " find deletions
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'D' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-      DELETE FROM zclass_params WHERE parguid = @lv_data-parguid.
-    ENDLOOP.
-    " find updates
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'U' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-      MOVE-CORRESPONDING lv_data TO table_line.
-      MODIFY zclass_params FROM @table_line.
-    ENDLOOP.
-    " find clear outputs
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'Z' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-      zparam_helper=>clear_output( parguid = lv_data-parguid  ).
-    ENDLOOP.
-      " find initializations
-
-
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'I' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-
-
-      select single * from zclass_i_params where Parguid = @lv_data-Parguid into @data(params).
-      DATA(editor) = abap_false.
-      FIND |,{ myname },| IN |,{ params-editors },|.
-      IF sy-subrc = 0. editor = abap_true.ENDIF.
-      " we are either an editor or we're using a user specific variant
-    if params-has_init = abap_true.
-      if editor = abap_true or params-global_flag = abap_false.
-        data(meth) = 'INIT'.
-        CALL METHOD (params-Classname)=>(meth)
-            EXPORTING parguid = lv_data-parguid.
-       endif.
-     endif.
-    ENDLOOP.
-
-    " find executions
-    lt_data = VALUE #(  FOR row IN lcl_buffer=>mt_buffer WHERE ( flag = 'X' )
-                       (  row-lv_data ) ).
-    LOOP AT lt_data INTO lv_data.
-
-      DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
-      SELECT SINGLE counter FROM zclass_output
-        WHERE parguid = @lv_data-parguid AND visible = '' AND written_by = @myname
-        INTO @DATA(counter).
-      IF sy-subrc > 0.
-        SELECT SINGLE MAX( counter ) FROM zclass_output
-          WHERE parguid = @lv_data-parguid
-          INTO @DATA(temp).
-        counter = temp + 1.
-      ENDIF.
-      MODIFY zclass_output FROM @( VALUE #( parguid    = lv_data-parguid
-                                            counter    = counter
-                                            text       = lastrun
-                                            visible    = ''
-                                            written_by = myname ) ).
-
-     select single classname from zclass_i_params where Parguid = @lv_data-Parguid into @data(myclassname).
-     meth = 'MAIN'.
-      CALL METHOD (myclassname)=>(meth)
-        EXPORTING parguid = lv_data-parguid.
-    ENDLOOP.
-      clear lcl_buffer=>mt_buffer.
-
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    CLEAR lcl_buffer=>mt_buffer.
   ENDMETHOD.
 
   METHOD cleanup.
