@@ -42,7 +42,8 @@ define root view entity ZCLASS_C_PARAMS
       lastname,
       
       /////// leave nav_all below - it provides the link to see the output
-      nav_all
+      nav_all,
+      _outputs: redirected to composition child ZCLASS_C_PARAMOUTPUT
 }
 
 where

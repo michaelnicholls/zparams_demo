@@ -5,13 +5,19 @@
 @UI.createHidden: true
 define root view entity zclass_i_params as select from zclass_params as p 
 left outer join zparam_classes  as c  on c.classname = p.classname left outer join zclass_out_exec as e on e.parguid = p.parguid and e.WrittenBy = $session.user
-
+composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
 {
         @UI.facet: [ { id: 'details',
                      purpose: #STANDARD,
                      position: 10,
                      label: 'Details',
-                     type: #IDENTIFICATION_REFERENCE } ]
+                     type: #IDENTIFICATION_REFERENCE },
+                     { id: 'outputs',
+                     purpose: #STANDARD,
+                     position: 20,
+                     label: 'Output',
+                     targetElement: '_outputs',
+                     type: #LINEITEM_REFERENCE }  ]
   
         @UI.identification: [ { type: #FOR_ACTION, dataAction: 'execute_object', position: 60, label: 'Execute' },
                          {type: #FOR_ACTION, dataAction: 'initialize_object',position: 65, label: 'Initialize'},
@@ -53,7 +59,8 @@ left outer join zparam_classes  as c  on c.classname = p.classname left outer jo
     @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
     case when e.text is null then '-' else e.text end as lastrun,
     @UI.hidden: true
-    e.latest_criticality
+    e.latest_criticality,
+    _outputs
     
    
 }

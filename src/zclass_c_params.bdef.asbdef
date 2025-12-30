@@ -1,6 +1,6 @@
 projection;
 strict ( 2 );
-
+use side effects;
 define behavior for ZCLASS_C_PARAMS //alias <alias_name>
 {
 //  use create;
@@ -14,4 +14,10 @@ define behavior for ZCLASS_C_PARAMS //alias <alias_name>
   use action initialize;
   use action initialize_object;
   use action copy;
+  use association _outputs;
+
+}
+define behavior for zclass_c_paramoutput
+{
+use association _params;
 }

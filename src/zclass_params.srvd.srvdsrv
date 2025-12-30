@@ -1,4 +1,5 @@
 @EndUserText.label: 'all class parameters'
 define service ZCLASS_PARAMS {
   expose ZCLASS_C_PARAMS;
+  expose ZCLASS_C_PARAMOUTPUT;
 }

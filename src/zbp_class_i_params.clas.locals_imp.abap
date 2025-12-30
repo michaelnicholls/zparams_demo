@@ -1,3 +1,28 @@
+CLASS lhc_zclass_i_paramoutput DEFINITION INHERITING FROM cl_abap_behavior_handler.
+
+  PRIVATE SECTION.
+
+    METHODS read FOR READ
+      IMPORTING keys FOR READ zclass_i_paramoutput RESULT result.
+
+    METHODS rba_Params FOR READ
+      IMPORTING keys_rba FOR READ zclass_i_paramoutput\_Params FULL result_requested RESULT result LINK association_links.
+
+ENDCLASS.
+
+CLASS lhc_zclass_i_paramoutput IMPLEMENTATION.
+
+  METHOD read.
+
+  data(x) = 'x'.
+  ENDMETHOD.
+
+  METHOD rba_Params.
+  data(x) = 'x'.
+  ENDMETHOD.
+
+ENDCLASS.
+
 CLASS lcl_buffer DEFINITION.
 
   PUBLIC SECTION.
@@ -73,6 +98,8 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS initialize_object FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~initialize_object
       result result.
+    METHODS rba_outputs FOR READ
+      IMPORTING keys_rba FOR READ zclass_i_params\_outputs FULL result_requested RESULT result LINK association_links.
 
     methods doInit importing parguid type sysuuid_x16.
     methods doExec importing parguid type sysuuid_x16.
@@ -263,24 +290,23 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
     result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
     reported-zclass_i_params = VALUE #(
         ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
-                                        text     = |Class executed -  use Show output to see results| ) ) ).
+                                        text     = |Class executed| ) ) ).
   ENDMETHOD.
 
   METHOD initialize_object.
-
-  " remember there is a non-object version
-  "
-      LOOP AT keys INTO DATA(ls_init).
-      doinit(  parguid = ls_init-Parguid ).
-        ENDLOOP.
-        read entities of zclass_i_params in local mode ENTITY zclass_i_params
-    all FIELDS WITH CORRESPONDING #( keys )
-    result data(vals).
-    result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
+    " remember there is a non-object version
+    "
+    LOOP AT keys INTO DATA(ls_init).
+      doinit( parguid = ls_init-Parguid ).
+    ENDLOOP.
+    READ ENTITIES OF zclass_i_params IN LOCAL MODE ENTITY zclass_i_params
+         ALL FIELDS WITH CORRESPONDING #( keys )
+         RESULT DATA(vals).
+    result = VALUE #(  FOR val IN vals
+                      (  %tky = val-%tky %param = val ) ).
 *    reported-zclass_i_params = VALUE #(
 *        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
 *                                        text     = |Psrameters initialized - use Refresh to see values| ) ) ).
-
   ENDMETHOD.
 
 
@@ -324,6 +350,10 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
        endif.
      endif.
 
+  ENDMETHOD.
+
+  METHOD rba_Outputs.
+  data(x) = 'x'.
   ENDMETHOD.
 
 ENDCLASS.
