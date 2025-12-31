@@ -1,4 +1,0 @@
-@EndUserText.label: 'outpuy service'
-define service ZCLASS_output {
-  expose zclass_c_output;
-}
