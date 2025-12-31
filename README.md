@@ -15,10 +15,8 @@ The superset of parameters are maintained in a structure, ZCLASS_PARAMS_LOCAL, w
 There are CDS views which support a Fiori app to maintain ZPARAM_CLASSES. These are named ZPARAM_I/C_CLASSES. There are similarly named behavior definitions, plus a service definition, ZPARAM_CLASSES, and a service binding.  
 To make life easier, the service binding name should be called ZPARAM_CLASSES_O2, as this aligns with the Fiori app ZPARAMS_CLASS. The implementation code is in class ZBP_PARAM_I_CLASSES.
 
-The ZCLASS_OUTPUT contents are viewed through a Fiori app that is based on CDS views ZCLASS_I/C_OUTPUT, and a service ZCLASS_OUTPUT. A service binding named ZCLASS_OUTPUT_O2 is assumed by the Fiori app ZCLASS_OUTPUT.  
+The ZCLASS_OUTPUT contents are viewed as part of the object page for a set of parameters.  
 
-The app is passed a parameter Parguid at run time. There is a value help view, ZCLASS_OUTPUT_USERVH, to provide a list of available outputs.  
-Another view, ZCLASS_OUT_EXEC, provides the most recent run time and criticality for a particular Parguid.  
 
 The actual parameters are maintained by the end user through a Fiori app which is used by all classes.
 
@@ -39,7 +37,7 @@ Each class that uses this capability needs to do the following.
   New classes need to be added to the master table by using the ZPARAM_CLASSES binding, either as a Fiori app, or in Preview mode in ADT.  
 
 ## The end user Fiori app
-This app, named ZCLASS_PARAMS, is based on a list item and object page.  
+This app, named ZCLASS_PARAMS, is based on a list item and object page, which also has a table of outputs.  
 
 
 
@@ -47,9 +45,9 @@ This app, named ZCLASS_PARAMS, is based on a list item and object page.
 A new technical catalog should be created. It can contain all of the end user apps (ZDEMO_PARAMS etc), plus the output, ZCLASS_OUTPUT. The ZCLASS_OUTPUT app tile does not need to be added to a user's space.  
 
 I'd suggest the semantic object zparams for all the apps, and the following actions:
-- showall, for ZCLASS_OUTPUT. By default this uses the component `classoutput`
-- classes, for ZPARAM_CLASSES. By default this uses the component `paramclasses`
-- addclasses, which can be used to set class specific adaptations
+
+- classes, for ZPARAM_CLASSES. By default this uses the component `zparamclasses`
+- standard, which can be used to set class specific adaptations
 - an action for each class. This uses the adaptation specific component, such as customer.zclassparams.id_1766470811448_815.
 - The app has a parameter called Classname, which has a value for the class, such as ZDEMO etc
 - the tile should have a label etc which specifies the class name and description.
