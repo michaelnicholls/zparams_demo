@@ -40,14 +40,5 @@ extend view entity zclass_i_params with
   @EndUserText.label: 'First name'
  p.firstname,
   @EndUserText.label: 'Last name'
- p.lastname,
-
-  ////////// leave nav_all below
-  //////////
-  @Consumption.semanticObject: 'zparams'
-  @UI.lineItem: [ { type: #WITH_INTENT_BASED_NAVIGATION,
-                    semanticObjectAction: 'showall',
-                    position: 90,
-                    label: 'Show output' } ]
-  'Show output' as nav_all
+ p.lastname
 }

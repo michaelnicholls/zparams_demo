@@ -5,7 +5,7 @@
    <DDLS>
     <DDLNAME>ZCLASS_I_OUTPUT</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>all outputs</DDTEXT>
+    <DDTEXT>all outputs ** obsolete **</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
    </DDLS>
   </asx:values>
