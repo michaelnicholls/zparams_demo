@@ -1,9 +1,5 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
-@EndUserText.label: 'Class parameters'  // useful title here
-
-@UI.headerInfo.typeNamePlural: 'Class parameters'
-@UI.headerInfo.title.label: 'Class parameters'
 
 define root view entity ZCLASS_C_PARAMS
   provider contract transactional_query

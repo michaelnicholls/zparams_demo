@@ -1,8 +1,9 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'projection'
-
-@Metadata.ignorePropagatedAnnotations: true
+@UI.headerInfo.title.value: 'classname'
+@UI.headerInfo.description.value: 'classdescription'
+//@Metadata.ignorePropagatedAnnotations: true
 
 define root view entity ZPARAm_C_CLASSES
   provider contract transactional_query
