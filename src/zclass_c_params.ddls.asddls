@@ -21,10 +21,12 @@ define root view entity ZCLASS_C_PARAMS
 
 
       ///////  put all the  fields here /////
-
+    @UI.identification: [{ position:  20 }]
       Int1 as Int1,
+      @UI.identification: [{ position : 21 }]
       Int2 as Int2,
       Int3 as Int3,
+      @UI.identification: [{ position: 22 }]
       Op,
       startdate,
       enddate,

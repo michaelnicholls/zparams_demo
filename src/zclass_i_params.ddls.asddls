@@ -33,7 +33,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
      //                   {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'} ,
                         { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' }
           ]
-        @UI.lineItem: [ { position: 50, label: 'Last run' },
+        @UI.lineItem: [ { position: 10, label: 'Last run' },
                         { type: #FOR_ACTION, inline: true, dataAction: 'execute', position: 60, label: 'Execute' },
                         {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
@@ -66,7 +66,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     
     
  
-    @UI.identification: [ { position: 80, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
+    @UI.identification: [ { position: 10, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
     @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
     case when e.text is null then '-' else e.text end as lastrun,
     @UI.hidden: true
@@ -74,6 +74,6 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     _outputs
     
    
-}
+} where p.classname is not initial
 
 
