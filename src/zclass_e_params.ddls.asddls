@@ -30,8 +30,31 @@ extend view entity zclass_i_params with
   p.int4        as Int4,
 
   @EndUserText.label: 'Price'
+   @Semantics.amount.currencyCode: 'Currency'
   p.price       as Price,
-
+ 
+  @EndUserText.label: 'Currency'
+  @Consumption.valueHelpDefinition: [
+    {
+        entity: {
+            name: 'I_Currency',  // The CDS entity providing currency codes
+            element: 'Currency'  // The element in I_Currency holding the code
+        }
+    }
+]
+  p.currency as Currency,
+  @EndUserText.label: 'Quantity'
+  @Semantics.quantity.unitOfMeasure: 'Unit'
+  p.quantity as Quantity,
+  @EndUserText.label: 'Unit'
+  @Consumption.valueHelpDefinition: [{
+    entity: {
+        name: 'I_UnitOfMeasureStdVH', 
+        element: 'UnitOfMeasure'
+    }
+}]
+  
+  p.unit as Unit,
   @EndUserText.label: 'Start date'
   p.startdate   as startdate,
 

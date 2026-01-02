@@ -9,6 +9,7 @@
     <CLIDEP>X</CLIDEP>
     <LANGDEP>X</LANGDEP>
     <DDTEXT>parameters for z classes</DDTEXT>
+    <ACTFLAG>U</ACTFLAG>
     <MASTERLANG>E</MASTERLANG>
     <CONTFLAG>A</CONTFLAG>
     <EXCLASS>3</EXCLASS>
