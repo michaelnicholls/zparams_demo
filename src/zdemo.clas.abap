@@ -68,7 +68,7 @@ final(masskg) = params-massKg.
        zparam_helper=>set_result(  parguid = parguid text = status ).
        ENDIF.
     zparam_helper=>set_latest_criticality( parguid = parguid criticality = criticality ).
-    zparam_helper=>write_line( parguid = parguid text = |Mass: { mass } ({ unit }) = { masskg DECIMALS = 3 } KG| ).
+    zparam_helper=>write_line( parguid = parguid text = |Mass: { mass NUMBER = USER  } ({ unit }) = { masskg DECIMALS = 3 } KG| ).
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).
   ENDMETHOD.
