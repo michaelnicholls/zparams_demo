@@ -10,7 +10,7 @@ It is based on three tables:
 - ZCLASS_PARAMS, which has the different parameters to be used by the classes. This is keyed by a unique id (parguid). Each class has a global set of parameter values, and users can copy this to theier own version.
 - ZCLASS_OUTPUT, which has all the outputs from when the class is executed
 
-The superset of parameters are maintained in a structure, ZCLASS_PARAMS_LOCAL, which is where new parameters should be added.
+The superset of parameters are maintained in the table ZCLASS_PARAMS, which is where new parameters should be added.
 
 There are CDS views which support a Fiori app to maintain ZPARAM_CLASSES. These are named ZPARAM_I/C_CLASSES. There are similarly named behavior definitions, plus a service definition, ZPARAM_CLASSES, and a service binding.  
 To make life easier, the service binding name should be called ZPARAM_CLASSES_O2, as this aligns with the Fiori app ZPARAMS_CLASS. The implementation code is in class ZBP_PARAM_I_CLASSES.
