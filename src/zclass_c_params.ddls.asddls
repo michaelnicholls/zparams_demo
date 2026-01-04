@@ -32,8 +32,12 @@ define root view entity ZCLASS_C_PARAMS
       enddate,
       Price,
       Currency,
-      Quantity,
+      Mass,
       Unit,
+      massKg,
+      
+      
+      targetUnit,
       Checkbox,
 
       Int4,

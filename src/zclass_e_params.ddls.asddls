@@ -43,9 +43,9 @@ extend view entity zclass_i_params with
     }
 ]
   p.currency as Currency,
-  @EndUserText.label: 'Quantity'
+  @EndUserText.label: 'Mass'
   @Semantics.quantity.unitOfMeasure: 'Unit'
-  p.quantity as Quantity,
+  p.mass as Mass,
   @EndUserText.label: 'Unit'
   @Consumption.valueHelpDefinition: [{
     entity: {
@@ -55,6 +55,13 @@ extend view entity zclass_i_params with
 }]
   
   p.unit as Unit,
+  @Semantics.quantity.unitOfMeasure: 'targetUnit'
+  @EndUserText.label: 'Mass (KG)'
+  
+  unit_conversion( quantity=>p.mass, source_unit=>p.unit, target_unit=>cast('KG' as abap.unit(3)), error_handling=> 'KEEP_UNCONVERTED') as massKg,
+  
+    cast ('KG' as abap.unit(3)) as targetUnit,
+   
   @EndUserText.label: 'Start date'
   p.startdate   as startdate,
 

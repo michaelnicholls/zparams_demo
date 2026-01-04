@@ -29,6 +29,9 @@ CLASS ZDEMO IMPLEMENTATION.
     FINAL(int1) = params-Int1.
     FINAL(int2) = params-int2.
     final(op) = params-op.
+    final(mass) = params-mass.
+    final(unit) = params-unit.
+final(masskg) = params-massKg.
     " delete old outputs
     " zparam_helper=>clear_output(   parguid = parguid ).
 
@@ -65,6 +68,7 @@ CLASS ZDEMO IMPLEMENTATION.
        zparam_helper=>set_result(  parguid = parguid text = status ).
        ENDIF.
     zparam_helper=>set_latest_criticality( parguid = parguid criticality = criticality ).
+    zparam_helper=>write_line( parguid = parguid text = |Mass: { mass } ({ unit }) = { masskg DECIMALS = 3 } KG| ).
     zparam_helper=>write_timestamp( parguid = parguid
                                     text    = |Finished at | ).
   ENDMETHOD.
