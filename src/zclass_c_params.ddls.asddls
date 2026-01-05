@@ -34,10 +34,10 @@ define root view entity ZCLASS_C_PARAMS
       Currency,
       Mass,
       Unit,
-      massKg,
+      massTarget,
       
       
-      targetUnit,
+      targetunit,
       Checkbox,
 
       Int4,
