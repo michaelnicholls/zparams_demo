@@ -1,4 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
+@UI.headerInfo.title.value: 'Classname'
+@UI.headerInfo.description.value: 'classdescription'
+
 
 
 define root view entity ZCLASS_C_PARAMS
@@ -7,11 +10,7 @@ define root view entity ZCLASS_C_PARAMS
 
 {
   key Parguid,
-//      @UI.selectionField: [{position: 5}]
-//    
-//      @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_userVH',
-//                                                      element: 'classname'  }  }]
-      Classname,
+    Classname,
   
       classdescription,
       global_flag,

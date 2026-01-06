@@ -1,7 +1,5 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'parameters used by all classes'
-@UI.headerInfo.title.value: 'classname'
-@UI.headerInfo.description.value: 'classdescription'
 
 
 @UI.headerInfo.typeNamePlural: 'Class parameters'
@@ -16,10 +14,10 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
                      position: 10,
                      label: 'Details',
                      type: #IDENTIFICATION_REFERENCE },
-                     { id:              'HeaderFacet',
+                     { id:              'HeaderFacet2',
                          purpose:         #HEADER,
                          type:            #FIELDGROUP_REFERENCE,
-               targetQualifier: 'HeaderItems',
+               targetQualifier: 'HeaderItems2',
                              position:  19 },
                      { id: 'outputs',
                      purpose: #STANDARD,
@@ -52,11 +50,11 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     
       @Consumption.valueHelpDefinition: [{entity: { name: 'zclass_userVH',
                                                       element: 'classname'  }  }]
-     @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Class' , position: 10}]
+//     @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Class' , position: 10}]
     p.classname as Classname,
    
      @UI.lineItem: [ { position: 20, label: 'Description' } ]
-     @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Description', position: 20 }]
+ //    @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Description', position: 20 }]
     concat_with_space(c.classdescription,
          case when p.uname  = '' then '<global>' else '' end ,1) as classdescription,
     @UI.hidden
