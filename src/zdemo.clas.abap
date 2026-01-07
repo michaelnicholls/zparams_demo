@@ -24,7 +24,7 @@ CLASS ZDEMO IMPLEMENTATION.
     " get the parameters
     DATA(params) = zparam_helper=>get_params( parguid ).
     " make local variables
-    DATA(global) = COND #( WHEN params-global_flag IS INITIAL THEN `` ELSE `<Global>` ). " use back ticks
+    DATA(default) = COND #( WHEN params-global_flag IS INITIAL THEN `` ELSE `<Default>` ). " use back ticks
 
     FINAL(int1) = params-Int1.
     FINAL(int2) = params-int2.
@@ -39,7 +39,7 @@ CLASS ZDEMO IMPLEMENTATION.
     DATA result TYPE p LENGTH 9 DECIMALS 2.
     DATA status TYPE string.
     zparam_helper=>write_timestamp( parguid = parguid
-                                    text    = |{ global }{ myname } : Started at | ).
+                                    text    = |{ default }{ myname } : Started at | ).
     DATA(criticality) = zparam_helper=>normal.
     DATA(prefix) = |The result of { int1 } { op } { int2 } is |.
 

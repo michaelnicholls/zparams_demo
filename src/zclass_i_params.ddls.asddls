@@ -26,16 +26,19 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
                      targetElement: '_outputs',
                      type: #LINEITEM_REFERENCE }  ]
   
-        @UI.identification: [ { type: #FOR_ACTION, dataAction: 'execute_object', position: 60, label: 'Execute' },
+        @UI.identification: [ 
+        { type: #FOR_ACTION, dataAction: 'execute_object', position: 60, label: 'Execute' },
+                             {type: #FOR_ACTION, dataAction: 'execute_object_noinit',position: 63, label: 'Execute'},
+    
                          {type: #FOR_ACTION, dataAction: 'initialize_object',position: 65, label: 'Initialize'},
      //                   {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'} ,
                         { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' }
           ]
         @UI.lineItem: [ { position: 10, label: 'Last run' },
-                        { type: #FOR_ACTION, inline: true, dataAction: 'execute', position: 60, label: 'Execute' },
-                        {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
-                        {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'},
-                        { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' }
+         //               { type: #FOR_ACTION, inline: false, dataAction: 'execute', position: 60, label: 'Execute' },
+         //               {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
+                        {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from default values'}
+           //             { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' }
                          ]
     @UI.hidden: true    
     @EndUserText.label: 'Parameter UUID'           
@@ -44,7 +47,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     @UI.hidden
     p.uname as Uname,
     
-    @UI.lineItem: [ { position: 15, label: 'Global' } ]
+  //  @UI.lineItem: [ { position: 15, label: 'Default values' } ]
     cast ( case when p.uname = '' then 'X' else '' end as boole_d ) as global_flag,
   @UI.selectionField: [{position: 5}]
     
@@ -56,7 +59,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
      @UI.lineItem: [ { position: 20, label: 'Description' } ]
  //    @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Description', position: 20 }]
     concat_with_space(c.classdescription,
-         case when p.uname  = '' then '<global>' else '' end ,1) as classdescription,
+         case when p.uname  = '' then '- default values' else '' end ,1) as classdescription,
     @UI.hidden
     c.editors as editors,
     c.has_init as has_init,

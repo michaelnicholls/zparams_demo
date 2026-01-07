@@ -100,6 +100,8 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
       result result.
     METHODS rba_outputs FOR READ
       IMPORTING keys_rba FOR READ zclass_i_params\_outputs FULL result_requested RESULT result LINK association_links.
+    METHODS execute_object_noinit FOR MODIFY
+      IMPORTING keys FOR ACTION zclass_i_params~execute_object_noinit RESULT result.
 
     methods doInit importing parguid type sysuuid_x16.
     methods doExec importing parguid type sysuuid_x16.
@@ -189,8 +191,9 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
     LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
         select count( * ) from zclass_i_params where Classname = @<param>-Classname and ( uname is initial or uname = @myname ) into @data(matching).
         data(editor) = lcl_buffer=>checkeditor( parguid = <param>-parguid ).
-
+    clear lt_result.
       lt_result-parguid = <param>-parguid.
+      lt_result-%action-execute = if_abap_behv=>fc-o-enabled.
 
        if matching = 1. " just global variant
 
@@ -218,13 +221,19 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
     if <param>-has_init <> abap_true.
       lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
     endif.
-
-      lt_result-%action-execute_object    = lt_result-%action-execute.
+     lt_result-%action-execute_object    = lt_result-%action-execute.
+     lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
+    if lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+            lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-enabled.
+            lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled.
+     endif.
+   "   lt_result-%action-execute_object    = lt_result-%action-execute.
       lt_result-%action-initialize_object = lt_result-%action-initialize.
 
      APPEND lt_result TO result.
 
-    ENDLOOP.
+    ENDLOOP..
+
 
   ENDMETHOD.
 
@@ -354,6 +363,26 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
 
   METHOD rba_Outputs.
   data(x) = 'x'.
+  ENDMETHOD.
+
+
+  METHOD execute_object_noinit.
+     LOOP AT keys INTO DATA(ls_exec).
+
+      IF ls_exec-%param-clear_first IS NOT INITIAL.
+        zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
+      ENDIF.
+      doexec( parguid = ls_exec-parguid ).
+
+    ENDLOOP.
+    read entities of zclass_i_params in local mode ENTITY zclass_i_params
+    all FIELDS WITH CORRESPONDING #( keys )
+    result data(vals).
+    result = value #(  for val in vals (  %tky = val-%tky %param = val ) ).
+    reported-zclass_i_params = VALUE #(
+        ( %msg = new_message_with_text( severity = if_abap_behv_message=>severity-success
+                                        text     = |Class executed| ) ) ).
+
   ENDMETHOD.
 
 ENDCLASS.
