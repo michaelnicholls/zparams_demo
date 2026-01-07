@@ -9,11 +9,9 @@ define root view entity zclass_i_params as select from zclass_params as p
 left outer join zparam_classes  as c  on c.classname = p.classname left outer join zclass_out_exec as e on e.parguid = p.parguid and e.WrittenBy = $session.user
 composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
 {
-        @UI.facet: [ { id: 'details',
-                     purpose: #STANDARD,
-                     position: 10,
-                     label: 'Details',
-                     type: #IDENTIFICATION_REFERENCE },
+        @UI.facet: [
+         { id: 'details',   purpose: #STANDARD,      position: 10,     label: 'Parameters',   type: #IDENTIFICATION_REFERENCE },
+         { id: 'hesderLast', purpose: #HEADER, type: #DATAPOINT_REFERENCE, targetQualifier: 'lastrun' },
                      { id:              'HeaderFacet2',
                          purpose:         #HEADER,
                          type:            #FIELDGROUP_REFERENCE,
@@ -67,8 +65,9 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     
     
  
-    @UI.identification: [ { position: 10, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
+  //  @UI.identification: [ { position: 10, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
     @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
+    @UI.dataPoint: { qualifier: 'lastrun', criticality: 'latest_criticality' , title: 'Last run'}
     case when e.text is null then '-' else e.text end as lastrun,
     @UI.hidden: true
     e.latest_criticality,
