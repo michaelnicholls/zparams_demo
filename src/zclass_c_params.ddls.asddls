@@ -1,7 +1,7 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @UI.headerInfo.title.value: 'Classname'
 @UI.headerInfo.description.value: 'classdescription'
-
+@UI.headerInfo.typeNamePlural: 'Parameter sets'
 
 
 define root view entity ZCLASS_C_PARAMS
