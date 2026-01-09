@@ -45,7 +45,8 @@ define root view entity ZCLASS_C_PARAMS
       firstname,
       lastname,
       
-      ////leave the _outputs
+      
+filler1,filler2,
       _outputs: redirected to composition child ZCLASS_C_PARAMOUTPUT
 }
 

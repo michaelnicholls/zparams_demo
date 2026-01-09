@@ -72,5 +72,7 @@ extend view entity zclass_i_params with
   p.firstname,
 
   @EndUserText.label: 'Last name'
-  p.lastname
+  p.lastname,
+  '' as filler1,
+  '' as filler2
 }
