@@ -229,7 +229,11 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
      endif.
    "   lt_result-%action-execute_object    = lt_result-%action-execute.
       lt_result-%action-initialize_object = lt_result-%action-initialize.
-
+    if <param>-has_main <> abap_true.
+        lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled..
+        lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
+        lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled..
+    endif.
      APPEND lt_result TO result.
 
     ENDLOOP..
