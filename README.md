@@ -22,7 +22,7 @@ The actual parameters are maintained by the end user through a Fiori app which i
 
 The repository objects for this app include:
 - view ZCLASS_I_PARAMS, which has some control parameters
-- view ZCLASS_E_PARAMS - this is where extra parameters are added. The parameters are persisted in the append structure ZCLASS_PARAMS_LOCAL, and exposed through view ZCLASS_E_PARAMS. This is where labels should be maintained for the parameters.
+- view ZCLASS_E_PARAMS - this is where extra parameters are added, and exposed through view ZCLASS_E_PARAMS. This is where labels should be maintained for the parameters.
 - behaviour definition ZCLASS_I_PARAMS, which has the main logic
 - class ZBP_CLASS_I_PARAMS, which has the implementation code for the runtime
 - class ZPARAM_HELPER, which has some methods to read/write parameter values, and store text in the ZCLASS_OUTPUT table
