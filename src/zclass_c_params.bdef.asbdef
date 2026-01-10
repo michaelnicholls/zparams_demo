@@ -7,12 +7,12 @@ define behavior for ZCLASS_C_PARAMS //alias <alias_name>
   use update;
   use delete;
 
-  use action execute;
+//  use action execute;
   use action execute_object;
   use action execute_object_noinit;
-  use action clear;
+//  use action clear;
   use action clear_object;
-  use action initialize;
+//  use action initialize;
   use action initialize_object;
   use action copy;
   use association _outputs;

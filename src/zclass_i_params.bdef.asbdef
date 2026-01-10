@@ -18,13 +18,13 @@ authorization master ( instance )
   field ( readonly ) Parguid, global_flag, lastrun;
   field (readonly) filler1,filler2;
 
-  action ( features : instance ) execute parameter zparam_prompts; // on list
+  //action ( features : instance ) execute parameter zparam_prompts; // on list
   action ( features : instance ) execute_object parameter zparam_prompts result [1] $self; // on object page
     action ( features : instance ) execute_object_noinit parameter zparam_prompts_noinit result [1] $self; // on object page
 
-  action clear; // on list
+  //action clear; // on list
   action clear_object result [1] $self; // on object page
-  action ( features : instance ) initialize; // on list
+  //action ( features : instance ) initialize; // on list
   action ( features : instance ) initialize_object result  [1] $self; // on object page
 
   action ( features : instance ) copy;

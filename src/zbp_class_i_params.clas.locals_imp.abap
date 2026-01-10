@@ -76,17 +76,11 @@ CLASS lhc_zclass_i_params DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS lock FOR LOCK
       IMPORTING keys FOR LOCK zclass_i_params.
 
-    METHODS execute FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~execute. " RESULT result.
-    METHODS initialize FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~initialize.
     METHODS get_instance_features FOR INSTANCE FEATURES
       IMPORTING keys REQUEST requested_features FOR zclass_i_params RESULT result.
 
     METHODS copy FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~copy.
-    METHODS clear FOR MODIFY
-      IMPORTING keys FOR ACTION zclass_i_params~clear.
     METHODS clear_object FOR MODIFY
       IMPORTING keys FOR ACTION zclass_i_params~clear_object
       result result.
@@ -151,33 +145,11 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD execute.
 
-  "   remember there's a version of this at execute_object
-  "
-    LOOP AT keys INTO DATA(ls_exec).
 
-      IF ls_exec-%param-clear_first IS NOT INITIAL.
-        zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
-      ENDIF.
-      IF ls_exec-%param-initialize_first IS NOT INITIAL.
-        doinit( parguid = ls_exec-parguid ).
-      ENDIF.
-      doexec( parguid = ls_exec-parguid ).
-    ENDLOOP.
 
-  ENDMETHOD.
 
-  METHOD initialize.
 
-  " remember there is an object version
-  "
-    LOOP AT keys INTO DATA(ls_init).
-    doinit(  parguid = ls_init-parguid ).
-
-    ENDLOOP.
-
-  ENDMETHOD.
 
   METHOD get_instance_features.
      DATA lt_result LIKE LINE OF result.
@@ -193,45 +165,45 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
         data(editor) = lcl_buffer=>checkeditor( parguid = <param>-parguid ).
     clear lt_result.
       lt_result-parguid = <param>-parguid.
-      lt_result-%action-execute = if_abap_behv=>fc-o-enabled.
+      data(execute) = if_abap_behv=>fc-o-enabled.
 
        if matching = 1. " just global variant
 
           lt_result-%action-copy = if_abap_behv=>fc-o-enabled.
           if editor = abap_true.
-             lt_result-%action-initialize = if_abap_behv=>fc-o-enabled.
+             data(initialize) = if_abap_behv=>fc-o-enabled.
           else.
-            lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+            initialize = if_abap_behv=>fc-o-disabled.
             endif.
        else. " more than 1
           lt_result-%action-copy = if_abap_behv=>fc-o-disabled.
           if <param>-Uname = myname or editor = abap_true.
-            lt_result-%action-initialize = if_abap_behv=>fc-o-enabled.
+            initialize = if_abap_behv=>fc-o-enabled.
           else.
-          lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+          initialize = if_abap_behv=>fc-o-disabled.
           ENDIF.
 
         ENDIF.
      lt_result-%delete = if_abap_behv=>fc-o-disabled.
      if <param>-Uname is not initial. lt_result-%delete = if_abap_behv=>fc-o-enabled. endif.
-    lt_result-%update = lt_result-%action-initialize.
+    lt_result-%update = initialize.
     if <param>-has_main <> abap_true.
-      lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
+      execute = if_abap_behv=>fc-o-disabled.
       endif.
     if <param>-has_init <> abap_true.
-      lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+      initialize = if_abap_behv=>fc-o-disabled.
     endif.
-     lt_result-%action-execute_object    = lt_result-%action-execute.
+     lt_result-%action-execute_object    = execute.
      lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
-    if lt_result-%action-initialize = if_abap_behv=>fc-o-disabled.
+    if initialize = if_abap_behv=>fc-o-disabled.
             lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-enabled.
             lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled.
      endif.
    "   lt_result-%action-execute_object    = lt_result-%action-execute.
-      lt_result-%action-initialize_object = lt_result-%action-initialize.
+      lt_result-%action-initialize_object = initialize.
     if <param>-has_main <> abap_true.
         lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled..
-        lt_result-%action-execute = if_abap_behv=>fc-o-disabled.
+        execute = if_abap_behv=>fc-o-disabled.
         lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled..
     endif.
      APPEND lt_result TO result.
@@ -253,22 +225,13 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD clear.
-
-  " remember there is an object version
-  "
-    LOOP AT keys INTO DATA(ls_clear).
-zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
-
-    ENDLOOP.
 
 
-  ENDMETHOD.
+
+
 
   METHOD clear_object.
-  "
-  " remember there is a normal version of this
-  "
+
     LOOP AT keys INTO DATA(ls_clear).
 
 zparam_helper=>clear_output( parguid = ls_clear-parguid  ).

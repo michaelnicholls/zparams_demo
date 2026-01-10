@@ -29,14 +29,10 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
                              {type: #FOR_ACTION, dataAction: 'execute_object_noinit',position: 63, label: 'Execute'},
     
                          {type: #FOR_ACTION, dataAction: 'initialize_object',position: 65, label: 'Initialize'},
-     //                   {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from global'} ,
                         { type: #FOR_ACTION,   dataAction: 'clear_object', position: 70, label: 'Clear output' }
           ]
         @UI.lineItem: [ { position: 10, label: 'Last run' },
-         //               { type: #FOR_ACTION, inline: false, dataAction: 'execute', position: 60, label: 'Execute' },
-         //               {type: #FOR_ACTION, dataAction: 'initialize',position: 65, label: 'Initialize'},
                         {type: #FOR_ACTION, dataAction: 'copy',position: 66, label: 'Copy from default values'}
-           //             { type: #FOR_ACTION,   dataAction: 'clear', position: 70, label: 'Clear output' }
                          ]
     @UI.hidden: true    
     @EndUserText.label: 'Parameter UUID'           
