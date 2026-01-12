@@ -30,6 +30,8 @@ CLASS zparam_helper DEFINITION
                                                    criticality TYPE n DEFAULT 0.
    CLASS-METHODS set_result IMPORTING parguid     TYPE sysuuid_x16
                                                    text TYPE string.
+     class-methods get_global_param importing parguid type sysuuid_x16
+            RETURNING VALUE(g_parguid) type sysuuid_x16.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -39,9 +41,11 @@ ENDCLASS.
 
 CLASS ZPARAM_HELPER IMPLEMENTATION.
   METHOD clear_output.
+  data(g_parguid) = get_global_param( parguid = parguid ).
+
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-    SELECT SINGLE classname FROM zclass_params WHERE parguid = @parguid INTO @DATA(myclass).
-    DELETE FROM zclass_output WHERE parguid = @parguid AND written_by = @myname.
+    SELECT SINGLE classname FROM zclass_params WHERE parguid = @g_parguid INTO @DATA(myclass).
+    DELETE FROM zclass_output WHERE parguid = @g_parguid AND written_by = @myname.
     IF all IS NOT INITIAL.
       SELECT *
         FROM zclass_output AS o
@@ -58,16 +62,17 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD write_line.
+   data(g_parguid) = get_global_param( parguid = parguid ).
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
 
     " get the highest line number so far
-    SELECT SINGLE MAX( counter ) INTO @DATA(max_count) FROM zclass_output WHERE parguid = @parguid. "
+    SELECT SINGLE MAX( counter ) INTO @DATA(max_count) FROM zclass_output WHERE parguid = @g_parguid. "
     " get the highest sequence so far
     SELECT SINGLE MAX( sequence ) INTO @DATA(max_sequence)
       FROM zclass_output
-      WHERE parguid = @parguid AND written_by = @myname.
+      WHERE parguid = @g_parguid AND written_by = @myname.
 
-    MODIFY zclass_output FROM @( VALUE #( parguid    = parguid
+    MODIFY zclass_output FROM @( VALUE #( parguid    = g_parguid
                                           text       = text
                                           visible    = visible
                                           written_by = myname
@@ -97,12 +102,12 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD SET_LATEST_CRITICALITY.
-
+        data(g_parguid) = get_global_param( parguid = parguid ).
       DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-      select single counter from zclass_output where parguid = @parguid and visible = ' ' and written_by = @myname into @data(counter).
+      select single counter from zclass_output where parguid = @g_parguid and visible = ' ' and written_by = @myname into @data(counter).
 
       update zclass_output set criticality = @criticality
-                where parguid    = @parguid
+                where parguid    = @g_parguid
                   and counter    = @counter
                   and visible    = ''
                    and      written_by = @myname.
@@ -112,15 +117,20 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
   METHOD SET_RESULT.
 
       DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-      select single counter from zclass_output where parguid = @parguid and visible = ' ' and written_by = @myname into @data(counter).
+       data(g_parguid) = get_global_param( parguid = parguid ).
+      select single counter from zclass_output where parguid = @g_parguid and visible = ' ' and written_by = @myname into @data(counter).
    " data(result) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER } { text }|.
     data(result) = text.
       update zclass_output set text = @result
-                where parguid    = @parguid
+                where parguid    = @g_parguid
                   and counter    = @counter
                   and visible    = ''
                    and      written_by = @myname.
 
+  ENDMETHOD.
+
+  METHOD GET_GLOBAL_PARAM.
+        select single from zclass_params fields global_parguid where parguid = @parguid into @g_parguid.
   ENDMETHOD.
 
 ENDCLASS.

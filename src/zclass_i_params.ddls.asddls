@@ -67,6 +67,9 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     case when e.text is null then '-' else e.text end as lastrun,
     @UI.hidden: true
     e.latest_criticality,
+    case e.latest_criticality
+    when 0 then 4 else e.latest_criticality end as latest_status,
+    p.global_parguid,
     _outputs
     
    

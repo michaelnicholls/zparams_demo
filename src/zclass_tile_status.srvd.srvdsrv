@@ -1,0 +1,4 @@
+@EndUserText.label: 'tile status'
+define service ZCLASS_TILE_STATUS {
+  expose zclass_tile_status;
+}

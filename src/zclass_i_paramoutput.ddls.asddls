@@ -3,7 +3,7 @@
 @Metadata.ignorePropagatedAnnotations: true
 define view entity ZCLASS_I_PARAMOUTPUT
 
- as select from zclass_output as o inner join zclass_params as p
+ as select from zclass_all_outputs as o inner join zclass_params as p
 on o.parguid = p.parguid
 association to parent zclass_i_params as _params
 on $projection.Parguid = _params.Parguid

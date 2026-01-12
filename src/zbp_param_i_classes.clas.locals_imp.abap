@@ -108,7 +108,8 @@ CLASS lsc_zparam_i_classes IMPLEMENTATION.
         modify zparam_classes from @ls_db.
         if <item_u>-dummy  = 'X'.
             data: p type zclass_params..
-            p = value #( classname = <item_u>-Classname parguid =  cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ) ).
+            data(parguid) = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ).
+            p = value #( classname = <item_u>-Classname parguid = parguid global_parguid = parguid ).
             modiFY zclass_params FROM @p.
 
         endif.

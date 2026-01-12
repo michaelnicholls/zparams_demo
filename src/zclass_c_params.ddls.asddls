@@ -17,6 +17,7 @@ define root view entity ZCLASS_C_PARAMS
       Uname,
       lastrun,
       latest_criticality,
+      global_parguid,
 
 
       ///////  put all the  fields here /////
