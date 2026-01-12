@@ -62,7 +62,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     
  
   //  @UI.identification: [ { position: 10, label: 'Last run',  criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}  ]
-    @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
+ //   @UI.lineItem: [ { position: 80, label: 'Last run', criticality: 'latest_criticality' , criticalityRepresentation: #WITHOUT_ICON}   ]  
     @UI.dataPoint: { qualifier: 'lastrun', criticality: 'latest_criticality' , title: 'Last run'}
     case when e.text is null then '-' else e.text end as lastrun,
     @UI.hidden: true

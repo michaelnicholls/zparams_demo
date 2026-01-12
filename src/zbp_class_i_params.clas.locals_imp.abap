@@ -247,7 +247,7 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
   ENDMETHOD.
 
   METHOD execute_object.
-    " there's also a version at execute
+
 
     LOOP AT keys INTO DATA(ls_exec).
 
@@ -289,17 +289,18 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
 
   METHOD doexec.
   DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+  data(g_parguid) = zparam_helper=>get_global_param( parguid = parguid ).
         DATA(lastrun) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER }|.
       SELECT SINGLE counter FROM zclass_output
-        WHERE parguid = @parguid AND visible = '' AND written_by = @myname
+        WHERE parguid = @g_parguid AND visible = '' AND written_by = @myname
         INTO @DATA(counter).
       IF sy-subrc > 0.
         SELECT SINGLE MAX( counter ) FROM zclass_output
-          WHERE parguid = @parguid
+          WHERE parguid = @g_parguid
           INTO @DATA(temp).
         counter = temp + 1.
       ENDIF.
-      MODIFY zclass_output FROM @( VALUE #( parguid    = parguid
+      MODIFY zclass_output FROM @( VALUE #( parguid    = g_parguid
                                             counter    = counter
                                             text       = lastrun
                                             visible    = ''

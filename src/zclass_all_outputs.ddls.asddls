@@ -20,4 +20,4 @@ on  p.global_parguid = o.parguid
    o.written_by,
    o.visible
 }
-where p.global_parguid is not null //and o.visible = 'X'// and o.written_by = $session.user
+where  o.written_by = $session.user

@@ -109,7 +109,7 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
       update zclass_output set criticality = @criticality
                 where parguid    = @g_parguid
                   and counter    = @counter
-                  and visible    = ''
+                  and visible    = ' '
                    and      written_by = @myname.
 
   ENDMETHOD.
@@ -124,7 +124,7 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
       update zclass_output set text = @result
                 where parguid    = @g_parguid
                   and counter    = @counter
-                  and visible    = ''
+                  and visible    = ' '
                    and      written_by = @myname.
 
   ENDMETHOD.
