@@ -110,6 +110,8 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 *  ENDMETHOD.
 
   METHOD create.
+
+  data(x) = 'create'.
   ENDMETHOD.
 
   METHOD update.
@@ -144,15 +146,8 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
   METHOD lock.
   ENDMETHOD.
 
-
-
-
-
-
-
-
   METHOD get_instance_features.
-     DATA lt_result LIKE LINE OF result.
+    DATA lt_result LIKE LINE OF result.
 
     SELECT * FROM zclass_i_params
       FOR ALL ENTRIES IN @keys
@@ -161,56 +156,62 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
 
     DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
     LOOP AT params ASSIGNING FIELD-SYMBOL(<param>).
-        select count( * ) from zclass_i_params where Classname = @<param>-Classname and ( uname is initial or uname = @myname ) into @data(matching).
-        data(editor) = lcl_buffer=>checkeditor( parguid = <param>-parguid ).
-    clear lt_result.
+      SELECT COUNT( * ) FROM zclass_i_params
+        WHERE Classname = @<param>-Classname AND ( uname IS INITIAL OR uname = @myname )
+        INTO @DATA(matching).
+      DATA(editor) = lcl_buffer=>checkeditor( parguid = <param>-parguid ).
+      CLEAR lt_result.
       lt_result-parguid = <param>-parguid.
-      data(execute) = if_abap_behv=>fc-o-enabled.
+      DATA(execute) = if_abap_behv=>fc-o-enabled.
 
-       if matching = 1. " just global variant
+      IF matching = 1. " just global variant
 
-          lt_result-%action-copy = if_abap_behv=>fc-o-enabled.
-          if editor = abap_true.
-             data(initialize) = if_abap_behv=>fc-o-enabled.
-          else.
-            initialize = if_abap_behv=>fc-o-disabled.
-            endif.
-       else. " more than 1
-          lt_result-%action-copy = if_abap_behv=>fc-o-disabled.
-          if <param>-Uname = myname or editor = abap_true.
-            initialize = if_abap_behv=>fc-o-enabled.
-          else.
+        lt_result-%action-copy = if_abap_behv=>fc-o-enabled.
+        IF editor = abap_true.
+          DATA(initialize) = if_abap_behv=>fc-o-enabled.
+        ELSE.
           initialize = if_abap_behv=>fc-o-disabled.
-          ENDIF.
-
         ENDIF.
-     lt_result-%delete = if_abap_behv=>fc-o-disabled.
-     if <param>-Uname is not initial. lt_result-%delete = if_abap_behv=>fc-o-enabled. endif.
-    lt_result-%update = initialize.
-    if <param>-has_main <> abap_true.
-      execute = if_abap_behv=>fc-o-disabled.
-      endif.
-    if <param>-has_init <> abap_true.
-      initialize = if_abap_behv=>fc-o-disabled.
-    endif.
-     lt_result-%action-execute_object    = execute.
-     lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
-    if initialize = if_abap_behv=>fc-o-disabled.
-            lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-enabled.
-            lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled.
-     endif.
-   "   lt_result-%action-execute_object    = lt_result-%action-execute.
-      lt_result-%action-initialize_object = initialize.
-    if <param>-has_main <> abap_true.
-        lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled..
+      ELSE. " more than 1
+        lt_result-%action-copy = if_abap_behv=>fc-o-disabled.
+        IF <param>-Uname = myname OR editor = abap_true.
+          initialize = if_abap_behv=>fc-o-enabled.
+        ELSE.
+          initialize = if_abap_behv=>fc-o-disabled.
+        ENDIF.
+
+      ENDIF.
+      lt_result-%delete = if_abap_behv=>fc-o-disabled.
+      IF <param>-Uname IS NOT INITIAL. lt_result-%delete = if_abap_behv=>fc-o-enabled. ENDIF.
+      lt_result-%update = initialize.
+      IF <param>-has_main <> abap_true.
         execute = if_abap_behv=>fc-o-disabled.
-        lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled..
-    endif.
-     APPEND lt_result TO result.
+      ENDIF.
+      IF <param>-has_init <> abap_true.
+        initialize = if_abap_behv=>fc-o-disabled.
+      ENDIF.
+      lt_result-%action-execute_object        = execute.
+      lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
+      IF initialize = if_abap_behv=>fc-o-disabled.
+        lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-enabled.
+        lt_result-%action-execute_object        = if_abap_behv=>fc-o-disabled.
+      ENDIF.
+      "   lt_result-%action-execute_object    = lt_result-%action-execute.
+      lt_result-%action-initialize_object = initialize.
+      IF <param>-has_main <> abap_true.
+        lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled.
+        execute = if_abap_behv=>fc-o-disabled.
+        lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
+      ENDIF.
+      lt_result-%action-clear_object = if_abap_behv=>fc-o-enabled.
+      if editor = abap_false.
+      lt_result-%action-clear_object = if_abap_behv=>fc-o-disabled.
+      lt_result-%action-execute_object = if_abap_behv=>fc-o-disabled.
+      lt_result-%action-execute_object_noinit = if_abap_behv=>fc-o-disabled.
+       endif.
+      APPEND lt_result TO result.
 
-    ENDLOOP..
-
-
+    ENDLOOP.
   ENDMETHOD.
 
   METHOD copy.
@@ -247,17 +248,23 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
   ENDMETHOD.
 
   METHOD execute_object.
-
+  "
+  " remember noinit version
+  "
 
     LOOP AT keys INTO DATA(ls_exec).
-
+        data(g_parguid) = zparam_helper=>get_global_param( parguid = ls_exec-parguid ).
       IF ls_exec-%param-clear_first IS NOT INITIAL.
         zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
       ENDIF.
       IF ls_exec-%param-initialize_first IS NOT INITIAL.
         doinit( parguid = ls_exec-parguid ).
       ENDIF.
-      doexec( parguid = ls_exec-parguid ).
+      if ls_exec-%param-use_default is initial.
+           doexec( parguid = ls_exec-parguid ).
+      else.
+           doexec(  parguid = g_parguid ).
+      endif.
 
     ENDLOOP.
     read entities of zclass_i_params in local mode ENTITY zclass_i_params
@@ -336,12 +343,16 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
 
   METHOD execute_object_noinit.
      LOOP AT keys INTO DATA(ls_exec).
+      data(g_parguid) = zparam_helper=>get_global_param( parguid = ls_exec-parguid ).
 
       IF ls_exec-%param-clear_first IS NOT INITIAL.
         zparam_helper=>clear_output( parguid = ls_exec-parguid  ).
       ENDIF.
-      doexec( parguid = ls_exec-parguid ).
-
+       if ls_exec-%param-use_default is initial.
+           doexec( parguid = ls_exec-parguid ).
+      else.
+           doexec(  parguid = g_parguid ).
+      endif.
     ENDLOOP.
     read entities of zclass_i_params in local mode ENTITY zclass_i_params
     all FIELDS WITH CORRESPONDING #( keys )
@@ -352,6 +363,8 @@ zparam_helper=>clear_output( parguid = ls_clear-parguid  ).
                                         text     = |Class executed| ) ) ).
 
   ENDMETHOD.
+
+
 
 ENDCLASS.
 

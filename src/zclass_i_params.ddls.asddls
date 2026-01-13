@@ -4,7 +4,7 @@
 
 @UI.headerInfo.typeNamePlural: 'Class parameters'
 
-@UI.createHidden: true
+//@UI.createHidden: true
 define root view entity zclass_i_params as select from zclass_params as p 
 left outer join zparam_classes  as c  on c.classname = p.classname left outer join zclass_out_exec as e on e.parguid = p.parguid and e.WrittenBy = $session.user
 composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs

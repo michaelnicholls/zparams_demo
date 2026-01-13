@@ -3,7 +3,7 @@ strict ( 2 );
 use side effects;
 define behavior for ZCLASS_C_PARAMS //alias <alias_name>
 {
-//  use create;
+ // use create;
   use update;
   use delete;
 

@@ -13,6 +13,7 @@ authorization master ( instance )
 
 {
   create;
+ // static default factory action newparams [1];
   update ( features : instance );
   delete ( features : instance );
   field ( readonly ) Parguid, global_flag, lastrun;
@@ -23,7 +24,7 @@ authorization master ( instance )
     action ( features : instance ) execute_object_noinit parameter zparam_prompts_noinit result [1] $self; // on object page
 
   //action clear; // on list
-  action clear_object result [1] $self; // on object page
+  action ( features : instance ) clear_object result [1] $self; // on object page
   //action ( features : instance ) initialize; // on list
   action ( features : instance ) initialize_object result  [1] $self; // on object page
 
