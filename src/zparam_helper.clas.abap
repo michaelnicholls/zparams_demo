@@ -32,9 +32,9 @@ CLASS zparam_helper DEFINITION
                                                    text TYPE string.
      class-methods get_global_param importing parguid type sysuuid_x16
             RETURNING VALUE(g_parguid) type sysuuid_x16.
-
-  PROTECTED SECTION.
-  PRIVATE SECTION.
+     class-METHODS get_parguid importing classname type string
+                exporting parguid type sysuuid_x16
+                            default_parguid type sysuuid_x16.
 ENDCLASS.
 
 
@@ -131,6 +131,35 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
 
   METHOD GET_GLOBAL_PARAM.
         select single from zclass_params fields global_parguid where parguid = @parguid into @g_parguid.
+  ENDMETHOD.
+
+  METHOD get_parguid.
+    " try to find the non-default parameters
+    CLEAR: parguid,
+           default_parguid.
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+
+    SELECT SINGLE FROM zclass_params
+      FIELDS parguid, global_parguid
+      WHERE classname = @classname
+        AND uname     = @myname
+      INTO @DATA(params).
+
+    IF sy-subrc = 0.
+      parguid = params-parguid.
+      default_parguid = params-global_parguid.
+    ELSE.
+      " else, get the defaults
+      SELECT SINGLE FROM zclass_params
+        FIELDS parguid, global_parguid
+        WHERE classname  = @classname
+          AND uname     IS INITIAL
+        INTO @params.
+      IF sy-subrc = 0.
+        parguid = params-parguid.
+        default_parguid = params-global_parguid.
+      ENDIF.
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.
