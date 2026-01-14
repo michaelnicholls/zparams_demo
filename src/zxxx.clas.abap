@@ -18,13 +18,17 @@ CLASS zxxx IMPLEMENTATION.
                                 IMPORTING parguid         = DATA(parguid)
                                           default_parguid = DATA(default_parguid) ).
     out->write( |{ parguid } { default_parguid }| ).
-    data(is_global) = abap_false.
-    if parguid = default_parguid. is_global = abap_true. endif.
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    DATA(is_global) = abap_false.
+    IF parguid = default_parguid. is_global = abap_true. ENDIF.
 
-    data(params) = zparam_helper=>get_params( parguid = parguid ).
-    data(default_params) = zparam_helper=>get_params( parguid = default_parguid ).
+    DATA(params) = zparam_helper=>get_params( parguid = parguid ).
+    DATA(default_params) = zparam_helper=>get_params( parguid = default_parguid ).
     out->write( |Default int1 { default_params-Int1 }| ).
     out->write( |User    int1 { params-Int1 }| ).
-
+    " set int2
+    params-int2 = 666.
+    zparam_helper=>set_params( parguid    = parguid
+                               new_params = params ).
   ENDMETHOD.
 ENDCLASS.
