@@ -101,32 +101,35 @@ CLASS ZPARAM_HELPER IMPLEMENTATION.
 
   ENDMETHOD.
 
-  METHOD SET_LATEST_CRITICALITY.
-        data(g_parguid) = get_global_param( parguid = parguid ).
-      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-      select single counter from zclass_output where parguid = @g_parguid and visible = ' ' and written_by = @myname into @data(counter).
+  METHOD set_latest_criticality.
+    DATA(g_parguid) = get_global_param( parguid = parguid ).
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    SELECT SINGLE counter,text  FROM zclass_output
+      WHERE parguid = @g_parguid AND visible = ' ' AND written_by = @myname
+      INTO ( @DATA(counter),@data(text) ).
 
-      update zclass_output set criticality = @criticality
-                where parguid    = @g_parguid
-                  and counter    = @counter
-                  and visible    = ' '
-                   and      written_by = @myname.
-
+    MODIFY zclass_output FROM @( VALUE #( criticality = criticality
+                                          parguid     = g_parguid
+                                          counter     = counter
+                                          text = text
+                                          visible     = ' '
+                                          written_by  = myname ) ).
   ENDMETHOD.
 
-  METHOD SET_RESULT.
-
-      DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
-       data(g_parguid) = get_global_param( parguid = parguid ).
-      select single counter from zclass_output where parguid = @g_parguid and visible = ' ' and written_by = @myname into @data(counter).
-   " data(result) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER } { text }|.
-    data(result) = text.
-      update zclass_output set text = @result
-                where parguid    = @g_parguid
-                  and counter    = @counter
-                  and visible    = ' '
-                   and      written_by = @myname.
-
+  METHOD set_result.
+    DATA(myname) = cl_abap_context_info=>get_user_technical_name( ).
+    DATA(g_parguid) = get_global_param( parguid = parguid ).
+    SELECT SINGLE counter,criticality FROM zclass_output
+      WHERE parguid = @g_parguid AND visible = ' ' AND written_by = @myname
+      INTO (  @DATA(counter),@data(criticality) ).
+    " data(result) = |{ sy-datlo DATE = USER } { sy-timlo TIME = USER } { text }|.
+    DATA(result) = text.
+    MODIFY zclass_output FROM @( VALUE #( text       = result
+                                          parguid    = g_parguid
+                                          counter    = counter
+                                          criticality = criticality
+                                          visible    = ' '
+                                          written_by = myname ) ).
   ENDMETHOD.
 
   METHOD GET_GLOBAL_PARAM.

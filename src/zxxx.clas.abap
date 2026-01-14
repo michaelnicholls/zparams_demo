@@ -28,6 +28,11 @@ CLASS zxxx IMPLEMENTATION.
     out->write( |User    int1 { params-Int1 }| ).
     " set int2
     params-int2 = 666.
+    zparam_helper=>write_line(  parguid = parguid text = |Line written| ).
+    zparam_helper=>write_line(  parguid = parguid text = |Line written| criticality = zparam_helper=>green ).
+    zparam_helper=>set_result(  parguid = parguid text = |Status from console app| ).
+    out->write( |Set some status and criticality| ).
+    zparam_helper=>set_latest_criticality(  parguid = parguid criticality = zparam_helper=>orange ).
     zparam_helper=>set_params( parguid    = parguid
                                new_params = params ).
   ENDMETHOD.
