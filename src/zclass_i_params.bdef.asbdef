@@ -28,7 +28,7 @@ authorization master ( instance )
   //action ( features : instance ) initialize; // on list
   action ( features : instance ) initialize_object result  [1] $self; // on object page
 
-  action ( features : instance ) copy;
+  action ( features : instance ) copy ;
 side effects {
 action execute_object affects entity _outputs;
 action execute_object_noinit affects entity _outputs;

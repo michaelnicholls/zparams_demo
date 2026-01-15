@@ -25,6 +25,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
                      type: #LINEITEM_REFERENCE }  ]
   
         @UI.identification: [ 
+        
         { type: #FOR_ACTION, dataAction: 'execute_object', position: 60, label: 'Execute' },
                              {type: #FOR_ACTION, dataAction: 'execute_object_noinit',position: 63, label: 'Execute'},
     
@@ -54,6 +55,13 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
  //    @UI.fieldGroup: [{ qualifier: 'HeaderItems',label: 'Description', position: 20 }]
     concat_with_space(c.classdescription,
          case when p.uname  = '' then '- default values' else '' end ,1) as classdescription,
+          @UI.lineItem: [ { position: 30, label: 'Instructions', type: #WITH_URL, url: 'instructionsURL' } ]
+    case when p.uname = '' then 'Instructions' else '' end as instructions,
+        @UI.hidden: true
+    'javascript:window.open("https://michaelnicholls.github.io/zparams/zparam_instructions.html")' as instructionsURL,
+    
+     @UI.lineItem: [ { position: 40, label: 'Proceed' } ]
+    'Proceed' as proceed,
     @UI.hidden
     c.editors as editors,
     c.has_init as has_init,

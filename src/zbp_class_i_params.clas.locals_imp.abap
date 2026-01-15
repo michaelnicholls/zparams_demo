@@ -222,7 +222,6 @@ CLASS lhc_zclass_i_params IMPLEMENTATION.
       current-parguid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16(  ).
       current-uname = myname.
       MODIFY zclass_params FROM @( current ).
-
     ENDLOOP.
   ENDMETHOD.
 
