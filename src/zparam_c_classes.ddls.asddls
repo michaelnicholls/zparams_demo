@@ -5,7 +5,7 @@
 @UI.headerInfo.description.value: 'classdescription'
 //@Metadata.ignorePropagatedAnnotations: true
 
-define root view entity ZPARAm_C_CLASSES
+define root view entity ZPARAM_C_CLASSES
   provider contract transactional_query
   as projection on zparam_i_classes
 

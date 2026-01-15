@@ -1,4 +1,4 @@
 @EndUserText.label: 'classes with parameters'
-define service Zparam_classes {
-  expose ZPARAm_C_CLASSES;
+define service ZPARAM_CLASSES {
+  expose ZPARAM_C_CLASSES;
 }
