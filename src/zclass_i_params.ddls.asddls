@@ -61,7 +61,7 @@ composition [0..*] of ZCLASS_I_PARAMOUTPUT as _outputs
     'javascript:window.open("https://michaelnicholls.github.io/zparams/zparam_instructions.html")' as instructionsURL,
     
      @UI.lineItem: [ { position: 40, label: 'Proceed' } ]
-    'Proceed' as proceed,
+    case when p.uname  = '' then 'See defaults' else 'Edit, execute, etc.' end  as proceed,
     @UI.hidden
     c.editors as editors,
     c.has_init as has_init,
