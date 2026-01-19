@@ -42,7 +42,7 @@ This app, named ZCLASS_PARAMS, is based on a list item and object page, which al
 
 
 ## FLP configuration
-A new technical catalog should be created. It can contain all of the end user apps (ZDEMO_PARAMS etc), plus the output, ZCLASS_OUTPUT. The ZCLASS_OUTPUT app tile does not need to be added to a user's space.  
+A new technical catalog should be created. It can contain all of the end user apps (ZDEMO_PARAMS etc).   
 
 I'd suggest the semantic object zparams for all the apps, and the following actions:
 
